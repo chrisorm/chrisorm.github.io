@@ -2768,4 +2768,4 @@ IvP/AY9cjiJizyF/AAAAAElFTkSuQmCC
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</summary><category term="Variational Inference VI Python"></category></entry></feed>
+</summary><category term="Variational Inference"></category><category term="VI"></category><category term="Python"></category></entry></feed>
