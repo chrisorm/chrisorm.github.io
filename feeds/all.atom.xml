@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Infinite nOrm</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2017-09-27T20:00:00+01:00</updated><entry><title>Variational Inference - Why?</title><link href="/VI-Why.html" rel="alternate"></link><published>2017-09-27T20:00:00+01:00</published><updated>2017-09-27T20:00:00+01:00</updated><author><name>Chris Orm</name></author><id>tag:,2017-09-27:VI-Why.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Infinite n∞rm</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2017-09-27T20:00:00+01:00</updated><entry><title>Variational Inference - Why?</title><link href="/VI-Why.html" rel="alternate"></link><published>2017-09-27T20:00:00+01:00</published><updated>2017-09-27T20:00:00+01:00</updated><author><name>Chris Orm</name></author><id>tag:,2017-09-27:VI-Why.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
