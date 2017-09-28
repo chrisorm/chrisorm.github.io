@@ -1019,7 +1019,7 @@ h6:hover .anchor-link {
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;As a trivial example, let's imagine that we have a quadratic equation that in reality has some very long and complicated coefficients. Imagine that it's complex for us to figure them out exactly, but we are happy to use an approximate evaluation of the function.&lt;/p&gt;
-&lt;p&gt;Because we don't know the coefficients, we can't actually evaluate our function at any point - this is why we use bounds. We can't do standard things like evaluate a few points and do an interpolation or approximate our function with a polynomial, because we can't evaluate it anywhere. These few examples are somewhat contrived, but for many problems, we can derive a bound on the function, without actually every knowing the function explicitly. But we will come onto this later.&lt;/p&gt;
+&lt;p&gt;Because we don't know the coefficients, we can't actually evaluate our function at any point - this is why we use bounds. We can't do standard things like evaluate a few points and do an interpolation or approximate our function with a polynomial, because we can't evaluate it anywhere. These few examples are somewhat contrived, but for many problems, we can derive a bound on the function, without actually ever knowing the function explicitly. But we will come onto this later.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2383,9 +2383,9 @@ YmZmWXhAMTOzLDygmJlZFh8C3PZENITTJQMAAAAASUVORK5CYII=
 &lt;p&gt;The most common place we see Variational Inference is computing posterior distributions in Bayesian models. Recall Bayes' Theroem:&lt;/p&gt;
 &lt;p&gt;$P(Z \mid X) = \frac{P(X,Z)}{\int_{Z}{P(X,Z) dZ}}$&lt;/p&gt;
 &lt;p&gt;Computing the denominator of this fraction is sometimes very, very hard. For example, if Z is multidemensional, and the distributions are not conjugate, there are very limited ways to compute this integral.&lt;/p&gt;
-&lt;p&gt;Let's take the simplifying assumption that X and Z are independent. This gives us the simplifying assumption:&lt;/p&gt;
+&lt;p&gt;Let's make the simplifying assumption that X and Z are independent. This gives us the simplifying assumption:&lt;/p&gt;
 &lt;p&gt;$\int_{Z}{P(X,Z) dZ} = \int_{Z}{P(X)P(Z) dZ} $&lt;/p&gt;
-&lt;p&gt;Obviously if we knew this in practice, we could simply find P(X) by factorising the joint distribution, however the important point here is to show how complex computing this integral is if we don't know an anlytical simplification. Let's say $P(Z)$ is a multivariate standard Gaussian.&lt;/p&gt;
+&lt;p&gt;Obviously if we knew this in practice, we could simply find P(X) by factorising the joint distribution, however the important point here is to show how complex computing this integral is if we don't know an analytical simplification. Let's say $P(Z)$ is a multivariate standard Gaussian.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2727,8 +2727,10 @@ IvP/AY9cjiJizyF/AAAAAElFTkSuQmCC
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;The reason this scales so badly is because of the curse of dimensionality - as our space becomes bigger, so does the shapes of which we need to compute the are. In 1d, we have to do ~ 200 evaluations, in 2d ~ 40,000 and in 3d (if we did the same x as 1 and 2d) ~ 8 million.&lt;/p&gt;
+&lt;p&gt;The reason this scales so badly is because of the curse of dimensionality.&lt;/p&gt;
+&lt;p&gt;As the dimension of the space becomes larger, the discrete volumes we compute with the numerical integral increase exponentially. In 1d, we have to do ~ 200 evaluations, in 2d ~ 40,000 and in 3d (if we did the same x as 1 and 2d) ~ 8 million.&lt;/p&gt;
 &lt;p&gt;Let's not forget that this is a simple case too - an independant mulivariate gaussian with known mean and variance. This means, I only have to integrate over a small portion of the real line (-100 to 100 is ample). In general, we don't neccesarily know this - in high dimensions with a non analytical joint, we might have to integrate over a very large range to ensure we capture all the mass of Z. Consider the example where Z is actually a mixture of many gaussians, with means equally spaced between -1e6 and + 1e6, giving us a 3d integral requiring 2e12 evaluations - a near impossible feat, and we are still only in 3D. Move this to 5 dimensions and it becomes 2e30 evaluations!!&lt;/p&gt;
+&lt;p&gt;The aim of variational inference is to develop bounds in order to get a tractable approximation.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2737,6 +2739,7 @@ IvP/AY9cjiJizyF/AAAAAElFTkSuQmCC
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h2 id="Summary"&gt;Summary&lt;a class="anchor-link" href="#Summary"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The purpose of this post was to introduce the concept of bounding a function, and to elaborate why we need to pursue this approach.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
