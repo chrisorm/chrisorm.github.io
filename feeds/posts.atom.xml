@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Infinite n♾rm</title><link href="https://chrisorm.github.io/" rel="alternate"></link><link href="https://chrisorm.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://chrisorm.github.io/</id><updated>2017-09-27T20:00:00+01:00</updated><entry><title>Variational Inference - Deriving the ELBO</title><link href="https://chrisorm.github.io/VI-ELBO.html" rel="alternate"></link><published>2017-09-27T20:00:00+01:00</published><updated>2017-09-27T20:00:00+01:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-09-27:VI-ELBO.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Infinite n♾rm</title><link href="https://chrisorm.github.io/" rel="alternate"></link><link href="https://chrisorm.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://chrisorm.github.io/</id><updated>2017-09-28T20:00:00+01:00</updated><entry><title>Variational Inference - Deriving the ELBO</title><link href="https://chrisorm.github.io/VI-ELBO.html" rel="alternate"></link><published>2017-09-28T20:00:00+01:00</published><updated>2017-09-28T20:00:00+01:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-09-28:VI-ELBO.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -1139,7 +1139,7 @@ h6:hover .anchor-link {
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</summary><category term="Variational Inference"></category><category term="VI"></category><category term="ELBO"></category></entry><entry><title>Variational Inference - Why?</title><link href="https://chrisorm.github.io/VI-Why.html" rel="alternate"></link><published>2017-09-27T20:00:00+01:00</published><updated>2017-09-27T20:00:00+01:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-09-27:VI-Why.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+</summary><category term="Variational Inference"></category><category term="VI"></category><category term="ELBO"></category></entry><entry><title>Variational Inference - Why?</title><link href="https://chrisorm.github.io/VI-Why.html" rel="alternate"></link><published>2017-09-26T20:00:00+01:00</published><updated>2017-09-26T20:00:00+01:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-09-26:VI-Why.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
