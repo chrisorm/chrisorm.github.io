@@ -3,13 +3,13 @@
 .highlight, pre { background-color: #fdf6e3; color: #313a3d }
 .highlight .c { color: #93a1a1 } /* Comment */
 .highlight .err { color: #586e75 } /* Error */
-.highlight .g { color: #313a3d} /* Generic */
+.highlight .g { color: #101111} /* Generic */
 .highlight .k { color: #859900 } /* Keyword */
-.highlight .l { color: #313a3d } /* Literal */
-.highlight .n { color: #313a3d} /* Name */
+.highlight .l { color: #101111 } /* Literal */
+.highlight .n { color: #101111} /* Name */
 .highlight .o { color: #859900 } /* Operator */
 .highlight .x { color: #cb4b16 } /* Other */
-.highlight .p { color: #313a3d } /* Punctuation */
+.highlight .p { color: #101111 } /* Punctuation */
 .highlight .cm { color: #93a1a1 } /* Comment.Multiline */
 .highlight .cp { color: #859900 } /* Comment.Preproc */
 .highlight .c1 { color: #93a1a1 } /* Comment.Single */
