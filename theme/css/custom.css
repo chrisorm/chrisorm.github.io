@@ -3,7 +3,7 @@ margin-left: 1.094017094017094%;
 }
 
 .row-fluid .span8{
-width: 88%;
+width: 83%;
 }
 
 .output_png {
@@ -14,4 +14,8 @@ width: 88%;
 
 div.input_area{
 background: #fffbd1 !important;
+}
+
+row-fluid .span1{
+width: 2.8%;
 }
