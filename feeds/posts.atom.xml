@@ -3078,7 +3078,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;We can see this requirement if we want to compute the gradient of the mean with respect to the parameters. 
+&lt;p&gt;We can see this requirement if we want to compute the gradient of the expectation of a function of x, a and b with respect to the parameters. 
 Let's take the example of the continuous uniform parameterised by a and b.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
