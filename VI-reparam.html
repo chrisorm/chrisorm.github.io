@@ -1247,13 +1247,12 @@ $= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + 
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Theory">Theory<a class="anchor-link" href="#Theory">¶</a></h2><p>The idea of reparameterisation was largely popularised by a paper released in 2014 <a href="https://arxiv.org/pdf/1312.6114.pdf">Autoencoding Variational Bayes, (Kingma, 2014)</a>. In this paper, they lay out 3 ways we can reparameterize probability distributions so samples have the appropriate gradient information.</p>
 <ol>
-<li>If the pdf we wish to sample from has a tractable inverse cdf, we can use this to transform a $U[0,1]$ sample to a sample from the target distribution, and the gradient will be properly accounted for.</li>
-</ol>
-<ol>
-<li>The approach used for this post, and also for the Gaussian case, fall under the location-scale family. A large class of distributions have a 'standard' form, which can be transformed to be draws from the same distribution with a different scale and/or location.</li>
-</ol>
-<ol>
-<li>Transformations and/or composition of draws from other distributions. For example, we can exponentiate random normal draws to get a log normal, and we can generate normal draws using the location-scale reparameterization.</li>
+<li><p>If the pdf we wish to sample from has a tractable inverse cdf, we can use this to transform a $U[0,1]$ sample to a sample from the target distribution, and the gradient will be properly accounted for.</p>
+</li>
+<li><p>The approach used for this post, and also for the Gaussian case, fall under the location-scale family. A large class of distributions have a 'standard' form, which can be transformed to be draws from the same distribution with a different scale and/or location.</p>
+</li>
+<li><p>Transformations and/or composition of draws from other distributions. For example, we can exponentiate random normal draws to get a log normal, and we can generate normal draws using the location-scale reparameterization.</p>
+</li>
 </ol>
 </div>
 </div>
