@@ -49,7 +49,7 @@
 .highlight .nv { color: #268bd2 } /* Name.Variable */
 .highlight .ow { color: #859900 } /* Operator.Word */
 .highlight .w { color: #586e75 } /* Text.Whitespace */
-.highlight .mf { color: #2aa198 } /* Literal.Number.Float */
+.highlight .mf { color: #2aa198 !important } /* Literal.Number.Float */
 .highlight .mh { color: #2aa198 } /* Literal.Number.Hex */
 .highlight .mi { color: #2aa198 } /* Literal.Number.Integer */
 .highlight .mo { color: #2aa198 } /* Literal.Number.Oct */
