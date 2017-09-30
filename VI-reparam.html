@@ -11,18 +11,18 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="Variational Inference, VI, ELBO, posts, " />
+<meta name="keywords" content="Variational Inference, VI, Python, Reparameterisation Trick, posts, " />
 
-<meta property="og:title" content="Variational Inference - Deriving the ELBO "/>
-<meta property="og:url" content="https://chrisorm.github.io/VI-ELBO.html" />
-<meta property="og:description" content="Deriving the Evidence Lower Bound¶Recap¶In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting: $P(X) = \int_{Z} P(X, Z) dZ$ Previously, I showed how this can be an incredibly difficult thing to compute using standard methods, such as numerical integration, because of the curse of dimensionality." />
+<meta property="og:title" content="Variational Inference - Reparameterisation Trick in detail. "/>
+<meta property="og:url" content="https://chrisorm.github.io/VI-reparam.html" />
+<meta property="og:description" content="Reparameterization Trick¶Introduction¶In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail. Why must sampling be differentiable?¶If we recall the lower bound;" />
 <meta property="og:site_name" content="Infinite n♾rm" />
 <meta property="og:article:author" content="Chris Orm" />
-<meta property="og:article:published_time" content="2017-09-28T20:00:00+01:00" />
-<meta name="twitter:title" content="Variational Inference - Deriving the ELBO ">
-<meta name="twitter:description" content="Deriving the Evidence Lower Bound¶Recap¶In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting: $P(X) = \int_{Z} P(X, Z) dZ$ Previously, I showed how this can be an incredibly difficult thing to compute using standard methods, such as numerical integration, because of the curse of dimensionality.">
+<meta property="og:article:published_time" content="2017-09-30T20:00:00+01:00" />
+<meta name="twitter:title" content="Variational Inference - Reparameterisation Trick in detail. ">
+<meta name="twitter:description" content="Reparameterization Trick¶Introduction¶In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail. Why must sampling be differentiable?¶If we recall the lower bound;">
 
-        <title>Variational Inference - Deriving the ELBO  · Infinite n♾rm
+        <title>Variational Inference - Reparameterisation Trick in detail.  · Infinite n♾rm
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 <article>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-ELBO.html"> Variational Inference - Deriving the ELBO  </a></h1>
+    <h1><a href="https://chrisorm.github.io/VI-reparam.html"> Variational Inference - Reparameterisation Trick in detail.  </a></h1>
     </header>
 </div>
 
@@ -1047,9 +1047,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Deriving-the-Evidence-Lower-Bound">Deriving the Evidence Lower Bound<a class="anchor-link" href="#Deriving-the-Evidence-Lower-Bound">¶</a></h1><h2 id="Recap">Recap<a class="anchor-link" href="#Recap">¶</a></h2><p>In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting:</p>
-<p>$P(X) = \int_{Z} P(X, Z) dZ$</p>
-<p>Previously, I showed how this can be an incredibly difficult thing to compute using standard methods, such as numerical integration, because of the curse of dimensionality.</p>
+<h1 id="Reparameterization-Trick">Reparameterization Trick<a class="anchor-link" href="#Reparameterization-Trick">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail.</p>
 </div>
 </div>
 </div>
@@ -1058,7 +1056,11 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Evidence">Evidence<a class="anchor-link" href="#Evidence">¶</a></h2><p>The quantity we are going to derive, in a few ways, is the ELBO, or Evidence Lower BOund. As suggested by the name, it is a bound on the so-called Model Evidence, (also termed the probability of the data), $P(X)$.</p>
+<h2 id="Why-must-sampling-be-differentiable?">Why must sampling be differentiable?<a class="anchor-link" href="#Why-must-sampling-be-differentiable?">¶</a></h2><p>If we recall the lower bound;</p>
+<p>$\mathcal{L} = \int_{Z} q(Z) log \ \frac{P(Z, X)}{q(Z)} dZ$</p>
+<p>Our strategy when pursuing the monte carlo estimate was to approximate the integral by a sum, and the distribution $q(Z)$ by sampling.</p>
+<p>The important thing to remember, is that when we take the gradient with respect to the parameters of the ELBO , it is easy to not incorporate the effect of the parameters on the expectation.</p>
+<p>As a simple example, consider sampling from a uniform distribution $U[a, b]$. If we change the values of a and b, then obviously this will change our samples! If we generate samples from this distribution outside of tensorflow, this gradient information will be lost.</p>
 </div>
 </div>
 </div>
@@ -1067,10 +1069,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Via-Jensen&#x27;s-Inequality">Via Jensen's Inequality<a class="anchor-link" href="#Via-Jensen&#x27;s-Inequality">¶</a></h3><p>Let us start with the premise that we wish to find $log P(X)$.</p>
-<p>$log P(X) = log [\int_{Z} P(X,Z) dZ]$</p>
-<p>Introducing another distribution on Z, we can rewrite as;</p>
-<p>$log P(X) = log [\int_{Z} P(X,Z)\frac{q(Z)}{q(Z)} dZ] = log \ E_{q}[\frac{P(X,Z)}{q(Z)}]$</p>
+<p>We can see this requirement if we want to compute the gradient of the mean with respect to the parameters. 
+Let's take the example of the continuous uniform parameterised by a and b.</p>
 </div>
 </div>
 </div>
@@ -1079,7 +1079,97 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>By <a href="https://en.wikipedia.org/wiki/Jensen%27s_inequality#Measure-theoretic_and_probabilistic_form">Jensen's Inequality</a> we know $log \ E_{q}[\frac{P(X,Z)}{q(Z)}] \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}]$</p>
+<p>$m = \int_{a}^{b} f(x, a) p(x) dx$</p>
+<p>$f(x, a) = a+b+x$</p>
+<p>$m =\frac{1}{b-a} \int_{a}^{b} (x+a+b)  dx$</p>
+<p>$= \frac{1}{b-a} ([0.5 x^{2}]^{b}_{a} + [ax]^{b}_{a}+ [bx]^{b}_{a})$
+$= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + b$</p>
+<p>$ \frac{d}{da} m = \frac{3}{2}$</p>
+<p>$ \frac{d}{db} m = \frac{3}{2}$</p>
+<p>This may be the analytical solution, but we could approximate this function by monte carlo:</p>
+<p>$\frac{1}{N}\sum_{i}^{N} (x_{i}+a+b)$</p>
+<p>What we would like is that computing the gradient of this MC approximation is close to the analytical.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [28]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[28]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>'1.3.0'</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [32]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    
+    <span class="n">mc_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">grads</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">mc_mean</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
+    <span class="n">init_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [33]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_op</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [34]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+<span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">X</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">grads</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[1.0000013, 1.0000013]]
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1088,7 +1178,65 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This gives us;</p>
+<p>hmmm...that's not right. The reason for this is that the sampling operation is also dependent on the parameters $a$ and $b$, but this is done outside of tensorflow, so the gradient doesn't flow into the mc_mean variable.</p>
+<p>In order to deal with this, we can reparameterize the sampling procedure. If we do random draws from a $U[0,1]$, we can transform this into a draw from $U[a,b]$ by doing;</p>
+<p>$a + (b-a)x$</p>
+<p>where $x \sim U[0,1]$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [38]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">x</span>
+    <span class="n">mc_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">grads</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">mc_mean</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
+    <span class="n">init_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [39]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_op</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [40]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+<span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">X</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">grads</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[1.4992578, 1.500746]]
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1097,8 +1245,16 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$ log \ P(X) = log \ E_{q}[\frac{P(X,Z)}{q(Z)}] \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}]$</p>
-<p>$ log \ P(X) \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}] = \mathcal{L}$</p>
+<h2 id="Theory">Theory<a class="anchor-link" href="#Theory">¶</a></h2><p>The idea of reparameterisation was largely popularised by a paper released in 2014 <a href="https://arxiv.org/pdf/1312.6114.pdf">Autoencoding Variational Bayes, (Kingma, 2014)</a>. In this paper, they lay out 3 ways we can reparameterise probability distributions so samples have the appropriate gradient information.</p>
+<ol>
+<li>If the pdf we wish to sample from has a tractable inverse cdf, we can use this to transform a $U[0,1]$ sample to a sample from the target distribution, and the gradient will be properly account for.</li>
+</ol>
+<ol>
+<li>The approach used for this post, and also for the Gaussian case, fall under the location-scale family. A large class of distributions have a 'standard' form, which can be transformed to be draws from the same distribution with a different scale and/or location.</li>
+</ol>
+<ol>
+<li>Transformations and/or composition of draws from other distributions. For example, we can exponentiate random normal draws to get a log normal, and we can generate normal draws using the location-scale reparameterisation.</li>
+</ol>
 </div>
 </div>
 </div>
@@ -1107,7 +1263,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>From this, the role of the ELBO is obvious; it is a lower bound on the "evidence", $P(X)$, so we can use this to get an approximation for the evidence.</p>
+<h3 id="Example-of-an-inverse-CDF">Example of an inverse CDF<a class="anchor-link" href="#Example-of-an-inverse-CDF">¶</a></h3><p>A simple example of the inverse method is the <a href="https://en.wikipedia.org/wiki/Rayleigh_distribution">Rayleigh distribution</a>. The CDF is given by;</p>
+<p>$C = 1 - exp{\frac{x^2}{2\sigma^{2}}}$</p>
+<p>We can invert this by;</p>
 </div>
 </div>
 </div>
@@ -1116,10 +1274,15 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Via-KL-Divergence">Via KL-Divergence<a class="anchor-link" href="#Via-KL-Divergence">¶</a></h3><p>We can also get to the ELBO from a completely different route.</p>
-<p>Often, we actually want to the approximate the posterior $P(Z|X)$. This is where our distribution $q(Z)$ comes in: we want to choose some distribution, $q(Z)$ to approximate the true posterior $P(Z \mid X)$.</p>
-<p>A really common way to measure the similarity between two probability distributions is the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">KL-divergence</a>. This is a non-negative measure of similarity, that is 0 for identical distributions.</p>
-<p>So, in order to encode the idea that our approximation is close, we want to have some 'small' (what ever that means...) KL-Divergence.</p>
+<p>$1-C = exp{\frac{x^2}{2\sigma^{2}}}$</p>
+<p>$ln (1-C) = \frac{x^2}{2\sigma^{2}}$</p>
+<p>$\sigma\sqrt{2ln (1-C) }= x$</p>
+<p>So we can generate a value for $C$ from a standard continuous uniform, and then transform it into a rayleigh distributed variable, with dependence on parameters properly encoded.</p>
+<p>This is valid for a wide range of distributions, and is an alternative when a location-scale type transform isn't possible.</p>
+<h2 id="Checking-the-status-of-distributions-in-Tensorflow">Checking the status of distributions in Tensorflow<a class="anchor-link" href="#Checking-the-status-of-distributions-in-Tensorflow">¶</a></h2><p>With 3rd party libraries, it is sometimes not obvious if gradient information is allowed across the sampling operation or not. Both behaviours are useful at some time, but not all distributions can be framed in a reparameterised way.</p>
+<p>Tensorflow has a flag FULLY_REPARAMETERIZED for gradient flowing distributions, and NOT_REPARAMETERIZED if it doesn't.</p>
+<p>We can check this under the Tensorflow graph by doing;</p>
+<p>distribution_instance.reparameterization_type == tf.contrib.distributions.FULLY_REPARAMETERIZED</p>
 </div>
 </div>
 </div>
@@ -1128,57 +1291,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$D_{KL}(q(Z)\mid\mid P(Z|X)) = -E_{q}[log\frac{P(Z\mid X)}{q(Z)}] = -E_{q}[log \ P(Z\mid X) - log \ q(Z)] $</p>
-<p>$-E_{q}[log \ P(Z\mid X) - log \ q(Z)] = -E_{q}[log \frac{ P(Z, X)}{P(X)} - log \ q(Z)] = -E_{q}[log \ P(Z, X) \ - log \ P(X) - log \ q(Z)]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$log P(X)$ is independant of Z, so it's expectation under $q(Z)$ is itself. We can thus split the last step into two terms:</p>
-<p>$-E_{q}[log \ P(Z, X) \ - log \ P(X) - log \ q(Z)] = -E_{q}[log \ P(Z, X) \ - log \ q(Z)] + E_{q}[log \ P(X)] $</p>
-<p>Therefore, we arrive at;</p>
-<p>$D_{KL}(q(z)\mid\mid P(Z\mid X))= -E_{q}[log \ P(Z, X) \  - log \ q(Z)] + log \ P(X)$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The expectation term is the same as the term we called $\mathcal{L}$ in the previous section, so rewriting;</p>
-<p>$D_{KL}(q(z)\mid\mid P(Z\mid X))= -\mathcal{L} + log \ P(X)$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The original goal was to find an approximation $q(z)$ that is close to the true posterior. So we are varying $q$ in order to minimise the KL-Divergence between it and the posterior. The log evidence is independent of $q$, so it doesn't matter how we vary $q$, it is just a constant term. So to minimise the LHS, we have to minimise $-\mathcal{L}$, which is equivalent to maximising $\mathcal{L}$.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Looking at the ELBO from this perspective, we see that the $q$ that maximises the ELBO also minimises the KL-Divergence between itself and the true posterior.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>From the above two angles, we can see the roles that the component parts of the ELBO play. The ELBO itself is a lower bound on the evidence, whilst the distribution q serves as the approximation of the true posterior.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, we have demonstrated why it is important to ensure that gradients are properly defined over a sampling operation, which is particularly relevant to computing gradients of monte carlo estimates in automatic differentiation frameworks.</p>
 </div>
 </div>
 </div>
@@ -1218,12 +1331,15 @@ h6:hover .anchor-link {
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-09-28T20:00:00+01:00">Sep 28, 2017</time>
+            <time pubdate="pubdate" datetime="2017-09-30T20:00:00+01:00">Sep 30, 2017</time>
             <h4>Category</h4>
             <a class="category-link" href="https://chrisorm.github.io/categories.html#posts-ref">posts</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
-                <li><a href="https://chrisorm.github.io/tags.html#elbo-ref">ELBO
+                <li><a href="https://chrisorm.github.io/tags.html#python-ref">Python
+                    <span>3</span>
+</a></li>
+                <li><a href="https://chrisorm.github.io/tags.html#reparameterisation-trick-ref">Reparameterisation Trick
                     <span>1</span>
 </a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#variational-inference-ref">Variational Inference
