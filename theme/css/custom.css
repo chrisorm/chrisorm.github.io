@@ -19,5 +19,5 @@ background: #fffbd1 !important;
 
 
 .prompt {
-    min-width: 2ex;
+    min-width: 2ex; !important
 }
