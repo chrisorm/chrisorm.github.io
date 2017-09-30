@@ -16,6 +16,8 @@ div.input_area{
 background: #fffbd1 !important;
 }
 
-row-fluid .span1{
-width: 2.8% !important;
+
+
+.prompt {
+    min-width: 2ex;
 }
