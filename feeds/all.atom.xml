@@ -985,7 +985,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Deriving-the-bias-of-an-estimator"&gt;Deriving the bias of an estimator&lt;a class="anchor-link" href="#Deriving-the-bias-of-an-estimator"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If we have an estimator $\hat{\theta}$, this is called an unbiased estimator if $E[\hat{\theta}] - \theta$ is zero (where $\theta$ is the true quantity. For a stochastic approximation, if our estimator is unbiased, we get convergence guarentees under the somewhat mild conditions (&lt;a href="https://pdfs.semanticscholar.org/34dd/d8865569c2c32dec9bf7ffc817ff42faaa01.pdf"&gt;Robbins, Monro 1951&lt;/a&gt;).&lt;/p&gt;
+&lt;h2 id="Deriving-the-bias-of-an-estimator"&gt;Deriving the bias of an estimator&lt;a class="anchor-link" href="#Deriving-the-bias-of-an-estimator"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If we have an estimator $\hat{\theta}$, this is called an unbiased estimator if $E[\hat{\theta}] - \theta$ is zero (where $\theta$ is the true quantity). For a stochastic approximation, if our estimator is unbiased, we get convergence guarentees under the somewhat mild conditions (&lt;a href="https://pdfs.semanticscholar.org/34dd/d8865569c2c32dec9bf7ffc817ff42faaa01.pdf"&gt;Robbins, Monro 1951&lt;/a&gt;).&lt;/p&gt;
 &lt;p&gt;However, if it is biased, we may have convergence issues. Intuitively, we can see this below;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
