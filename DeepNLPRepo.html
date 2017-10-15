@@ -11,18 +11,18 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="Variational Inference, VI, Python, Reparameterisation Trick, posts, " />
+<meta name="keywords" content="Tensorflow, Python, RNN, NLP, Text Classification, posts, " />
 
-<meta property="og:title" content="Variational Inference - Reparameterisation Trick in detail. "/>
-<meta property="og:url" content="https://chrisorm.github.io/VI-reparam.html" />
-<meta property="og:description" content="Reparameterization Trick¶Introduction¶In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail. Why must sampling be differentiable?¶If we recall the lower bound;" />
+<meta property="og:title" content="RNNs for Text classification in Tensorflow (#LTM London) "/>
+<meta property="og:url" content="https://chrisorm.github.io/DeepNLPRepo.html" />
+<meta property="og:description" content="Tensorflow for Text Classification¶Earlier this year, I gave a talk at London Tensorflow Meetup, giving an interactive tutorial on how to do text classification using Tensorflow. This is just a short post going over the resources I created as part of that talk. The resources can be found on my github." />
 <meta property="og:site_name" content="Infinite n♾rm" />
 <meta property="og:article:author" content="Chris Orm" />
-<meta property="og:article:published_time" content="2017-09-30T20:00:00+01:00" />
-<meta name="twitter:title" content="Variational Inference - Reparameterisation Trick in detail. ">
-<meta name="twitter:description" content="Reparameterization Trick¶Introduction¶In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail. Why must sampling be differentiable?¶If we recall the lower bound;">
+<meta property="og:article:published_time" content="2017-10-15T20:00:00+01:00" />
+<meta name="twitter:title" content="RNNs for Text classification in Tensorflow (#LTM London) ">
+<meta name="twitter:description" content="Tensorflow for Text Classification¶Earlier this year, I gave a talk at London Tensorflow Meetup, giving an interactive tutorial on how to do text classification using Tensorflow. This is just a short post going over the resources I created as part of that talk. The resources can be found on my github.">
 
-        <title>Variational Inference - Reparameterisation Trick in detail.  · Infinite n♾rm
+        <title>RNNs for Text classification in Tensorflow (#LTM London)  · Infinite n♾rm
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 <article>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-reparam.html"> Variational Inference - Reparameterisation Trick in detail.  </a></h1>
+    <h1><a href="https://chrisorm.github.io/DeepNLPRepo.html"> RNNs for Text classification in Tensorflow (#LTM London)  </a></h1>
     </header>
 </div>
 
@@ -1047,7 +1047,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Reparameterization-Trick">Reparameterization Trick<a class="anchor-link" href="#Reparameterization-Trick">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail.</p>
+<h1 id="Tensorflow-for-Text-Classification">Tensorflow for Text Classification<a class="anchor-link" href="#Tensorflow-for-Text-Classification">¶</a></h1><p>Earlier this year, I gave a talk at London Tensorflow Meetup, giving an interactive tutorial on how to do text classification using Tensorflow. This is just a short post going over the resources I created as part of that talk. The resources can be found <a href="https://github.com/chrisorm/LTM-July-2017-Talk">on my github.</a>.</p>
 </div>
 </div>
 </div>
@@ -1056,11 +1056,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Why-must-sampling-be-differentiable?">Why must sampling be differentiable?<a class="anchor-link" href="#Why-must-sampling-be-differentiable?">¶</a></h2><p>If we recall the lower bound;</p>
-<p>$\mathcal{L} = \int_{Z} q(Z) log \ \frac{P(Z, X)}{q(Z)} dZ$</p>
-<p>Our strategy when pursuing the monte carlo estimate was to approximate the integral by a sum, and the distribution $q(Z)$ by sampling.</p>
-<p>The important thing to remember, is that when we take the gradient with respect to the parameters of the ELBO , it is easy to not incorporate the effect of the parameters on the expectation.</p>
-<p>As a simple example, consider sampling from a uniform distribution $U[a, b]$. If we change the values of a and b, then obviously this will change our samples! If we generate samples from this distribution outside of tensorflow, this gradient information will be lost.</p>
+<h2 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">¶</a></h2><p>For those wanting to learn to apply neural networks to text classification, finding practical resources can be somewhat challenging. The excellent, <a href="http://web.stanford.edu/class/cs224n/syllabus.html">CS224n</a> from Stanford has some excellent theoretical resources. However, if you don't go to stanford, access to materials to do this in practice can be somewhat lacking!</p>
+<p>All the exercises below have a semi-complete set of notebooks for you to work on, and have full solutions too, in case you want something to compare against or something is unclear. I suggest you invest the time to get a minimal working example before you look at my approach - it will pay dividends!</p>
 </div>
 </div>
 </div>
@@ -1069,8 +1066,55 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can see this requirement if we want to compute the gradient of the expectation of a function of x, a and b with respect to the parameters. 
-Let's take the example of the continuous uniform parameterized by a and b.</p>
+<h2 id="Suggested-Syllabus">Suggested Syllabus<a class="anchor-link" href="#Suggested-Syllabus">¶</a></h2><h3 id="Lesson-1">Lesson 1<a class="anchor-link" href="#Lesson-1">¶</a></h3><ul>
+<li>Lecture 8 of CS224n <a href="http://web.stanford.edu/class/cs224n/lectures/cs224n-2017-lecture8.pdf">Slides</a></li>
+<li>First part of WildML blog on RNNs <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">Blog</a></li>
+<li>WildML blog of RNNs in Tensorflow. <a href="http://www.wildml.com/2016/08/rnns-in-tensorflow-a-practical-guide-and-undocumented-features/">Blog</a> - Some features/locations may have changed between tensorflow versions.</li>
+<li>Read the documentation about dynamic_rnn, and cell types, on tensorflow website. <a href="https://www.tensorflow.org/api_docs/python/tf/nn/dynamic_rnn">dynamic_rnn</a> <a href="http://web.stanford.edu/class/cs224n/lectures/cs224n-2017-lecture9.pdf">BasicRNNCell</a></li>
+</ul>
+<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
+<li><strong>BasicRNN</strong></li>
+</ul>
+<h3 id="Lesson-2">Lesson 2<a class="anchor-link" href="#Lesson-2">¶</a></h3><ul>
+<li>Lecture 9 CS224n <a href="http://web.stanford.edu/class/cs224n/lectures/cs224n-2017-lecture9.pdf">Slides</a></li>
+<li>Colah's Blog on LSTMs <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">Blog</a></li>
+<li>Read the documentation about GRUs and LSTMs, on tensorflow website. <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LSTMCell">LSTM</a> <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/GRUCell">GRU</a></li>
+</ul>
+<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
+<li><strong>GRURNN</strong></li>
+<li><strong>LSTMRNN</strong></li>
+</ul>
+<h3 id="Lesson-3">Lesson 3<a class="anchor-link" href="#Lesson-3">¶</a></h3><ul>
+<li>Later part of WildML blog on RNNs <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">Blog</a></li>
+<li>Oxford Deep NLP course <a href="https://github.com/oxford-cs-deepnlp-2017/lectures/blob/master/Lecture%205%20-%20Text%20Classification.pdf">Lecture 5</a></li>
+<li>Read tensorflow documentation about <a href="https://www.tensorflow.org/api_docs/python/tf/nn/bidirectional_dynamic_rnn">bidirectional_dynamic_rnn</a>
+#### Exercises</li>
+<li><strong>BasicBidirectionalRNN</strong> </li>
+<li>Modify this code to run bidirectional LSTM and GRU networks.</li>
+</ul>
+<h3 id="Lesson">Lesson<a class="anchor-link" href="#Lesson">¶</a></h3><ul>
+<li>Oxford Deep NLP Conditional Language Modelling with attention <a href="https://github.com/oxford-cs-deepnlp-2017/lectures/blob/master/Lecture%208%20-%20Conditional%20Language%20Modeling%20with%20Attention.pdf">Slides</a></li>
+</ul>
+<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
+<li><strong>BasicBidirectionalRNN-MeanPooling</strong></li>
+<li><strong>BasicBidirectionalRNN-MaxPooling</strong> </li>
+<li><strong>GRUBidirectionalRNN-MeanPooling</strong></li>
+<li><strong>GRUBidirectionalRNN-MaxPooling</strong></li>
+</ul>
+<h3 id="Lesson-5">Lesson 5<a class="anchor-link" href="#Lesson-5">¶</a></h3><ul>
+<li>Oxford Deep NLP Conditional Language Modelling with attention <a href="https://github.com/oxford-cs-deepnlp-2017/lectures/blob/master/Lecture%208%20-%20Conditional%20Language%20Modeling%20with%20Attention.pdf">Slides</a></li>
+<li>Wild ML Post on attention <a href="http://www.wildml.com/2016/01/attention-and-memory-in-deep-learning-and-nlp/">Blog</a></li>
+<li>Hierchical Attention Networks - Zhang, 2015 <a href="https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf">Paper</a>
+#### Exercises</li>
+<li><strong>BasicRNNAttention</strong></li>
+<li>Modify this code to run attention over an LSTM network.</li>
+</ul>
+<h3 id="Lesson-6+">Lesson 6+<a class="anchor-link" href="#Lesson-6+">¶</a></h3><p>Apply these techniques to other datasets, some examples:</p>
+<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
+<li>Yelp dataset <a href="https://www.yelp.co.uk/dataset_challenge">Site</a></li>
+<li>Hierichal text classification <a href="https://www.kaggle.com/c/lshtc">Kaggle</a></li>
+<li>Reuters Dataset <a href="http://www.daviddlewis.com/resources/testcollections/reuters21578/">Site</a></li>
+</ul>
 </div>
 </div>
 </div>
@@ -1079,218 +1123,7 @@ Let's take the example of the continuous uniform parameterized by a and b.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$m = \int_{a}^{b} f(x, a) p(x) dx$</p>
-<p>$f(x, a) = a+b+x$</p>
-<p>$m =\frac{1}{b-a} \int_{a}^{b} (x+a+b)  dx$</p>
-<p>$= \frac{1}{b-a} ([0.5 x^{2}]^{b}_{a} + [ax]^{b}_{a}+ [bx]^{b}_{a})$
-$= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + b$</p>
-<p>$ \frac{d}{da} m = \frac{3}{2}$</p>
-<p>$ \frac{d}{db} m = \frac{3}{2}$</p>
-<p>This may be the analytical solution, but we could approximate this function by monte carlo:</p>
-<p>$\frac{1}{N}\sum_{i}^{N} (x_{i}+a+b)$</p>
-<p>What we would like is that computing the gradient of this MC approximation is close to the analytical.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [1]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
-
-<span class="n">tf</span><span class="o">.</span><span class="n">__version__</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[1]:</div>
-<div class="output_text output_subarea output_execute_result">
-<pre>'1.3.0'</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    
-    <span class="n">a</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    
-    <span class="n">mc_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">grads</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">mc_mean</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
-    <span class="n">init_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [3]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
-<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_op</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [4]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
-<span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">X</span><span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">grads</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[[1.0000013, 1.0000013]]
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>hmmm...that's not right. The reason for this is that the sampling operation is also dependent on the parameters $a$ and $b$, but this is done outside of tensorflow, so the gradient doesn't flow into the mc_mean variable.</p>
-<p>In order to deal with this, we can reparameterize the sampling procedure. If we do random draws from a $U[0,1]$, we can transform this into a draw from $U[a,b]$ by doing;</p>
-<p>$a + (b-a)x$</p>
-<p>where $x \sim U[0,1]$.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [5]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    
-    <span class="n">a</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">x</span>
-    <span class="n">mc_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">grads</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">mc_mean</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
-    <span class="n">init_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [6]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
-<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_op</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [7]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
-<span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">X</span><span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">grads</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[[1.5035391, 1.4964648]]
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Theory">Theory<a class="anchor-link" href="#Theory">¶</a></h2><p>The idea of reparameterisation was largely popularised by a paper released in 2014 <a href="https://arxiv.org/pdf/1312.6114.pdf">Autoencoding Variational Bayes, (Kingma, 2014)</a>. In this paper, they lay out 3 ways we can reparameterize probability distributions so samples have the appropriate gradient information.</p>
-<ol>
-<li><p>If the pdf we wish to sample from has a tractable inverse cdf, we can use this to transform a $U[0,1]$ sample to a sample from the target distribution, and the gradient will be properly accounted for.</p>
-</li>
-<li><p>The approach used for this post, and also for the Gaussian case, fall under the location-scale family. A large class of distributions have a 'standard' form, which can be transformed to be draws from the same distribution with a different scale and/or location.</p>
-</li>
-<li><p>Transformations and/or composition of draws from other distributions. For example, we can exponentiate random normal draws to get a log normal, and we can generate normal draws using the location-scale reparameterization.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Example-of-an-inverse-CDF">Example of an inverse CDF<a class="anchor-link" href="#Example-of-an-inverse-CDF">¶</a></h3><p>A simple example of the inverse method is the <a href="https://en.wikipedia.org/wiki/Rayleigh_distribution">Rayleigh distribution</a>. The CDF is given by;</p>
-<p>$C = 1 - exp{\frac{x^2}{2\sigma^{2}}}$</p>
-<p>We can invert this by;</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$1-C = exp{\frac{x^2}{2\sigma^{2}}}$</p>
-<p>$ln (1-C) = \frac{x^2}{2\sigma^{2}}$</p>
-<p>$\sigma\sqrt{2ln (1-C) }= x$</p>
-<p>So we can generate a value for $C$ from a standard continuous uniform, and then transform it into a rayleigh distributed variable, with dependence on parameters properly encoded.</p>
-<p>This is valid for a wide range of distributions, and is an alternative when a location-scale type transform isn't possible.</p>
-<h2 id="Checking-the-status-of-distributions-in-Tensorflow">Checking the status of distributions in Tensorflow<a class="anchor-link" href="#Checking-the-status-of-distributions-in-Tensorflow">¶</a></h2><p>With 3rd party libraries, it is sometimes not obvious if gradient information is allowed across the sampling operation or not. Both behaviours are useful at some time, but not all distributions can be framed in a reparameterised way.</p>
-<p>Tensorflow has a flag FULLY_REPARAMETERIZED for gradient flowing distributions, and NOT_REPARAMETERIZED if it doesn't.</p>
-<p>We can check this under the Tensorflow graph by doing;</p>
-<p>distribution_instance.reparameterization_type == tf.contrib.distributions.FULLY_REPARAMETERIZED</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, we have demonstrated why it is important to ensure that gradients are properly defined over a sampling operation, which is particularly relevant to computing gradients of monte carlo estimates in automatic differentiation frameworks.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>This is only a short set of notebooks, and of course their are many other approachs and techniques that one could use. However, if you invest the time and work through these, you will be incredibly well placed to tackle current research papers in the area!</p>
 </div>
 </div>
 </div>
@@ -1330,22 +1163,25 @@ $= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + 
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-09-30T20:00:00+01:00">Sep 30, 2017</time>
+            <time pubdate="pubdate" datetime="2017-10-15T20:00:00+01:00">Oct 15, 2017</time>
             <h4>Category</h4>
             <a class="category-link" href="https://chrisorm.github.io/categories.html#posts-ref">posts</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
+                <li><a href="https://chrisorm.github.io/tags.html#nlp-ref">NLP
+                    <span>1</span>
+</a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#python-ref">Python
                     <span>4</span>
 </a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#reparameterisation-trick-ref">Reparameterisation Trick
+                <li><a href="https://chrisorm.github.io/tags.html#rnn-ref">RNN
                     <span>1</span>
 </a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#variational-inference-ref">Variational Inference
-                    <span>4</span>
+                <li><a href="https://chrisorm.github.io/tags.html#tensorflow-ref">Tensorflow
+                    <span>2</span>
 </a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#vi-ref">VI
-                    <span>4</span>
+                <li><a href="https://chrisorm.github.io/tags.html#text-classification-ref">Text Classification
+                    <span>1</span>
 </a></li>
             </ul>
 <h4>Contact</h4>
