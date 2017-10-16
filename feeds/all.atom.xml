@@ -976,7 +976,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Unbiased-property-of-the-ELBO"&gt;Unbiased property of the ELBO&lt;a class="anchor-link" href="#Unbiased-property-of-the-ELBO"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;In order to be able to be able to stochastic optimisation of the Monte Carlo approximation of the ELBO, we need to have the property that the approximation is unbaised. This is a short post reviewing that idea, and showing that this is indeed the case.&lt;/p&gt;
+&lt;h1 id="Unbiased-property-of-the-ELBO"&gt;Unbiased property of the ELBO&lt;a class="anchor-link" href="#Unbiased-property-of-the-ELBO"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;In order to be able to perform stochastic optimisation of the Monte Carlo approximation of the ELBO, we need to have the property that the approximation is unbaised. This is a short post reviewing that idea, and showing that this is indeed the case.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -995,8 +995,8 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;If $E[\hat{L}] \neq L$, the clearly it is not neccesarily true that $E[\frac{d}{d\theta}\hat{L}] = \frac{d}{d\theta}E[\hat{L}] \neq \frac{d}{d\theta}L$. This means that for some arbitary loss function, if we perform an SGD like approximation many times over, our adjustments, based on the gradient, don't neccesarily move us in the correct direction.&lt;/p&gt;
-&lt;p&gt;If we view optimisation as moving us 'downhill' to some minimum point on our loss surface, for a biased estimate, we are moving downhill on the surface of our surface of the estimated loss function, but this doesn't mean we actually move downhill on our true loss surface, so we may never actually end up at the minimum point.&lt;/p&gt;
+&lt;p&gt;If $E[\hat{L}] \neq L$, then clearly it is not neccesarily true that $ \frac{d}{d\theta}E[\hat{L}] \neq \frac{d}{d\theta}L$. This means that for some arbitary loss function, if we perform an SGD like approximation many times over, our adjustments, based on the gradient, don't neccesarily move us in the correct direction.&lt;/p&gt;
+&lt;p&gt;If we view optimisation as moving us 'downhill' to some minimum point on our loss surface, if the gradient is a biased estimate, we do not have a general guarentee that this biased estimate will always point in the correct direction. This can either affect the speed of convergence, or even whether the algorithm will converge properly at all.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
