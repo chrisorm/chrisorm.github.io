@@ -976,7 +976,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Unbiased-property-of-the-ELBO"&gt;Unbiased property of the ELBO&lt;a class="anchor-link" href="#Unbiased-property-of-the-ELBO"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;In order to be able to perform stochastic optimisation of the Monte Carlo approximation of the ELBO, we need to have the property that the approximation is unbaised. This is a short post reviewing that idea, and showing that this is indeed the case.&lt;/p&gt;
+&lt;h1 id="Unbiased-property-of-the-ELBO"&gt;Unbiased property of the ELBO&lt;a class="anchor-link" href="#Unbiased-property-of-the-ELBO"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;In order to be able to perform stochastic optimisation of the Monte Carlo approximation of the ELBO, we need to have the property that the approximation is unbiased. This is a short post reviewing that idea, and showing that this is indeed the case.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -995,8 +995,9 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;If $E[\hat{L}] \neq L$, then clearly it is not neccesarily true that $ \frac{d}{d\theta}E[\hat{L}] \neq \frac{d}{d\theta}L$. This means that for some arbitary loss function, if we perform an SGD like approximation many times over, our adjustments, based on the gradient, don't neccesarily move us in the correct direction.&lt;/p&gt;
-&lt;p&gt;If we view optimisation as moving us 'downhill' to some minimum point on our loss surface, if the gradient is a biased estimate, we do not have a general guarentee that this biased estimate will always point in the correct direction. This can either affect the speed of convergence, or even whether the algorithm will converge properly at all.&lt;/p&gt;
+&lt;p&gt;If $E[\hat{L}] \neq L$, then clearly it is not necessarily true that $ \frac{d}{d\theta}E[\hat{L}] \neq \frac{d}{d\theta}L$. This means that for some arbitary loss function, if we perform an SGD like approximation many times over, our adjustments, based on the gradient, don't necessarily move us in the correct direction.&lt;/p&gt;
+&lt;p&gt;If we view optimisation as moving us 'downhill' to some minimum point on our loss surface, if the gradient is a biased estimate, we do not have a general guarantee that this biased estimate will always point in the correct direction in expectation. For an unbiased estimate, we can view this as saying that whilst any single estimate will be wrong, if we take many estimates such as when we perform SGD, the resulting movement on the surface will likely be quite close to the true optimal move.&lt;/p&gt;
+&lt;p&gt;This can either affect the speed of convergence, or even whether the algorithm will converge properly at all.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1022,7 +1023,7 @@ h6:hover .anchor-link {
 &lt;p&gt;$E_{q}[\hat{\mathcal{L}}] = E_{q}[\frac{1}{N}\sum_{i}^{N}log \frac{P(X,Z_{i})}{q(Z_{i})}]$&lt;/p&gt;
 &lt;p&gt;$= \frac{1}{N}\sum_{i}^{N}E_{q}[log \frac{P(X,Z_{i})}{q(Z_{i})}]$&lt;/p&gt;
 &lt;p&gt;$= \frac{1}{N}\sum_{i}^{N}[ \int q(Z_{i}) log \frac{P(X,Z_{i})}{q(Z_{i})} dZ_{i}]$&lt;/p&gt;
-&lt;p&gt;For each of the terms of the sum, the integral is the same, as the integral is over the whole domain over $Z_{i}$. This means the value of each term is independant of the subscript. We can also reach the same conclusion by recognising that as the terms are IID, they all have the same expectation so;&lt;/p&gt;
+&lt;p&gt;For each of the terms of the sum, the integral is the same, as the integral is over the whole domain over $Z_{i}$. This means the value of each term is independent of the subscript. We can also reach the same conclusion by recognising that as the terms are IID, they all have the same expectation, so;&lt;/p&gt;
 &lt;p&gt;$= \frac{1}{N}N \ E_{q}[log \frac{P(X,Z)}{q(Z)}] =E_{q}[log \frac{P(X,Z)}{q(Z)}] $&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
