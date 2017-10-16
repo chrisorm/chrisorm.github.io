@@ -1022,7 +1022,7 @@ h6:hover .anchor-link {
 &lt;p&gt;$E_{q}[\hat{\mathcal{L}}] = E_{q}[\frac{1}{N}\sum_{i}^{N}log \frac{P(X,Z_{i})}{q(Z_{i})}]$&lt;/p&gt;
 &lt;p&gt;$= \frac{1}{N}\sum_{i}^{N}E_{q}[log \frac{P(X,Z_{i})}{q(Z_{i})}]$&lt;/p&gt;
 &lt;p&gt;$= \frac{1}{N}\sum_{i}^{N}[ \int q(Z_{i}) log \frac{P(X,Z_{i})}{q(Z_{i})} dZ_{i}]$&lt;/p&gt;
-&lt;p&gt;For each of the terms of the sum, the integral is the same, as the integral is over the whole domain over $Z_{i}$. This means the value of each term is independant of the subscript, so;&lt;/p&gt;
+&lt;p&gt;For each of the terms of the sum, the integral is the same, as the integral is over the whole domain over $Z_{i}$. This means the value of each term is independant of the subscript. We can also reach the same conclusion by recognising that as the terms are IID, they all have the same expectation so;&lt;/p&gt;
 &lt;p&gt;$= \frac{1}{N}N \ E_{q}[log \frac{P(X,Z)}{q(Z)}] =E_{q}[log \frac{P(X,Z)}{q(Z)}] $&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
