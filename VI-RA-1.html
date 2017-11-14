@@ -11,18 +11,18 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="Variational Inference, VI, ELBO, posts, " />
+<meta name="keywords" content="Variational Inference, VI, Python, PyTorch, Alpha Divergence, Renyi, posts, " />
 
-<meta property="og:title" content="Variational Inference - Deriving the ELBO "/>
-<meta property="og:url" content="https://chrisorm.github.io/VI-ELBO.html" />
-<meta property="og:description" content="Deriving the Evidence Lower Bound¶Recap¶In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting: $P(X) = \int_{Z} P(X, Z) dZ$ Previously, I showed how this can be an incredibly difficult thing to compute using standard methods, such as numerical integration, because of the curse of dimensionality." />
+<meta property="og:title" content="Renyi Alpha Variational Inference - Part 1 "/>
+<meta property="og:url" content="https://chrisorm.github.io/VI-RA-1.html" />
+<meta property="og:description" content="Renyi Alpha Divergence¶In many areas of machine learning, we use the KL-divergence to measure the &#39;distance&#39; between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on Renyi Divergence Variational Inference" />
 <meta property="og:site_name" content="Infinite n♾rm" />
 <meta property="og:article:author" content="Chris Orm" />
-<meta property="og:article:published_time" content="2017-09-28T20:00:00+01:00" />
-<meta name="twitter:title" content="Variational Inference - Deriving the ELBO ">
-<meta name="twitter:description" content="Deriving the Evidence Lower Bound¶Recap¶In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting: $P(X) = \int_{Z} P(X, Z) dZ$ Previously, I showed how this can be an incredibly difficult thing to compute using standard methods, such as numerical integration, because of the curse of dimensionality.">
+<meta property="og:article:published_time" content="2017-11-14T22:33:00+00:00" />
+<meta name="twitter:title" content="Renyi Alpha Variational Inference - Part 1 ">
+<meta name="twitter:description" content="Renyi Alpha Divergence¶In many areas of machine learning, we use the KL-divergence to measure the &#39;distance&#39; between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on Renyi Divergence Variational Inference">
 
-        <title>Variational Inference - Deriving the ELBO  · Infinite n♾rm
+        <title>Renyi Alpha Variational Inference - Part 1  · Infinite n♾rm
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 <article>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-ELBO.html"> Variational Inference - Deriving the ELBO  </a></h1>
+    <h1><a href="https://chrisorm.github.io/VI-RA-1.html"> Renyi Alpha Variational Inference - Part 1  </a></h1>
     </header>
 </div>
 
@@ -1047,9 +1047,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Deriving-the-Evidence-Lower-Bound">Deriving the Evidence Lower Bound<a class="anchor-link" href="#Deriving-the-Evidence-Lower-Bound">¶</a></h1><h2 id="Recap">Recap<a class="anchor-link" href="#Recap">¶</a></h2><p>In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting:</p>
-<p>$P(X) = \int_{Z} P(X, Z) dZ$</p>
-<p>Previously, I showed how this can be an incredibly difficult thing to compute using standard methods, such as numerical integration, because of the curse of dimensionality.</p>
+<h1 id="Renyi-Alpha-Divergence">Renyi Alpha Divergence<a class="anchor-link" href="#Renyi-Alpha-Divergence">¶</a></h1><p>In many areas of machine learning, we use the KL-divergence to measure the 'distance' between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on <a href="https://arxiv.org/pdf/1602.02311.pdf">Renyi Divergence Variational Inference</a>, submitted to NIPS 2016.</p>
 </div>
 </div>
 </div>
@@ -1058,7 +1056,15 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Evidence">Evidence<a class="anchor-link" href="#Evidence">¶</a></h2><p>The quantity we are going to derive, in a few ways, is the ELBO, or Evidence Lower BOund. As suggested by the name, it is a bound on the so-called Model Evidence, (also termed the probability of the data), $P(X)$.</p>
+<h2 id="Alpha-divergence-recap">Alpha divergence recap<a class="anchor-link" href="#Alpha-divergence-recap">¶</a></h2><p>The alpha divergence is given by;</p>
+<p>$D_{\alpha}[q\mid \mid p] =\frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
+<p>$ = \frac{1}{\alpha-1} log \int q(x) q(x)^{\alpha - 1}p(x)^{1-\alpha}dx$</p>
+<p>$ = \frac{1}{\alpha-1} log \int q(x) (\frac{p(x)}{q(x)})^{1-\alpha}dx$</p>
+<p>$ =  \frac{1}{\alpha-1} log E_{q}[(\frac{p(x)}{q(x)})^{1-\alpha}]$</p>
+<h2 id="Why-Renyi-Alpha-divergence?">Why Renyi Alpha divergence?<a class="anchor-link" href="#Why-Renyi-Alpha-divergence?">¶</a></h2><p>The presence of the $\alpha$ allows us to tailor the strength of the bound that we use. If we take $\alpha$ as 0, we recover:</p>
+<p>$D_{0}[q\mid \mid p] =-log \int p(x)dx = 0$</p>
+<p>This means, we recover the maximum likelihood solution (i.e. the bound is exact), and if we set $\alpha$ to 1, we recover the KL divergence. By choosing some other value, we can generate different behaviour to manipulate the type and tightness of the bound. Many of these points will become clear later in this post, or in subsequent posts.</p>
+<h2 id="Link-to-KL-Divergence">Link to KL Divergence<a class="anchor-link" href="#Link-to-KL-Divergence">¶</a></h2><p>If we take the limit of $\alpha \rightarrow 1$, we recover the KL-divergence, and we prove this now.</p>
 </div>
 </div>
 </div>
@@ -1067,10 +1073,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Via-Jensen&#x27;s-Inequality">Via Jensen's Inequality<a class="anchor-link" href="#Via-Jensen&#x27;s-Inequality">¶</a></h3><p>Let us start with the premise that we wish to find $log P(X)$.</p>
-<p>$log P(X) = log [\int_{Z} P(X,Z) dZ]$</p>
-<p>Introducing another distribution on Z, we can rewrite as;</p>
-<p>$log P(X) = log [\int_{Z} P(X,Z)\frac{q(Z)}{q(Z)} dZ] = log \ E_{q}[\frac{P(X,Z)}{q(Z)}]$</p>
+<p>$\lim_{\alpha\to 1} \frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
 </div>
 </div>
 </div>
@@ -1079,7 +1082,18 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>By <a href="https://en.wikipedia.org/wiki/Jensen%27s_inequality#Measure-theoretic_and_probabilistic_form">Jensen's Inequality</a> we know $log \ E_{q}[\frac{P(X,Z)}{q(Z)}] \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}]$</p>
+<p>However, if we take this limit, the integral becomes $log(1) = 0$, and the denominator of the multiplier becomes 0.</p>
+<p>This means we have a limit in the form of $\frac{0}{0}$. This form of indeterminate limit can be solved by using <a href="https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule">L'Hopitals Rule</a>.</p>
+<p>In short, we take the derivative of the numerator with respect to the limiting variable, $\alpha$, and do the same denominator, and the take the limit of the fraction of the derivatives instead.</p>
+<p>The derivative of the denominator is easy - its 1.</p>
+<p>$\frac{d}{d\alpha} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
+<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx}\frac{d}{d\alpha} \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
+<p>The final step is to compute the derivative of the integral - using Leibniz we can take the derivative under the integral.</p>
+<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int \frac{d}{d\alpha} e^{\alpha \ log q(x)} e^{(1-\alpha) \ log p(x)} dx$</p>
+<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int p(x)^{1-\alpha}q(x)^{\alpha}log \ q(x) - q(x)^{\alpha}p(x)^{1-\alpha} log \ p(x)$</p>
+<p>$\lim_{\alpha \to 1} \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int p(x)^{1-\alpha}q(x)^{\alpha}log \ q(x) - q(x)^{\alpha}p(x)^{1-\alpha} log \ p(x) dx$</p>
+<p>$= \frac{1}{\int q(x)dx} \int q(x)log \ q(x) - q(x) log \ p(x) dx$</p>
+<p>$= \int q(x)log \ q(x) - q(x) log \ p(x) dx \ \ = \ KL(q \mid \mid p)$</p>
 </div>
 </div>
 </div>
@@ -1088,7 +1102,11 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This gives us;</p>
+<h2 id="Deriving-the-Renyi-Objective">Deriving the Renyi Objective<a class="anchor-link" href="#Deriving-the-Renyi-Objective">¶</a></h2><p>The previous section provides us with some guidance about how to go about deriving a Renyi based bound on the marginal likelihood. If we recall the <a href="https://chrisorm.github.io/VI-ELBO.html">derivation of the ELBO</a>, we will proceed along a similar path, except using Renyi divergences rather than KL. Using the form derived in section 1:</p>
+<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z \mid x)}{q(z)})^{1-\alpha}]$</p>
+<p>Expanding the posterior over z under p, $p(z \mid x)$, using bayes theorem, we get:</p>
+<p>$p(z \mid x) = \frac{p(z, x)}{p(x)}$</p>
+<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{p(x)q(z)})^{1-\alpha}]$</p>
 </div>
 </div>
 </div>
@@ -1097,8 +1115,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$ log \ P(X) = log \ E_{q}[\frac{P(X,Z)}{q(Z)}] \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}]$</p>
-<p>$ log \ P(X) \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}] = \mathcal{L}$</p>
+<p>Rearranging slightly, and then separating terms:</p>
+<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} \ \frac{1}{p(x)^{1-\alpha}}] =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} p(x)^{\alpha -1}] $</p>
 </div>
 </div>
 </div>
@@ -1107,7 +1125,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>From this, the role of the ELBO is obvious; it is a lower bound on the "evidence", $P(X)$, so we can use this to get an approximation for the evidence.</p>
+<p>In the last term, the marginal likelihood is a constant with respect to the expectation, so we can rewrite this term on the outside of the expectation:</p>
 </div>
 </div>
 </div>
@@ -1116,10 +1134,10 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Via-KL-Divergence">Via KL-Divergence<a class="anchor-link" href="#Via-KL-Divergence">¶</a></h3><p>We can also get to the ELBO from a completely different route.</p>
-<p>Often, we actually want to the approximate the posterior $P(Z|X)$. This is where our distribution $q(Z)$ comes in: we want to choose some distribution, $q(Z)$ to approximate the true posterior $P(Z \mid X)$.</p>
-<p>A really common way to measure the similarity between two probability distributions is the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">KL-divergence</a>. This is a non-negative measure of similarity, that is 0 for identical distributions.</p>
-<p>So, in order to encode the idea that our approximation is close, we want to have some 'small' (what ever that means...) KL-Divergence.</p>
+<p>$=\frac{1}{\alpha -1} log \ ( E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] p(x)^{\alpha -1}) $</p>
+<p>$=\frac{1}{\alpha -1} (log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x)^{\alpha -1}) $</p>
+<p>$=\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
+<p>So, we now have a familiar form for the first term, this is a Renyi Divergence between the joint and the approximation, and the second term is the log marginal likelihood.</p>
 </div>
 </div>
 </div>
@@ -1128,8 +1146,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$D_{KL}(q(Z)\mid\mid P(Z|X)) = -E_{q}[log\frac{P(Z\mid X)}{q(Z)}] = -E_{q}[log \ P(Z\mid X) - log \ q(Z)] $</p>
-<p>$-E_{q}[log \ P(Z\mid X) - log \ q(Z)] = -E_{q}[log \frac{ P(Z, X)}{P(X)} - log \ q(Z)] = -E_{q}[log \ P(Z, X) \ - log \ P(X) - log \ q(Z)]$</p>
+<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
 </div>
 </div>
 </div>
@@ -1138,10 +1155,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$log P(X)$ is independant of Z, so it's expectation under $q(Z)$ is itself. We can thus split the last step into two terms:</p>
-<p>$-E_{q}[log \ P(Z, X) \ - log \ P(X) - log \ q(Z)] = -E_{q}[log \ P(Z, X) \ - log \ q(Z)] + E_{q}[log \ P(X)] $</p>
-<p>Therefore, we arrive at;</p>
-<p>$D_{KL}(q(z)\mid\mid P(Z\mid X))= -E_{q}[log \ P(Z, X) \  - log \ q(Z)] + log \ P(X)$</p>
+<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
+<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \mathcal{L_\alpha} \ + \ log \ p(x) $</p>
+<p>where $\mathcal{L_\alpha} =  \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] $</p>
 </div>
 </div>
 </div>
@@ -1150,8 +1166,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The expectation term is the same as the term we called $\mathcal{L}$ in the previous section, so rewriting;</p>
-<p>$D_{KL}(q(z)\mid\mid P(Z\mid X))= -\mathcal{L} + log \ P(X)$</p>
+<p>Here, we have an equivalent formulation to that which we ended up with when we derived the ELBO. In order to minimise the Renyi divergence between the true and approximate posterior, we should maximise the Renyi bound, $\mathcal{L_{\alpha}}$.</p>
+<p>As mentioned earlier, if we choose $\alpha$ to be 0, it is easy to show that  $D_{\alpha}(q(z)\mid \mid p(z \mid x))$ becomes 0, and so $\mathcal{L_{0}}$ simplifies to nothing more than integrating the z out of the joint, hence it is exact. As the Renyi divergence is continuous in $\alpha$, by picking a value between 0 and 1, we get somewhere between an exact and ELBO solution.</p>
 </div>
 </div>
 </div>
@@ -1160,7 +1176,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The original goal was to find an approximation $q(z)$ that is close to the true posterior. So we are varying $q$ in order to minimise the KL-Divergence between it and the posterior. The log evidence is independent of $q$, so it doesn't matter how we vary $q$, it is just a constant term. So to minimise the LHS, we have to minimise $-\mathcal{L}$, which is equivalent to maximising $\mathcal{L}$.</p>
+<h2 id="Practicalities-of-using-the-Renyi-Alpha-divergence.">Practicalities of using the Renyi Alpha divergence.<a class="anchor-link" href="#Practicalities-of-using-the-Renyi-Alpha-divergence.">¶</a></h2><p>When we use the KL divergence, we approximate the expectations by monte carlo, as covered in a <a href="https://chrisorm.github.io/VI-MC.html">previous post</a>. For the KL divergence, we are lucky that this happens to be an unbiased estimate of the true expectation, so we can use this in our optimisation procedure confident of our convergence.</p>
+<p>Let's do the same with the Renyi bound:</p>
 </div>
 </div>
 </div>
@@ -1169,7 +1186,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Looking at the ELBO from this perspective, we see that the $q$ that maximises the ELBO also minimises the KL-Divergence between itself and the true posterior.</p>
+<p>$\hat{\mathcal{L_\alpha}} =  \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
+<p>For this to be unbiased, if we take the expectation it should be equal to the true value.</p>
+<p>$E_{q}[\hat{\mathcal{L_\alpha}}] = E_{q}[ \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
 </div>
 </div>
 </div>
@@ -1178,7 +1197,45 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>From the above two angles, we can see the roles that the component parts of the ELBO play. The ELBO itself is a lower bound on the evidence, whilst the distribution q serves as the approximation of the true posterior.</p>
+<p>$= \frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is somewhat problematic though, as the log complicates matters. By Jensen's inequality (recalling that the log is convex):</p>
+<p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ \frac{1}{N} E_{q}[  \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is not great, as we are trying to maximise $\mathcal{L_{\alpha}}$. So our estimate of the bound will actually be a underestimate, making the bound less tight.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, I have introduced the Renyi alpha divergence, and we have seen some important properties. We have shown that the KL-divergence is a special case, shown how we can derive a Renyi Lower Bound, and shown that a monte carlo approximation of this bound is biased to underestimate the bound.</p>
+<p>In the next post, I will show some more properties of the Renyi divergence bound, as well as use it in a practical problem or two!</p>
 </div>
 </div>
 </div>
@@ -1218,12 +1275,21 @@ h6:hover .anchor-link {
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-09-28T20:00:00+01:00">Sep 28, 2017</time>
+            <time pubdate="pubdate" datetime="2017-11-14T22:33:00+00:00">Nov 14, 2017</time>
             <h4>Category</h4>
             <a class="category-link" href="https://chrisorm.github.io/categories.html#posts-ref">posts</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
-                <li><a href="https://chrisorm.github.io/tags.html#elbo-ref">ELBO
+                <li><a href="https://chrisorm.github.io/tags.html#alpha-divergence-ref">Alpha Divergence
+                    <span>1</span>
+</a></li>
+                <li><a href="https://chrisorm.github.io/tags.html#python-ref">Python
+                    <span>6</span>
+</a></li>
+                <li><a href="https://chrisorm.github.io/tags.html#pytorch-ref">PyTorch
+                    <span>2</span>
+</a></li>
+                <li><a href="https://chrisorm.github.io/tags.html#renyi-ref">Renyi
                     <span>1</span>
 </a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#variational-inference-ref">Variational Inference
