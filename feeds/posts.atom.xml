@@ -1132,7 +1132,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $&lt;/p&gt;
 &lt;p&gt;$ =\frac{1}{1 - \alpha} log \int q(z)^{\alpha} p(z, y)^{1-\alpha} dz $&lt;/p&gt;
 &lt;p&gt;$ =\frac{1}{1 - \alpha} log \int q(z)^{\alpha} (p(z\mid y)p(y))^{1-\alpha} dz $&lt;/p&gt;
 &lt;p&gt;$ =\frac{1}{1 - \alpha} log \int q(z)^{\alpha} p(z\mid y)^{1-\alpha} p(y)^{1-\alpha} dz $&lt;/p&gt;
-&lt;p&gt;but $q(z) = p(z \mid y)$, so:&lt;/p&gt;
+&lt;p&gt;but $q(z) = p(z \mid y)$ if the approximation is exact, so:&lt;/p&gt;
 &lt;p&gt;$ =\frac{1}{1 - \alpha} log \int p(z\mid y)^{\alpha} p(z\mid y)^{1-\alpha} p(y)^{1-\alpha} dz $&lt;/p&gt;
 &lt;p&gt;$ =\frac{1}{1 - \alpha} log \ p(y)^{1-\alpha} \int p(z\mid y) dz $&lt;/p&gt;
 &lt;p&gt;$ =\frac{1-\alpha}{1 - \alpha} log \ p(y) \ = \ log \ p(y)$&lt;/p&gt;
