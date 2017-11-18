@@ -1101,7 +1101,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $&lt;/p&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Substituting in for C and cancelling yields:&lt;/p&gt;
-&lt;p&gt;$ =\frac{1}{1 - \alpha} log \ \frac{\mid \Sigma \mid^{\frac{1}{2}}}{(2\pi)^{\frac{(1-\alpha)M}{2}} \mid\Sigma_{q}\mid^{\frac{\alpha}{2}}\mid\Sigma_{p}\mid^{\frac{1-\alpha}{2}}\mid\Sigma_{l}\mid^{\frac{1-\alpha}{2}}}   exp -\frac{1}{2}(- \mu^{T}\Sigma^{-1} \mu + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q} +  (1-\alpha)y^{T}\Sigma_{l}^{-1}y)  $&lt;/p&gt;
+&lt;p&gt;$ =\frac{1}{1 - \alpha} log \ \frac{\mid \Sigma \mid^{\frac{1}{2}}}{(2\pi)^{\frac{(1-\alpha)M}{2}} \mid\Sigma_{q}\mid^{\frac{\alpha}{2}}\mid\Sigma_{p}\mid^{\frac{1-\alpha}{2}}\mid\Sigma_{l}\mid^{\frac{1-\alpha}{2}}} \bullet   exp -\frac{1}{2}(- \mu^{T}\Sigma^{-1} \mu + \\ \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q} +  (1-\alpha)y^{T}\Sigma_{l}^{-1}y)  $&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
