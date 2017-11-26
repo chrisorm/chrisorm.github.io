@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Infinite n♾rm</title><link href="https://chrisorm.github.io/" rel="alternate"></link><link href="https://chrisorm.github.io/feeds/all.atom.xml" rel="self"></link><id>https://chrisorm.github.io/</id><updated>2017-11-26T15:36:00+00:00</updated><entry><title>Renyi Divergence Variational Inference - Part 3</title><link href="https://chrisorm.github.io/VI-RVI-3.html" rel="alternate"></link><published>2017-11-26T15:36:00+00:00</published><updated>2017-11-26T15:36:00+00:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-11-26:VI-RVI-3.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Infinite n♾rm</title><link href="https://chrisorm.github.io/" rel="alternate"></link><link href="https://chrisorm.github.io/feeds/all.atom.xml" rel="self"></link><id>https://chrisorm.github.io/</id><updated>2017-11-26T15:36:00+00:00</updated><entry><title>Renyi Alpha Variational Inference - Part 3</title><link href="https://chrisorm.github.io/VI-RVI-3.html" rel="alternate"></link><published>2017-11-26T15:36:00+00:00</published><updated>2017-11-26T15:36:00+00:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-11-26:VI-RVI-3.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -1820,7 +1820,7 @@ SZ3//Oc/U1dXx4svvgh4FyVfvXp1dxa7SyKp8yeffMKWLVswm80kJiaybNmyXntjNJL69jWRvsf/
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 &lt;/script&gt;
-</summary><category term="Variational Inference"></category><category term="VI"></category><category term="Python"></category><category term="PyTorch"></category><category term="Renyi Divergence"></category></entry><entry><title>Renyi Alpha Variational Inference - Part 2</title><link href="https://chrisorm.github.io/VI-RA-2.html" rel="alternate"></link><published>2017-11-18T16:41:00+00:00</published><updated>2017-11-18T16:41:00+00:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-11-18:VI-RA-2.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+</summary><category term="Variational Inference"></category><category term="VI"></category><category term="Python"></category><category term="PyTorch"></category><category term="Alpha Divergence"></category></entry><entry><title>Renyi Alpha Variational Inference - Part 2</title><link href="https://chrisorm.github.io/VI-RA-2.html" rel="alternate"></link><published>2017-11-18T16:41:00+00:00</published><updated>2017-11-18T16:41:00+00:00</updated><author><name>Chris Orm</name></author><id>tag:chrisorm.github.io,2017-11-18:VI-RA-2.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
