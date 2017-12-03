@@ -11,18 +11,18 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="Variational Inference, VI, Python, PyTorch, Alpha Divergence, Renyi, posts, " />
+<meta name="keywords" content="Variational Inference, VI, Variational Autoencoder, posts, " />
 
-<meta property="og:title" content="Renyi Alpha Variational Inference - Part 1 "/>
-<meta property="og:url" content="https://chrisorm.github.io/VI-RA-1.html" />
-<meta property="og:description" content="Renyi Alpha Divergence¶In many areas of machine learning, we use the KL-divergence to measure the &#39;distance&#39; between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on Renyi Divergence Variational Inference" />
+<meta property="og:title" content="Variational Autoencoders "/>
+<meta property="og:url" content="https://chrisorm.github.io/VI-to-VAE.html" />
+<meta property="og:description" content="From Variational Inference to Variational Autoencoders¶In previous posts, we have introduced Variational Inference, mainly from the perspective of computing an intractable posterior. However, this is just one use of the very general framework that we have encountered. In this post, I will bridge the gap between the previous posts and Variational Autoencoders" />
 <meta property="og:site_name" content="Infinite n♾rm" />
 <meta property="og:article:author" content="Chris Orm" />
-<meta property="og:article:published_time" content="2017-11-14T22:33:00+00:00" />
-<meta name="twitter:title" content="Renyi Alpha Variational Inference - Part 1 ">
-<meta name="twitter:description" content="Renyi Alpha Divergence¶In many areas of machine learning, we use the KL-divergence to measure the &#39;distance&#39; between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on Renyi Divergence Variational Inference">
+<meta property="og:article:published_time" content="2017-12-02T19:20:00+00:00" />
+<meta name="twitter:title" content="Variational Autoencoders ">
+<meta name="twitter:description" content="From Variational Inference to Variational Autoencoders¶In previous posts, we have introduced Variational Inference, mainly from the perspective of computing an intractable posterior. However, this is just one use of the very general framework that we have encountered. In this post, I will bridge the gap between the previous posts and Variational Autoencoders">
 
-        <title>Renyi Alpha Variational Inference - Part 1  · Infinite n♾rm
+        <title>Variational Autoencoders  · Infinite n♾rm
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 <article>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-RA-1.html"> Renyi Alpha Variational Inference - Part 1  </a></h1>
+    <h1><a href="https://chrisorm.github.io/VI-to-VAE.html"> Variational Autoencoders  </a></h1>
     </header>
 </div>
 
@@ -1047,7 +1047,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Renyi-Alpha-Divergence">Renyi Alpha Divergence<a class="anchor-link" href="#Renyi-Alpha-Divergence">¶</a></h1><p>In many areas of machine learning, we use the KL-divergence to measure the 'distance' between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on <a href="https://arxiv.org/pdf/1602.02311.pdf">Renyi Divergence Variational Inference</a>, submitted to NIPS 2016.</p>
+<h1 id="From-Variational-Inference-to-Variational-Autoencoders">From Variational Inference to Variational Autoencoders<a class="anchor-link" href="#From-Variational-Inference-to-Variational-Autoencoders">¶</a></h1><p>In previous posts, we have introduced Variational Inference, mainly from the perspective of computing an intractable posterior. However, this is just one use of the very general framework that we have encountered. In this post, I will bridge the gap between the previous posts and <a href="https://arxiv.org/abs/1312.6114">Variational Autoencoders</a>.</p>
 </div>
 </div>
 </div>
@@ -1056,15 +1056,34 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Alpha-divergence-recap">Alpha divergence recap<a class="anchor-link" href="#Alpha-divergence-recap">¶</a></h2><p>The alpha divergence is given by;</p>
-<p>$D_{\alpha}[q\mid \mid p] =\frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
-<p>$ = \frac{1}{\alpha-1} log \int q(x) q(x)^{\alpha - 1}p(x)^{1-\alpha}dx$</p>
-<p>$ = \frac{1}{\alpha-1} log \int q(x) (\frac{p(x)}{q(x)})^{1-\alpha}dx$</p>
-<p>$ =  \frac{1}{\alpha-1} log E_{q}[(\frac{p(x)}{q(x)})^{1-\alpha}]$</p>
-<h2 id="Why-Renyi-Alpha-divergence?">Why Renyi Alpha divergence?<a class="anchor-link" href="#Why-Renyi-Alpha-divergence?">¶</a></h2><p>The presence of the $\alpha$ allows us to tailor the strength of the bound that we use. If we take $\alpha$ as 0, we recover:</p>
-<p>$D_{0}[q\mid \mid p] =-log \int p(x)dx = 0$</p>
-<p>This means, we recover the maximum likelihood solution (i.e. the bound is exact), and if we set $\alpha$ to 1, we recover the KL divergence. By choosing some other value, we can generate different behaviour to manipulate the type and tightness of the bound. Many of these points will become clear later in this post, or in subsequent posts.</p>
-<h2 id="Link-to-KL-Divergence">Link to KL Divergence<a class="anchor-link" href="#Link-to-KL-Divergence">¶</a></h2><p>If we take the limit of $\alpha \rightarrow 1$, we recover the KL-divergence, and we prove this now.</p>
+<h2 id="Recap">Recap<a class="anchor-link" href="#Recap">¶</a></h2><p>In previous posts, we have had a fixed model, and are looking to compute an approximate posterior, often because this is computationally hard to do exactly. To do this, we derived the ELBO, which revolves around the KL-divergence to measure the 'closeness' of the true and approximate posteriors. Let's denote the parameters of our approximate posterior as $\phi$.</p>
+<p>$\mathcal{L} = E_{q}[log \ \frac{P(X,Z)}{q(Z)}] = E_{q}[log \ P(X,Z) - log \ q_{\phi}(Z)]  $</p>
+<p>In order to find our approximation, $q$, we solve:</p>
+<p>$max_{\phi}(\mathcal{L})$</p>
+<h2 id="Learning-the-true-joint">Learning the true joint<a class="anchor-link" href="#Learning-the-true-joint">¶</a></h2><p>The natural question to ask is "what if we don't know the model for the joint distribution?". Let's first imagine that we do have a form for the model - e.g. it is normally distributed, but we don't know the parameters of this model. We can use maximum likelihood to learn the parameters of our true model, which we will denote as $\theta$.</p>
+<p>So, if we want to learn both the model and the approximate posterior, we can rewrite the above objective as:</p>
+<p>$max_{\phi}max_{\theta} \ E_{p_{D}}[ \mathcal{L}] = max_{\phi, \theta} E_{p_{D}}[E_{q}[log \ P_{\theta}(X,Z) - log \ q_{\phi}(Z)]] $</p>
+<p>where $p_{D}(X)$ denotes the distribution of the data. In practice, we have some data, $X$, and we minimise the mean of the loss function over this data.</p>
+<p>This represents a very minor change to the previous framework, and this is quite natural to handle in modern autodiff framworks.</p>
+<h2 id="Variational-Autoencoders">Variational Autoencoders<a class="anchor-link" href="#Variational-Autoencoders">¶</a></h2><p>One final step brings us to <a href="https://arxiv.org/abs/1312.6114">Variational Autoencoders</a>. The problem with doing simple maximum likelihood as outlined before, is that it is very constraining. If I want to learn a model over Gaussians, it's fine, but if I want to learn a model of the distribution of images that contain zebras, specifying the model is a problem!</p>
+<p>To solve this problem, VAEs replace the explicit model with a neural network. Firstly, we make the near trivial extension that the approximate posterior is given by $q(z \mid x)$. The original paper took the posterior as:</p>
+<p>$q(z \mid X) \sim N(\mu_{q \mid X}, \Sigma_{q \mid X})$</p>
+<p>The notation here means that every x value has its own mean and variance associated with it - so if we have n data points, we learn n means and n covariances.</p>
+<p>We also specify the joint as a prior on Z and a likelihood term on x. The prior is a unit gaussian.</p>
+<p>$P(Z) \sim N(0,I)$</p>
+<p>The form of $P(X \mid Z)$ is either a Gaussian or Bernoulli, depending on the data.</p>
+<h3 id="Distributions-from-Neural-Networks">Distributions from Neural Networks<a class="anchor-link" href="#Distributions-from-Neural-Networks">¶</a></h3><p>In order to have both the approximate posterior and likelihood terms, we use neural networks to learn the form. In the case of the likelihood, we have a neural network that takes a sample from $P(Z)$ as input, and outputs a mean and a variance of the likelihood distribution if it is Gaussian, or the Bernoulli parameter if not.</p>
+<p>The approximate posterior is parameterised by a neural network that takes a sample of our data as input, and outputs a mean and variance for the approximate posterior at this X value.</p>
+<p>In short, the neural networks act a bit like lookup tables - we pass in an input value and get the parameters of the distribution out. From there, everything is much the same as before - we maximise the ELBO.</p>
+<p>Let's assume that the likelihood is given be a Gaussian:</p>
+<p>$P(X \mid Z) \sim N(f(Z), g(Z))$</p>
+<p>Where f and g are our neural network. Assuming we don't use a trivial network (e.g. no hidden layers or no non-linearities), f and g are likely to be far from linear. This means the joint is no longer a Gaussian, but this is a good thing! If the network is sufficiently flexible, it can learn very complex joints that are not at all similar to a Gaussian.</p>
+<h2 id="Some-complications-to-be-aware-of">Some complications to be aware of<a class="anchor-link" href="#Some-complications-to-be-aware-of">¶</a></h2><p>One obvious problem comes from the posterior - whereas before we had to only learn a single posterior, now we learn one for each data point. This means if we have lots of data, this may be a problem!</p>
+<p>$q(z \mid X) \sim N(h(X), k(X))$</p>
+<p>Another, more subtle issue comes from the ELBO itself.</p>
+<p>$\mathcal{L} = E_{q}[log \ \frac{P(X,Z)}{q(Z \mid X)}] $</p>
+<p>We encounter problems if the support of the distributions P and q are different. If there is some point where the distribution under P is non-zero, but the distribution under q is very small, the bound becomes very large. If there is a point where q is actually or numerically zero, the bound is infinite.</p>
+<p>As the bound becomes very large, the gradient signal we get becomes smaller and smaller, and so we may well encounter convergence issues. We will come back to this in more detail in a later post.</p>
 </div>
 </div>
 </div>
@@ -1073,169 +1092,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$\lim_{\alpha\to 1} \frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>However, if we take this limit, the integral becomes $log(1) = 0$, and the denominator of the multiplier becomes 0.</p>
-<p>This means we have a limit in the form of $\frac{0}{0}$. This form of indeterminate limit can be solved by using <a href="https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule">L'Hopitals Rule</a>.</p>
-<p>In short, we take the derivative of the numerator with respect to the limiting variable, $\alpha$, and do the same denominator, and the take the limit of the fraction of the derivatives instead.</p>
-<p>The derivative of the denominator is easy - its 1.</p>
-<p>$\frac{d}{d\alpha} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
-<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx}\frac{d}{d\alpha} \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
-<p>The final step is to compute the derivative of the integral - using Leibniz we can take the derivative under the integral.</p>
-<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int \frac{d}{d\alpha} e^{\alpha \ log q(x)} e^{(1-\alpha) \ log p(x)} dx$</p>
-<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int p(x)^{1-\alpha}q(x)^{\alpha}log \ q(x) - q(x)^{\alpha}p(x)^{1-\alpha} log \ p(x)$</p>
-<p>$\lim_{\alpha \to 1} \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int p(x)^{1-\alpha}q(x)^{\alpha}log \ q(x) - q(x)^{\alpha}p(x)^{1-\alpha} log \ p(x) dx$</p>
-<p>$= \frac{1}{\int q(x)dx} \int q(x)log \ q(x) - q(x) log \ p(x) dx$</p>
-<p>$= \int q(x)log \ q(x) - q(x) log \ p(x) dx \ \ = \ KL(q \mid \mid p)$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Deriving-the-Renyi-Objective">Deriving the Renyi Objective<a class="anchor-link" href="#Deriving-the-Renyi-Objective">¶</a></h2><p>The previous section provides us with some guidance about how to go about deriving a Renyi based bound on the marginal likelihood. If we recall the <a href="https://chrisorm.github.io/VI-ELBO.html">derivation of the ELBO</a>, we will proceed along a similar path, except using Renyi divergences rather than KL. Using the form derived in section 1:</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z \mid x)}{q(z)})^{1-\alpha}]$</p>
-<p>Expanding the posterior over z under p, $p(z \mid x)$, using bayes theorem, we get:</p>
-<p>$p(z \mid x) = \frac{p(z, x)}{p(x)}$</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{p(x)q(z)})^{1-\alpha}]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Rearranging slightly, and then separating terms:</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} \ \frac{1}{p(x)^{1-\alpha}}] =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} p(x)^{\alpha -1}] $</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>In the last term, the marginal likelihood is a constant with respect to the expectation, so we can rewrite this term on the outside of the expectation:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$=\frac{1}{\alpha -1} log \ ( E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] p(x)^{\alpha -1}) $</p>
-<p>$=\frac{1}{\alpha -1} (log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x)^{\alpha -1}) $</p>
-<p>$=\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
-<p>So, we now have a familiar form for the first term, this is a Renyi Divergence between the joint and the approximation, and the second term is the log marginal likelihood.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \mathcal{L_\alpha} \ + \ log \ p(x) $</p>
-<p>where $\mathcal{L_\alpha} =  \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] $</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Here, we have an equivalent formulation to that which we ended up with when we derived the ELBO. In order to minimise the Renyi divergence between the true and approximate posterior, we should maximise the Renyi bound, $\mathcal{L_{\alpha}}$.</p>
-<p>As mentioned earlier, if we choose $\alpha$ to be 0, it is easy to show that  $D_{\alpha}(q(z)\mid \mid p(z \mid x))$ becomes 0, and so $\mathcal{L_{0}}$ simplifies to nothing more than integrating the z out of the joint, hence it is exact. As the Renyi divergence is continuous in $\alpha$, by picking a value between 0 and 1, we get somewhere between an exact and ELBO solution.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Practicalities-of-using-the-Renyi-Alpha-divergence.">Practicalities of using the Renyi Alpha divergence.<a class="anchor-link" href="#Practicalities-of-using-the-Renyi-Alpha-divergence.">¶</a></h2><p>When we use the KL divergence, we approximate the expectations by monte carlo, as covered in a <a href="https://chrisorm.github.io/VI-MC.html">previous post</a>. For the KL divergence, we are lucky that this happens to be an unbiased estimate of the true expectation, so we can use this in our optimisation procedure confident of our convergence.</p>
-<p>Let's do the same with the Renyi bound:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$\hat{\mathcal{L_\alpha}} =  \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
-<p>For this to be unbiased, if we take the expectation it should be equal to the true value.</p>
-<p>$E_{q}[\hat{\mathcal{L_\alpha}}] = E_{q}[ \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$= \frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This is somewhat problematic though, as the log complicates matters. By Jensen's inequality (recalling that the log is convex):</p>
-<p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ \frac{1}{N} E_{q}[  \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This is not great, as we are trying to maximise $\mathcal{L_{\alpha}}$. So our estimate of the bound will actually be a underestimate, making the bound less tight.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, I have introduced the Renyi alpha divergence, and we have seen some important properties. We have shown that the KL-divergence is a special case, shown how we can derive a Renyi Lower Bound, and shown that a monte carlo approximation of this bound is biased to underestimate the bound.</p>
-<p>In the next post, I will show some more properties of the Renyi divergence bound, as well as use it in a practical problem or two!</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, we have bridged the (theoretical) gap between VI and VAEs. We have discussed how to extend the ELBO to cope with learning the model as well as the approximation, and how to use neural networks to help us out for complex distributions.</p>
+<p>In the next post, we will see some code implementing these ideas, and in the future we will expand on some of the problems raised at the end of the post, and see some recent solutions.</p>
 </div>
 </div>
 </div>
@@ -1275,22 +1133,13 @@ h6:hover .anchor-link {
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-11-14T22:33:00+00:00">Nov 14, 2017</time>
+            <time pubdate="pubdate" datetime="2017-12-02T19:20:00+00:00">Dec 2, 2017</time>
             <h4>Category</h4>
             <a class="category-link" href="https://chrisorm.github.io/categories.html#posts-ref">posts</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
-                <li><a href="https://chrisorm.github.io/tags.html#alpha-divergence-ref">Alpha Divergence
-                    <span>3</span>
-</a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#python-ref">Python
-                    <span>8</span>
-</a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#pytorch-ref">PyTorch
-                    <span>3</span>
-</a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#renyi-ref">Renyi
-                    <span>2</span>
+                <li><a href="https://chrisorm.github.io/tags.html#variational-autoencoder-ref">Variational Autoencoder
+                    <span>1</span>
 </a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#variational-inference-ref">Variational Inference
                     <span>10</span>
