@@ -1058,7 +1058,7 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Ratios of probabilites form an important part of Generative models, whether explicit as in the case of VAEs or implicit in the case of GANs. Even if we are computing the KL-divergence between two distributions, this usually boils down to computing the average over samples of the logarithm of two probability distributions.</p>
 <p>For situations where we do not have a form for one or both of the models, computing the ratio of two distributions is not possible!</p>
-<p>In this post, I go through a method used frequently in recent publications, to estimate ratios of probabilites even when we do not have a form for one or both of them.</p>
+<p>In this post, I explore a method used frequently in recent publications, to estimate ratios of probabilites even when we do not have a form for one or both of them.</p>
 </div>
 </div>
 </div>
@@ -1067,7 +1067,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Estimating-ratios-using-Logisitic-Regression">Estimating ratios using Logisitic Regression<a class="anchor-link" href="#Estimating-ratios-using-Logisitic-Regression">¶</a></h2><p>Lets say we have a model, $q$, and some true distribution, $p$, we are looking to make inferences about.</p>
+<h2 id="Estimating-ratios-using-Logisitic-Regression">Estimating ratios using Logisitic Regression<a class="anchor-link" href="#Estimating-ratios-using-Logisitic-Regression">¶</a></h2><p>Let's say we have a model, $q$, and some true distribution, $p$, we are looking to make inferences about.</p>
 <p>$q \sim U[-20,20]$</p>
 <p>$p \sim N(5, 0.2)$</p>
 <p>Let's imagine p is not knowable to us, we have some samples but no idea the model behind them.</p>
@@ -1456,7 +1456,7 @@ i4h4jIJbRMRjFNwiIh7z/wGi3KNgeIVsHgAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="The-general-case">The general case<a class="anchor-link" href="#The-general-case">¶</a></h2><p>The form in the previous example is not sufficiently flexible for complex distributions. A linear function of a basis function of X is ok, but it requires us to know the combination of features we need to sufficiently model the ratio function. If we rewrite $f(x)W$ as $g(x)$, we can include non-linear functions of arbitary complexity.</p>
-<p>We can then make $g(x)$ be a neural network. We can then reach an equivalent conclusion as the logisitic regression example, if we define a discriminator network, that takes input x, and has a logistic sigmoid as the final activation function. In this formulation, g(x) is the inputs to the final activation function, and the so the neural network can be written as:</p>
+<p>We can then make $g(x)$ be a neural network. We can then reach an equivalent conclusion as the logisitic regression example, if we define a discriminator network, that takes input x, and has a logistic sigmoid as the final activation function. In this formulation, g(x) is the input to the final activation function, and so the neural network can be written as:</p>
 <p>$\frac{1}{1+exp(-g(x))}    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \    \ \ \ \      (3)$</p>
 <p>Comparing with equation 1, the ratio of $p$ and $q$ is equal to $exp(-g(x))$ in the general case.</p>
 <p>If the network is sufficiently flexible, and we train it to optimality, our approach used above is still valid to estimate the ratio.</p>
