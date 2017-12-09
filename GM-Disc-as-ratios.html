@@ -11,18 +11,18 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="Variational Inference, VI, Python, PyTorch, Alpha Divergence, Renyi, posts, " />
+<meta name="keywords" content="Variational Inference, VI, Python, Scikit-Learn, posts, " />
 
-<meta property="og:title" content="Renyi Alpha Variational Inference - Part 1 "/>
-<meta property="og:url" content="https://chrisorm.github.io/VI-RA-1.html" />
-<meta property="og:description" content="Renyi Alpha Divergence¶In many areas of machine learning, we use the KL-divergence to measure the &#39;distance&#39; between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on Renyi Divergence Variational Inference" />
+<meta property="og:title" content="Learning with Generative Models - Discriminators as approximations of ratios of distributions "/>
+<meta property="og:url" content="https://chrisorm.github.io/GM-Disc-as-ratios.html" />
+<meta property="og:description" content="Learning With Generative Models - Discriminators as approximations to likelihood ratios¶ Ratios of probabilites form an important part of Generative models, whether explicit as in the case of VAEs or implicit in the case of GANs. Even if we are computing the KL-divergence between two distributions, this usually boils down to computing the average over samples of the logarithm of two probability distributions." />
 <meta property="og:site_name" content="Infinite n♾rm" />
 <meta property="og:article:author" content="Chris Orm" />
-<meta property="og:article:published_time" content="2017-11-14T22:33:00+00:00" />
-<meta name="twitter:title" content="Renyi Alpha Variational Inference - Part 1 ">
-<meta name="twitter:description" content="Renyi Alpha Divergence¶In many areas of machine learning, we use the KL-divergence to measure the &#39;distance&#39; between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on Renyi Divergence Variational Inference">
+<meta property="og:article:published_time" content="2017-12-09T17:00:00+00:00" />
+<meta name="twitter:title" content="Learning with Generative Models - Discriminators as approximations of ratios of distributions ">
+<meta name="twitter:description" content="Learning With Generative Models - Discriminators as approximations to likelihood ratios¶ Ratios of probabilites form an important part of Generative models, whether explicit as in the case of VAEs or implicit in the case of GANs. Even if we are computing the KL-divergence between two distributions, this usually boils down to computing the average over samples of the logarithm of two probability distributions.">
 
-        <title>Renyi Alpha Variational Inference - Part 1  · Infinite n♾rm
+        <title>Learning with Generative Models - Discriminators as approximations of ratios of distributions  · Infinite n♾rm
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 <article>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-RA-1.html"> Renyi Alpha Variational Inference - Part 1  </a></h1>
+    <h1><a href="https://chrisorm.github.io/GM-Disc-as-ratios.html"> Learning with Generative Models - Discriminators as approximations of ratios of distributions  </a></h1>
     </header>
 </div>
 
@@ -1047,7 +1047,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Renyi-Alpha-Divergence">Renyi Alpha Divergence<a class="anchor-link" href="#Renyi-Alpha-Divergence">¶</a></h1><p>In many areas of machine learning, we use the KL-divergence to measure the 'distance' between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on <a href="https://arxiv.org/pdf/1602.02311.pdf">Renyi Divergence Variational Inference</a>, submitted to NIPS 2016.</p>
+<h1 id="Learning-With-Generative-Models---Discriminators-as-approximations-to-likelihood-ratios">Learning With Generative Models - Discriminators as approximations to likelihood ratios<a class="anchor-link" href="#Learning-With-Generative-Models---Discriminators-as-approximations-to-likelihood-ratios">¶</a></h1>
 </div>
 </div>
 </div>
@@ -1056,15 +1056,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Alpha-divergence-recap">Alpha divergence recap<a class="anchor-link" href="#Alpha-divergence-recap">¶</a></h2><p>The alpha divergence is given by;</p>
-<p>$D_{\alpha}[q\mid \mid p] =\frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
-<p>$ = \frac{1}{\alpha-1} log \int q(x) q(x)^{\alpha - 1}p(x)^{1-\alpha}dx$</p>
-<p>$ = \frac{1}{\alpha-1} log \int q(x) (\frac{p(x)}{q(x)})^{1-\alpha}dx$</p>
-<p>$ =  \frac{1}{\alpha-1} log E_{q}[(\frac{p(x)}{q(x)})^{1-\alpha}]$</p>
-<h2 id="Why-Renyi-Alpha-divergence?">Why Renyi Alpha divergence?<a class="anchor-link" href="#Why-Renyi-Alpha-divergence?">¶</a></h2><p>The presence of the $\alpha$ allows us to tailor the strength of the bound that we use. If we take $\alpha$ as 0, we recover:</p>
-<p>$D_{0}[q\mid \mid p] =-log \int p(x)dx = 0$</p>
-<p>This means, we recover the maximum likelihood solution (i.e. the bound is exact), and if we set $\alpha$ to 1, we recover the KL divergence. By choosing some other value, we can generate different behaviour to manipulate the type and tightness of the bound. Many of these points will become clear later in this post, or in subsequent posts.</p>
-<h2 id="Link-to-KL-Divergence">Link to KL Divergence<a class="anchor-link" href="#Link-to-KL-Divergence">¶</a></h2><p>If we take the limit of $\alpha \rightarrow 1$, we recover the KL-divergence, and we prove this now.</p>
+<p>Ratios of probabilites form an important part of Generative models, whether explicit as in the case of VAEs or implicit in the case of GANs. Even if we are computing the KL-divergence between two distributions, this usually boils down to computing the average over samples of the logarithm of two probability distributions.</p>
+<p>For situations where we do not have a form for one or both of the models, computing the ratio of two distributions is not possible!</p>
+<p>In this post, I go through a method used frequently in recent publications, to estimate ratios of probabilites even when we do not have a form for one or both of them.</p>
 </div>
 </div>
 </div>
@@ -1073,7 +1067,377 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$\lim_{\alpha\to 1} \frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
+<h2 id="Estimating-ratios-using-Logisitic-Regression">Estimating ratios using Logisitic Regression<a class="anchor-link" href="#Estimating-ratios-using-Logisitic-Regression">¶</a></h2><p>Lets say we have a model, $q$, and some true distribution, $p$, we are looking to make inferences about.</p>
+<p>$q \sim U[-20,20]$</p>
+<p>$p \sim N(5, 0.2)$</p>
+<p>Let's imagine p is not knowable to us, we have some samples but no idea the model behind them.</p>
+<p>What we can do is assign label y=1 to samples from p, and then draw the same number of samples from q, and label these y=0.</p>
+<p>Following the same line of reasoning as <a href="https://web.stanford.edu/~hastie/Papers/ESLII.pdf">ESL</a> section 14.24, Bayes theory tells us:</p>
+<p>$P(Y=1 \mid X) = \frac{P(X \mid Y=1)}{P(X \mid Y=1) + P(X \mid Y=0)}$</p>
+<p>Where, by definition;</p>
+<p>$P(X \mid Y=1) = p(x)$</p>
+<p>$P(X \mid Y=0) = q(x)$</p>
+<p>$P(Y=1 \mid X) = \frac{1}{1 + \frac{q(x)}{p(x)}} \ \ \ \ \ \ \ \ \ \ \ \ \ \    (1)$</p>
+<p>If we switch our approach for a second, we can write the objective for a logistic regression as:</p>
+<p>$\frac{1}{1+exp(-f(X)W)}    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \    \ \ \ \      (2)$</p>
+<p>Where we have made use of the basis function expansion, and leave f() as some unspecified basis function that is sufficiently flexible.</p>
+<p>Comparing equations 1 and 2, it is clear that $exp(-f(X)W)$ is equal to the ratio of q and p, subject to a sufficient form of f().</p>
+<p>The advantage of equation 2 is that we don't need to know the probability distributions, we just need samples and a sufficiently flexible basis function.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">norm</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">y1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">basis</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">"""A Basis function that is sufficiently flexible to model the problem."""</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">])</span>
+
+<span class="n">x</span><span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=None, solver='liblinear', tol=0.0001,
+          verbose=0, warm_start=False)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xtest_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">xtest</span><span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">xtest_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">est</span> <span class="o">=</span> <span class="n">ps</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">ps</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">truth</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xtest_</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,)</span><span class="o">*</span><span class="mi">40</span> <span class="c1">#p(x)/q(x)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xtest_</span><span class="p">,</span> <span class="n">est</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xtest_</span><span class="p">,</span> <span class="n">truth</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>[<matplotlib.lines.line2d at 0x7fb40f738128>]</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+" />
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1082,18 +1446,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>However, if we take this limit, the integral becomes $log(1) = 0$, and the denominator of the multiplier becomes 0.</p>
-<p>This means we have a limit in the form of $\frac{0}{0}$. This form of indeterminate limit can be solved by using <a href="https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule">L'Hopitals Rule</a>.</p>
-<p>In short, we take the derivative of the numerator with respect to the limiting variable, $\alpha$, and do the same denominator, and the take the limit of the fraction of the derivatives instead.</p>
-<p>The derivative of the denominator is easy - its 1.</p>
-<p>$\frac{d}{d\alpha} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
-<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx}\frac{d}{d\alpha} \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
-<p>The final step is to compute the derivative of the integral - using Leibniz we can take the derivative under the integral.</p>
-<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int \frac{d}{d\alpha} e^{\alpha \ log q(x)} e^{(1-\alpha) \ log p(x)} dx$</p>
-<p>$= \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int p(x)^{1-\alpha}q(x)^{\alpha}log \ q(x) - q(x)^{\alpha}p(x)^{1-\alpha} log \ p(x)$</p>
-<p>$\lim_{\alpha \to 1} \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int p(x)^{1-\alpha}q(x)^{\alpha}log \ q(x) - q(x)^{\alpha}p(x)^{1-\alpha} log \ p(x) dx$</p>
-<p>$= \frac{1}{\int q(x)dx} \int q(x)log \ q(x) - q(x) log \ p(x) dx$</p>
-<p>$= \int q(x)log \ q(x) - q(x) log \ p(x) dx \ \ = \ KL(q \mid \mid p)$</p>
+<p>As this figure shows, we actually get a very good approximation for the true ratio, and if we use more samples, this will be exact. The 2nd degree polynomial used in the basis function is sufficient, and if we use more samples the estimate will converge on the truth.</p>
 </div>
 </div>
 </div>
@@ -1102,11 +1455,11 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Deriving-the-Renyi-Objective">Deriving the Renyi Objective<a class="anchor-link" href="#Deriving-the-Renyi-Objective">¶</a></h2><p>The previous section provides us with some guidance about how to go about deriving a Renyi based bound on the marginal likelihood. If we recall the <a href="https://chrisorm.github.io/VI-ELBO.html">derivation of the ELBO</a>, we will proceed along a similar path, except using Renyi divergences rather than KL. Using the form derived in section 1:</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z \mid x)}{q(z)})^{1-\alpha}]$</p>
-<p>Expanding the posterior over z under p, $p(z \mid x)$, using bayes theorem, we get:</p>
-<p>$p(z \mid x) = \frac{p(z, x)}{p(x)}$</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{p(x)q(z)})^{1-\alpha}]$</p>
+<h2 id="The-general-case">The general case<a class="anchor-link" href="#The-general-case">¶</a></h2><p>The form in the previous example is not sufficiently flexible for complex distributions. A linear function of a basis function of X is ok, but it requires us to know the combination of features we need to sufficiently model the ratio function. If we rewrite $f(x)W$ as $g(x)$, we can include non-linear functions of arbitary complexity.</p>
+<p>We can then make $g(x)$ be a neural network. We can then reach an equivalent conclusion as the logisitic regression example, if we define a discriminator network, that takes input x, and has a logistic sigmoid as the final activation function. In this formulation, g(x) is the inputs to the final activation function, and the so the neural network can be written as:</p>
+<p>$\frac{1}{1+exp(-g(x))}    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \    \ \ \ \      (3)$</p>
+<p>Comparing with equation 1, the ratio of $p$ and $q$ is equal to $exp(-g(x))$ in the general case.</p>
+<p>If the network is sufficiently flexible, and we train it to optimality, our approach used above is still valid to estimate the ratio.</p>
 </div>
 </div>
 </div>
@@ -1115,127 +1468,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Rearranging slightly, and then separating terms:</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} \ \frac{1}{p(x)^{1-\alpha}}] =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} p(x)^{\alpha -1}] $</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>In the last term, the marginal likelihood is a constant with respect to the expectation, so we can rewrite this term on the outside of the expectation:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$=\frac{1}{\alpha -1} log \ ( E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] p(x)^{\alpha -1}) $</p>
-<p>$=\frac{1}{\alpha -1} (log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x)^{\alpha -1}) $</p>
-<p>$=\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
-<p>So, we now have a familiar form for the first term, this is a Renyi Divergence between the joint and the approximation, and the second term is the log marginal likelihood.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
-<p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \mathcal{L_\alpha} \ + \ log \ p(x) $</p>
-<p>where $\mathcal{L_\alpha} =  \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] $</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Here, we have an equivalent formulation to that which we ended up with when we derived the ELBO. In order to minimise the Renyi divergence between the true and approximate posterior, we should maximise the Renyi bound, $\mathcal{L_{\alpha}}$.</p>
-<p>As mentioned earlier, if we choose $\alpha$ to be 0, it is easy to show that  $D_{\alpha}(q(z)\mid \mid p(z \mid x))$ becomes 0, and so $\mathcal{L_{0}}$ simplifies to nothing more than integrating the z out of the joint, hence it is exact. As the Renyi divergence is continuous in $\alpha$, by picking a value between 0 and 1, we get somewhere between an exact and ELBO solution.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Practicalities-of-using-the-Renyi-Alpha-divergence.">Practicalities of using the Renyi Alpha divergence.<a class="anchor-link" href="#Practicalities-of-using-the-Renyi-Alpha-divergence.">¶</a></h2><p>When we use the KL divergence, we approximate the expectations by monte carlo, as covered in a <a href="https://chrisorm.github.io/VI-MC.html">previous post</a>. For the KL divergence, we are lucky that this happens to be an unbiased estimate of the true expectation, so we can use this in our optimisation procedure confident of our convergence.</p>
-<p>Let's do the same with the Renyi bound:</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$\hat{\mathcal{L_\alpha}} =  \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
-<p>For this to be unbiased, if we take the expectation it should be equal to the true value.</p>
-<p>$E_{q}[\hat{\mathcal{L_\alpha}}] = E_{q}[ \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$= \frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This is somewhat problematic though, as the log complicates matters. By Jensen's inequality (recalling that the log is convex):</p>
-<p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ \frac{1}{N} E_{q}[  \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This is not great, as we are trying to maximise $\mathcal{L_{\alpha}}$. So our estimate of the bound will actually be a underestimate, making the bound less tight.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, I have introduced the Renyi alpha divergence, and we have seen some important properties. We have shown that the KL-divergence is a special case, shown how we can derive a Renyi Lower Bound, and shown that a monte carlo approximation of this bound is biased to underestimate the bound.</p>
-<p>In the next post, I will show some more properties of the Renyi divergence bound, as well as use it in a practical problem or two!</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post we have shown how we can equate discriminators and probability ratios. This is an important result that is used in recent work. By the converse logic, we can also see how implicit models which utilise discriminators are approximating ratios of probability distributions.</p>
 </div>
 </div>
 </div>
@@ -1275,22 +1508,16 @@ h6:hover .anchor-link {
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-11-14T22:33:00+00:00">Nov 14, 2017</time>
+            <time pubdate="pubdate" datetime="2017-12-09T17:00:00+00:00">Dec 9, 2017</time>
             <h4>Category</h4>
             <a class="category-link" href="https://chrisorm.github.io/categories.html#posts-ref">posts</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
-                <li><a href="https://chrisorm.github.io/tags.html#alpha-divergence-ref">Alpha Divergence
-                    <span>3</span>
-</a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#python-ref">Python
                     <span>9</span>
 </a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#pytorch-ref">PyTorch
-                    <span>3</span>
-</a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#renyi-ref">Renyi
-                    <span>2</span>
+                <li><a href="https://chrisorm.github.io/tags.html#scikit-learn-ref">Scikit-Learn
+                    <span>1</span>
 </a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#variational-inference-ref">Variational Inference
                     <span>11</span>
