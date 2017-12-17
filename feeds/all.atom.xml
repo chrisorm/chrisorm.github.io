@@ -3283,9 +3283,9 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Ratios of probabilites form an important part of Generative models, whether explicit as in the case of VAEs or implicit in the case of GANs. Even if we are computing the KL-divergence between two distributions, this usually boils down to computing the average over samples of the logarithm of two probability distributions.&lt;/p&gt;
+&lt;p&gt;Ratios of probabilities form an important part of Generative models, whether explicit as in the case of VAEs or implicit in the case of GANs. Even if we are computing the KL-divergence between two distributions, this usually boils down to computing the average over samples of the logarithm of two probability distributions.&lt;/p&gt;
 &lt;p&gt;For situations where we do not have a form for one or both of the models, computing the ratio of two distributions is not possible!&lt;/p&gt;
-&lt;p&gt;In this post, I explore a method used frequently in recent publications, to estimate ratios of probabilites even when we do not have a form for one or both of them.&lt;/p&gt;
+&lt;p&gt;In this post, I explore a method used frequently in recent publications, to estimate ratios of probabilities even when we do not have a form for one or both of them.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -3294,7 +3294,7 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Estimating-ratios-using-Logisitic-Regression"&gt;Estimating ratios using Logisitic Regression&lt;a class="anchor-link" href="#Estimating-ratios-using-Logisitic-Regression"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let's say we have a model, $q$, and some true distribution, $p$, we are looking to make inferences about.&lt;/p&gt;
+&lt;h2 id="Estimating-ratios-using-Logistic-Regression"&gt;Estimating ratios using Logistic Regression&lt;a class="anchor-link" href="#Estimating-ratios-using-Logistic-Regression"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let's say we have a model, $q$, and some true distribution, $p$, we are looking to make inferences about.&lt;/p&gt;
 &lt;p&gt;$q \sim U[-20,20]$&lt;/p&gt;
 &lt;p&gt;$p \sim N(5, 0.2)$&lt;/p&gt;
 &lt;p&gt;Let's imagine p is not knowable to us, we have some samples but no idea the model behind them.&lt;/p&gt;
@@ -3682,8 +3682,8 @@ i4h4jIJbRMRjFNwiIh7z/wGi3KNgeIVsHgAAAABJRU5ErkJggg==
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="The-general-case"&gt;The general case&lt;a class="anchor-link" href="#The-general-case"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The form in the previous example is not sufficiently flexible for complex distributions. A linear function of a basis function of X is ok, but it requires us to know the combination of features we need to sufficiently model the ratio function. If we rewrite $f(x)W$ as $g(x)$, we can include non-linear functions of arbitary complexity.&lt;/p&gt;
-&lt;p&gt;We can then make $g(x)$ be a neural network. We can then reach an equivalent conclusion as the logisitic regression example, if we define a discriminator network, that takes input x, and has a logistic sigmoid as the final activation function. In this formulation, g(x) is the input to the final activation function, and so the neural network can be written as:&lt;/p&gt;
+&lt;h2 id="The-general-case"&gt;The general case&lt;a class="anchor-link" href="#The-general-case"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The form in the previous example is not sufficiently flexible for complex distributions. A linear function of a basis function of X is ok, but it requires us to know the combination of features we need to sufficiently model the ratio function. If we rewrite $f(x)W$ as $g(x)$, we can include non-linear functions of arbitrary complexity.&lt;/p&gt;
+&lt;p&gt;We can then make $g(x)$ be a neural network. We can then reach an equivalent conclusion as the logistic regression example, if we define a discriminator network, that takes input x, and has a logistic sigmoid as the final activation function. In this formulation, g(x) is the input to the final activation function, and so the neural network can be written as:&lt;/p&gt;
 &lt;p&gt;$\frac{1}{1+exp(-g(x))}    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \    \ \ \ \      (3)$&lt;/p&gt;
 &lt;p&gt;Comparing with equation 1, the ratio of $p$ and $q$ is equal to $exp(-g(x))$ in the general case.&lt;/p&gt;
 &lt;p&gt;If the network is sufficiently flexible, and we train it to optimality, our approach used above is still valid to estimate the ratio.&lt;/p&gt;
