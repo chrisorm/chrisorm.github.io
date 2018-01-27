@@ -11,18 +11,18 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="Variational Inference, VI, Python, Reparameterisation Trick, posts, " />
+<meta name="keywords" content="Dropout, Variational Inference, VI, Neural Networks, posts, " />
 
-<meta property="og:title" content="Variational Inference - Reparameterisation Trick in detail. "/>
-<meta property="og:url" content="https://chrisorm.github.io/VI-reparam.html" />
-<meta property="og:description" content="Reparameterization Trick¶Introduction¶In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail. Why must sampling be differentiable?¶If we recall the lower bound;" />
+<meta property="og:title" content="Dropout As a Bayesian Method "/>
+<meta property="og:url" content="https://chrisorm.github.io/MCDropout.html" />
+<meta property="og:description" content="Dropout as a Bayesian Method¶Dropout is a common method to prevent overfitting in neural networks. This post covers Dropout as a Bayesian Approximation. Dropout¶Dropout is a way to reduce overfitting during training of neural networks. The idea is simple - if a single sample of input to a layer in out network is N dimensional, we sample N independent Bernoulli variables with a probability $p$ (also called the dropout probability), and take the product of each Bernoulli sample with the corresponding entry of our input." />
 <meta property="og:site_name" content="Infinite n♾rm" />
 <meta property="og:article:author" content="Chris Orm" />
-<meta property="og:article:published_time" content="2017-09-30T20:00:00+01:00" />
-<meta name="twitter:title" content="Variational Inference - Reparameterisation Trick in detail. ">
-<meta name="twitter:description" content="Reparameterization Trick¶Introduction¶In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail. Why must sampling be differentiable?¶If we recall the lower bound;">
+<meta property="og:article:published_time" content="2018-01-27T16:00:00+00:00" />
+<meta name="twitter:title" content="Dropout As a Bayesian Method ">
+<meta name="twitter:description" content="Dropout as a Bayesian Method¶Dropout is a common method to prevent overfitting in neural networks. This post covers Dropout as a Bayesian Approximation. Dropout¶Dropout is a way to reduce overfitting during training of neural networks. The idea is simple - if a single sample of input to a layer in out network is N dimensional, we sample N independent Bernoulli variables with a probability $p$ (also called the dropout probability), and take the product of each Bernoulli sample with the corresponding entry of our input.">
 
-        <title>Variational Inference - Reparameterisation Trick in detail.  · Infinite n♾rm
+        <title>Dropout As a Bayesian Method  · Infinite n♾rm
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 <article>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-reparam.html"> Variational Inference - Reparameterisation Trick in detail.  </a></h1>
+    <h1><a href="https://chrisorm.github.io/MCDropout.html"> Dropout As a Bayesian Method  </a></h1>
     </header>
 </div>
 
@@ -1047,7 +1047,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Reparameterization-Trick">Reparameterization Trick<a class="anchor-link" href="#Reparameterization-Trick">¶</a></h1><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>In the previous post, we did our first practical variational algorithm in tensorflow. However, as briefly mentioned, using the Monte Carlo estimate of the ELBO relies on gradients working correctly across the sampling distribution. In this post we will discuss that point in detail.</p>
+<h1 id="Dropout-as-a-Bayesian-Method">Dropout as a Bayesian Method<a class="anchor-link" href="#Dropout-as-a-Bayesian-Method">¶</a></h1><p>Dropout is a common method to prevent overfitting in neural networks. This post covers <a href="https://arxiv.org/abs/1506.02142">Dropout as a Bayesian Approximation</a>.</p>
 </div>
 </div>
 </div>
@@ -1056,11 +1056,31 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Why-must-sampling-be-differentiable?">Why must sampling be differentiable?<a class="anchor-link" href="#Why-must-sampling-be-differentiable?">¶</a></h2><p>If we recall the lower bound;</p>
-<p>$\mathcal{L} = \int_{Z} q(Z) log \ \frac{P(Z, X)}{q(Z)} dZ$</p>
-<p>Our strategy when pursuing the monte carlo estimate was to approximate the integral by a sum, and the distribution $q(Z)$ by sampling.</p>
-<p>The important thing to remember, is that when we take the gradient with respect to the parameters of the ELBO , it is easy to not incorporate the effect of the parameters on the expectation.</p>
-<p>As a simple example, consider sampling from a uniform distribution $U[a, b]$. If we change the values of a and b, then obviously this will change our samples! If we generate samples from this distribution outside of tensorflow, this gradient information will be lost.</p>
+<h2 id="Dropout">Dropout<a class="anchor-link" href="#Dropout">¶</a></h2><p>Dropout is a way to reduce overfitting during training of neural networks. The idea is simple - if a single sample of input to a layer in out network is N dimensional, we sample N independent Bernoulli variables with a probability $p$ (also called the dropout probability), and take the product of each Bernoulli sample with the corresponding entry of our input.</p>
+<p>$\mathbf{z} = \left[\begin{matrix}z_{0} \\ ... \\ z_{i} \\ ... \\ z_{N}\end{matrix}\right]$</p>
+<p>$z_{i} \sim Bernoulli(p)$</p>
+<p>$\mathbf{\hat{y}} = \sigma((\mathbf{x} \cdot \mathbf{z})^{T}W +b)$</p>
+<p>Where $\sigma$ is some activation function, $\mathbf{x}$ is a vector of dimension N, representing a single sample, and $W$ and $b$ are weights and biases for the layer respectively.</p>
+<p>For deep networks, we can simply repeat the process as so:</p>
+<p>$\mathbf{\tilde{y}} = \sigma((\mathbf{\hat{y}} \cdot \mathbf{z_{2}})^{T}W_{2} +b_{2})$</p>
+<p>In order to train the network, we have a loss function, which I denote by $Er()$, and some additional penality around the parameters themselves, such as a complexity penalty:</p>
+<p>$\mathcal{L} = Er(\mathbf{\tilde{y}}, \mathbf{y}) + \lambda(||W||_{2}^{2}+||W_{2}||_{2}^{2}+||b||_{2}^{2} + ||b_{2}||_{2}^{2})$</p>
+<p>For regression, $Er$ could be the normal squared error:</p>
+<p>$Er(\mathbf{\tilde{y}}, \mathbf{y}) = ||\mathbf{\tilde{y}}- \mathbf{y}||_{2}^{2}$</p>
+<h3 id="Intuition">Intuition<a class="anchor-link" href="#Intuition">¶</a></h3><p>Dropout works because for every sample, each feature may be zero-ed out with probability p. This means in order to make good predictions, the network cannot rely too heavily on any specific feature. Generalisation is, at a high level, having a network that is not dependent on specific patterns within the training set that do not hold in general.</p>
+<p>This means that the network is too sensitive to particular features. Dropout helps combat this because any feature may be set to 0. If the network is heavily reliant on very particular intricacies of a feature, it will perform terribly if we set that feature to 0. So in order to achieve a good Loss, the network is forced to not exploit small transient patterns in the training set.</p>
+<h2 id="Dropout-as-a-Bayesian-method">Dropout as a Bayesian method<a class="anchor-link" href="#Dropout-as-a-Bayesian-method">¶</a></h2><p>The basic approach we will take is to view our network as a Gaussian Process. Let our final network outputs be $\mathbf{Y}$, and the inputs be $\mathbf{X}$. A Gaussian process with the correct kernel and sufficient form is capable of modelling any function, so this view is justified.</p>
+<p>Let us consider a slightly simplified functional form that above:</p>
+<p>$\mathbf{\tilde{y}} = \sigma(\mathbf{X}W_{1} +b)W_{2} + \epsilon$</p>
+<p>$X$ has shape Nxd, $W_{1}$ is dxK, $W_{2}$ is Kx1.</p>
+<p>We let $W$ correspond to the weight matricies after dropout is applied. If we denote the 'pre-dropout' matrix as $M$, $W = M \cdot z$.</p>
+<p>This is exactly the same as we get for a linear regression, so we can equally say:</p>
+<p>$\mathbf{\tilde{y}} \sim \mathcal{N}(\sigma(\mathbf{X}W_{1} +b)W_{2}, \tau^{-1}I)$</p>
+<p>Let us place a prior on all the parameters, with the priors on $W_{1}$ and $W_{2}$ being standard gaussians.</p>
+<p>$P(\mathbf{\tilde{y}}, W_{2}, W_{1}, b | \mathbf{X}) = P(\mathbf{\tilde{y}}| W_{2}, W_{1}, b, \mathbf{X})P(W_{1})P( W_{2})P(b)$</p>
+<p>Here we have an anlogue to standard loss functions - if each of the terms above are normal, performing MAP estimation is equivalent to minimising:</p>
+<p>$||y-\hat{y}^{2}|| + ||W_{1}||^{2}+ ||W_{2}||^{2}+ ||b||^{2}$</p>
+<p>Which is a standard sum-of squares loss funciton with regularization terms.</p>
 </div>
 </div>
 </div>
@@ -1069,8 +1089,10 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can see this requirement if we want to compute the gradient of the expectation of a function of x, a and b with respect to the parameters. 
-Let's take the example of the continuous uniform parameterized by a and b.</p>
+<h2 id="As-a-Gaussian-Process">As a Gaussian Process<a class="anchor-link" href="#As-a-Gaussian-Process">¶</a></h2><p>We can also write this as a Gaussian process, which is the approach used in the paper:</p>
+<p>$\mathcal{N}(\mathbf{\tilde{y}}| f, \tau^{-1}I_{d})\mathcal{N}(f|0, K)$</p>
+<p>$f = \Phi W_{2}$</p>
+<p>where $\Phi = \sigma(\mathbf{X}W_{1}+b)$</p>
 </div>
 </div>
 </div>
@@ -1079,97 +1101,15 @@ Let's take the example of the continuous uniform parameterized by a and b.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$m = \int_{a}^{b} f(x, a) p(x) dx$</p>
-<p>$f(x, a) = a+b+x$</p>
-<p>$m =\frac{1}{b-a} \int_{a}^{b} (x+a+b)  dx$</p>
-<p>$= \frac{1}{b-a} ([0.5 x^{2}]^{b}_{a} + [ax]^{b}_{a}+ [bx]^{b}_{a})$
-$= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + b$</p>
-<p>$ \frac{d}{da} m = \frac{3}{2}$</p>
-<p>$ \frac{d}{db} m = \frac{3}{2}$</p>
-<p>This may be the analytical solution, but we could approximate this function by monte carlo:</p>
-<p>$\frac{1}{N}\sum_{i}^{N} (x_{i}+a+b)$</p>
-<p>What we would like is that computing the gradient of this MC approximation is close to the analytical.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [1]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
-
-<span class="n">tf</span><span class="o">.</span><span class="n">__version__</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[1]:</div>
-<div class="output_text output_subarea output_execute_result">
-<pre>'1.3.0'</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    
-    <span class="n">a</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    
-    <span class="n">mc_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">grads</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">mc_mean</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
-    <span class="n">init_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [3]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
-<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_op</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [4]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
-<span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">X</span><span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">grads</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[[1.0000013, 1.0000013]]
-</pre>
-</div>
-</div>
+<p>We can find the moments of f, knowing the prior $P(W_{1})$ and $P(W_{2})$ are standard normal.</p>
+<p>$E[f] = E[\Phi W_{2}] = E[\Phi]E[ W_{2}]  = 0$</p>
+<p>$E[f f^{T}] = E[\Phi W_{2}W_{2}^{T} \Phi^{T}] =  E[\Phi E[W_{2}W_{2}^{T}] \Phi^{T}] = E[\Phi \Phi^{T}]$</p>
+<p>For a pair of samples, x and y (which form rows of $\mathbf{X}$), we can write this expecation as</p>
+<p>$K(x,y)= \int \sigma(w^{T}x +b) \sigma(w^{T}y +b) P(w)P(b) dwdb$</p>
+<p>and so:</p>
+<p>$K_{n,m} = K(\mathbf{X}_{n},\mathbf{X}_{m})$</p>
+<p>We can approximate the integral by samples:</p>
+<p>$\hat{K}(x,y)= \frac{1}{K} \sum_{k=1}^{K} \sigma(w_{k}^{T}x +b_{k}) \sigma(w_{k}^{T}y +b_{k})$</p>
 </div>
 </div>
 </div>
@@ -1178,65 +1118,8 @@ $= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>hmmm...that's not right. The reason for this is that the sampling operation is also dependent on the parameters $a$ and $b$, but this is done outside of tensorflow, so the gradient doesn't flow into the mc_mean variable.</p>
-<p>In order to deal with this, we can reparameterize the sampling procedure. If we do random draws from a $U[0,1]$, we can transform this into a draw from $U[a,b]$ by doing;</p>
-<p>$a + (b-a)x$</p>
-<p>where $x \sim U[0,1]$.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [5]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    
-    <span class="n">a</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">x</span>
-    <span class="n">mc_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">z</span><span class="o">+</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">grads</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">mc_mean</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
-    <span class="n">init_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [6]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
-<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_op</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [7]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
-<span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">X</span><span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">grads</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[[1.5035391, 1.4964648]]
-</pre>
-</div>
-</div>
+<h2 id="Uncertainty-Estimates-of-a-New-point">Uncertainty Estimates of a New point<a class="anchor-link" href="#Uncertainty-Estimates-of-a-New-point">¶</a></h2><p>Given some new sample, $x'$, we want the distribution of $y'$.</p>
+<p>$P(y' | x', \mathbf{X}, y) = \int P(y' | x', W_{1}, W_{2}, b)P(W_{1}, W_{2}, b | \mathbf{X}, y) dW_{1}dW_{2}db$</p>
 </div>
 </div>
 </div>
@@ -1245,15 +1128,21 @@ $= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Theory">Theory<a class="anchor-link" href="#Theory">¶</a></h2><p>The idea of reparameterisation was largely popularised by a paper released in 2014 <a href="https://arxiv.org/pdf/1312.6114.pdf">Autoencoding Variational Bayes, (Kingma, 2014)</a>. In this paper, they lay out 3 ways we can reparameterize probability distributions so samples have the appropriate gradient information.</p>
-<ol>
-<li><p>If the pdf we wish to sample from has a tractable inverse cdf, we can use this to transform a $U[0,1]$ sample to a sample from the target distribution, and the gradient will be properly accounted for.</p>
-</li>
-<li><p>The approach used for this post, and also for the Gaussian case, fall under the location-scale family. A large class of distributions have a 'standard' form, which can be transformed to be draws from the same distribution with a different scale and/or location.</p>
-</li>
-<li><p>Transformations and/or composition of draws from other distributions. For example, we can exponentiate random normal draws to get a log normal, and we can generate normal draws using the location-scale reparameterization.</p>
-</li>
-</ol>
+<p>If we make a simple approximation to the posterior, setting $q(w)$ to a 2 component gaussian mixture:</p>
+<p>$q(W) = \prod_{k=1}^{K} q(w_{k})$</p>
+<p>$q(w_{k}) = p \mathcal{N}(m_{k}, \sigma I) + (1-p) \mathcal{N}(0, \sigma I) $</p>
+<p>To sample a $w_{k}$ from this, we can use ancestral sampling.</p>
+<p>Consider a random bernoulli variable, $z$, with probability p. Sample $z$, and if $z=1$, sample from $\mathcal{N}(m_{k}, \sigma I)$, else sample from $\mathcal{N}(0, \sigma I) $.</p>
+<p>If we set $\sigma$ to tend to 0, this procedure tends towards:</p>
+<p>if $z=1$, our sample is $m_{k}$, else our sample is 0.</p>
+<p>This is exactly equal to:</p>
+<p>w<em>{k} = $m</em>{k}\cdot z$.</p>
+<p>Which is just applying dropout. So we can see that applying dropout with probability p is actually the limit case of sampling from a mixture of two gaussians, one with a mean at $m$, and the other a mean at 0.</p>
+<p>Now we know how to draw approximate samples from the posterior, we can approximately evaluate the uncertainty.</p>
+<p>$P(y' | x', \mathbf{X}, y) \approx \frac{1}{N} \sum_{n=1}^{N} P(y' | x', W_{1}^n, W_{2}^n, b^n)$</p>
+<p>Where</p>
+<p>$W^{n} = M \cdot Z^{n}$</p>
+<p>In practice, this corresponds to simply applying dropout at test time, and the computing the probability of each output under a normal distribution under multiple samples, as specified above, and averaging the results for each data point.</p>
 </div>
 </div>
 </div>
@@ -1262,9 +1151,9 @@ $= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Example-of-an-inverse-CDF">Example of an inverse CDF<a class="anchor-link" href="#Example-of-an-inverse-CDF">¶</a></h3><p>A simple example of the inverse method is the <a href="https://en.wikipedia.org/wiki/Rayleigh_distribution">Rayleigh distribution</a>. The CDF is given by;</p>
-<p>$C = 1 - exp{\frac{x^2}{2\sigma^{2}}}$</p>
-<p>We can invert this by;</p>
+<h2 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">¶</a></h2><p>For me the key insight is the result the link between dropout and a mixture of gaussians. Under this framework, training the network corresponds to learning the means of one of the mixture components. Of course, the real crux of the issue is the appropriateness of this posterior - the uncertainty estimates we generate are only as good as our approximation to the true posterior. Knowing if this choice is sufficient to give us useful output is of course a much harder problem.</p>
+<p>Empirically, we see that dropout improves generalisation of networks when appropriately applied.</p>
+<p>We could view this as saying that overfitting corresponds to learning parameters $\omega = [W_1, W_2, b]$ so that $P(Y | X, \omega)$ is high, but $P(Y| X)$ is not. If this is the case, applying dropout is analogous to optimising the model evidence as opposed to the likelihood, which is a well established bayesian method to avoid overfitting.</p>
 </div>
 </div>
 </div>
@@ -1273,24 +1162,7 @@ $= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$1-C = exp{\frac{x^2}{2\sigma^{2}}}$</p>
-<p>$ln (1-C) = \frac{x^2}{2\sigma^{2}}$</p>
-<p>$\sigma\sqrt{2ln (1-C) }= x$</p>
-<p>So we can generate a value for $C$ from a standard continuous uniform, and then transform it into a rayleigh distributed variable, with dependence on parameters properly encoded.</p>
-<p>This is valid for a wide range of distributions, and is an alternative when a location-scale type transform isn't possible.</p>
-<h2 id="Checking-the-status-of-distributions-in-Tensorflow">Checking the status of distributions in Tensorflow<a class="anchor-link" href="#Checking-the-status-of-distributions-in-Tensorflow">¶</a></h2><p>With 3rd party libraries, it is sometimes not obvious if gradient information is allowed across the sampling operation or not. Both behaviours are useful at some time, but not all distributions can be framed in a reparameterised way.</p>
-<p>Tensorflow has a flag FULLY_REPARAMETERIZED for gradient flowing distributions, and NOT_REPARAMETERIZED if it doesn't.</p>
-<p>We can check this under the Tensorflow graph by doing;</p>
-<p>distribution_instance.reparameterization_type == tf.contrib.distributions.FULLY_REPARAMETERIZED</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, we have demonstrated why it is important to ensure that gradients are properly defined over a sampling operation, which is particularly relevant to computing gradients of monte carlo estimates in automatic differentiation frameworks.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>This post was a short summary of the details of the paper by Gal et Al. I mainly focussed on the interpretation and the use of this approach to compute distributions over the output of a network. In the appendix to the original paper, the authors present a more complete set of results, such as how this applies to classification, and formulas for a variety of useful quantities like marginal likelihood etc, as well as expanding on some points I skimmed over here.</p>
 </div>
 </div>
 </div>
@@ -1330,15 +1202,15 @@ $= \frac{b+a}{2} + \frac{a(b-a)}{b-a}\frac{b(b-a)}{b-a} =   \frac{b+a}{2} + a + 
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-09-30T20:00:00+01:00">Sep 30, 2017</time>
+            <time pubdate="pubdate" datetime="2018-01-27T16:00:00+00:00">Jan 27, 2018</time>
             <h4>Category</h4>
             <a class="category-link" href="https://chrisorm.github.io/categories.html#posts-ref">posts</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
-                <li><a href="https://chrisorm.github.io/tags.html#python-ref">Python
-                    <span>11</span>
+                <li><a href="https://chrisorm.github.io/tags.html#dropout-ref">Dropout
+                    <span>1</span>
 </a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#reparameterisation-trick-ref">Reparameterisation Trick
+                <li><a href="https://chrisorm.github.io/tags.html#neural-networks-ref">Neural Networks
                     <span>1</span>
 </a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#variational-inference-ref">Variational Inference
