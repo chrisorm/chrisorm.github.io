@@ -992,7 +992,7 @@ h6:hover .anchor-link {
 &lt;p&gt;Write $\frac{p(x)}{q(x)}$ as $r$:&lt;/p&gt;
 &lt;p&gt;$E_{p(x)}[f(x)] = E_{q(x)}[r \cdot f(x)]$&lt;/p&gt;
 &lt;p&gt;If we say that each distribution has a normalisation constant, so: $q(x) = \frac{\tilde{q}(x)}{Z_{q}}$ and $p(x) = \frac{\tilde{p}(x)}{Z_{p}}$&lt;/p&gt;
-&lt;p&gt;$E_{p(x)}[f(x)] = \int p(x) f(x) dx = \int \frac{p(x)}{q(x)}q(x) f(x) dx = \frac{Z_{p}}{Z_{q}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx$&lt;/p&gt;
+&lt;p&gt;$E_{p(x)}[f(x)] = \int p(x) f(x) dx = \int \frac{p(x)}{q(x)}q(x) f(x) dx = \frac{Z_{q}}{Z_{p}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx$&lt;/p&gt;
 &lt;p&gt;Using the basic axiom of probability we know:&lt;/p&gt;
 &lt;p&gt;$Z_{p} = \int  \tilde{p}(x) dx$&lt;/p&gt;
 &lt;p&gt;And so&lt;/p&gt;
@@ -1000,7 +1000,7 @@ h6:hover .anchor-link {
 &lt;p&gt;We can approximate these integrals with sums over samples drawn from $q$.&lt;/p&gt;
 &lt;p&gt;$\frac{Z_{p}}{Z_{q}} \approx \frac{1}{L} \sum_{l=1}^{L} r_{l} $&lt;/p&gt;
 &lt;p&gt;where $r_{l} = \frac{\tilde{p}(x_{l})}{\tilde{q}(x_{l})}$, and $x_{l}$ is a sample drawn from $q$.&lt;/p&gt;
-&lt;p&gt;$E_{p(x)}[f(x)] = \frac{Z_{p}}{Z_{q}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx \approx \frac{Z_{p}}{Z_{q}} \sum_{l=1}^{L} r_{l} f(x_{l}) $&lt;/p&gt;
+&lt;p&gt;$E_{p(x)}[f(x)] = \frac{Z_{q}}{Z_{p}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx \approx \frac{Z_{q}}{Z_{p}} \sum_{l=1}^{L} r_{l} f(x_{l}) $&lt;/p&gt;
 &lt;p&gt;Putting this together we get:&lt;/p&gt;
 &lt;p&gt;$E_{p(x)}[f(x)] \approx \frac{\sum_{l=1}^{L} r_{l} \ f(x_{l})}{\sum_{l=1}^{L} r_{l}}$&lt;/p&gt;
 &lt;/div&gt;

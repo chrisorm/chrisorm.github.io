@@ -1063,7 +1063,7 @@ h6:hover .anchor-link {
 <p>Write $\frac{p(x)}{q(x)}$ as $r$:</p>
 <p>$E_{p(x)}[f(x)] = E_{q(x)}[r \cdot f(x)]$</p>
 <p>If we say that each distribution has a normalisation constant, so: $q(x) = \frac{\tilde{q}(x)}{Z_{q}}$ and $p(x) = \frac{\tilde{p}(x)}{Z_{p}}$</p>
-<p>$E_{p(x)}[f(x)] = \int p(x) f(x) dx = \int \frac{p(x)}{q(x)}q(x) f(x) dx = \frac{Z_{p}}{Z_{q}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx$</p>
+<p>$E_{p(x)}[f(x)] = \int p(x) f(x) dx = \int \frac{p(x)}{q(x)}q(x) f(x) dx = \frac{Z_{q}}{Z_{p}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx$</p>
 <p>Using the basic axiom of probability we know:</p>
 <p>$Z_{p} = \int  \tilde{p}(x) dx$</p>
 <p>And so</p>
@@ -1071,7 +1071,7 @@ h6:hover .anchor-link {
 <p>We can approximate these integrals with sums over samples drawn from $q$.</p>
 <p>$\frac{Z_{p}}{Z_{q}} \approx \frac{1}{L} \sum_{l=1}^{L} r_{l} $</p>
 <p>where $r_{l} = \frac{\tilde{p}(x_{l})}{\tilde{q}(x_{l})}$, and $x_{l}$ is a sample drawn from $q$.</p>
-<p>$E_{p(x)}[f(x)] = \frac{Z_{p}}{Z_{q}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx \approx \frac{Z_{p}}{Z_{q}} \sum_{l=1}^{L} r_{l} f(x_{l}) $</p>
+<p>$E_{p(x)}[f(x)] = \frac{Z_{q}}{Z_{p}}\int \frac{\tilde{p}(x)}{\tilde{q}(x)}q(x) f(x) dx \approx \frac{Z_{q}}{Z_{p}} \sum_{l=1}^{L} r_{l} f(x_{l}) $</p>
 <p>Putting this together we get:</p>
 <p>$E_{p(x)}[f(x)] \approx \frac{\sum_{l=1}^{L} r_{l} \ f(x_{l})}{\sum_{l=1}^{L} r_{l}}$</p>
 </div>
