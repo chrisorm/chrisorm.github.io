@@ -11,18 +11,18 @@
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content="Tensorflow, Python, RNN, NLP, Text Classification, posts, " />
+<meta name="keywords" content="Variational Inference, VI, Python, posts, " />
 
-<meta property="og:title" content="RNNs for Text classification in Tensorflow (#LTM London) "/>
-<meta property="og:url" content="https://chrisorm.github.io/DeepNLPRepo.html" />
-<meta property="og:description" content="Tensorflow for Text Classification¶Earlier this year, I gave a talk at London Tensorflow Meetup, giving an interactive tutorial on how to do text classification using Tensorflow. This is just a short post going over the resources I created as part of that talk. The resources can be found on my github." />
+<meta property="og:title" content="Inference Generation Tradeoffs in VAEs "/>
+<meta property="og:url" content="https://chrisorm.github.io/InfGenTradeoff.html" />
+<meta property="og:description" content="Introduction¶This post covers the recent paper Distribution Matching in Variational Inference by Mihaela Rosca, Balaji Lakshminarayanan and Shakir Mohamed. It covers a variety of topics in deep generative modelling, and this post is my own take on some parts of it, so I also recommend the original paper! Many of the ideas in this post have been seen before, for example see Ferenc" />
 <meta property="og:site_name" content="Infinite n♾rm" />
 <meta property="og:article:author" content="Chris Orm" />
-<meta property="og:article:published_time" content="2017-10-15T20:00:00+01:00" />
-<meta name="twitter:title" content="RNNs for Text classification in Tensorflow (#LTM London) ">
-<meta name="twitter:description" content="Tensorflow for Text Classification¶Earlier this year, I gave a talk at London Tensorflow Meetup, giving an interactive tutorial on how to do text classification using Tensorflow. This is just a short post going over the resources I created as part of that talk. The resources can be found on my github.">
+<meta property="og:article:published_time" content="2017-12-09T17:00:00+00:00" />
+<meta name="twitter:title" content="Inference Generation Tradeoffs in VAEs ">
+<meta name="twitter:description" content="Introduction¶This post covers the recent paper Distribution Matching in Variational Inference by Mihaela Rosca, Balaji Lakshminarayanan and Shakir Mohamed. It covers a variety of topics in deep generative modelling, and this post is my own take on some parts of it, so I also recommend the original paper! Many of the ideas in this post have been seen before, for example see Ferenc">
 
-        <title>RNNs for Text classification in Tensorflow (#LTM London)  · Infinite n♾rm
+        <title>Inference Generation Tradeoffs in VAEs  · Infinite n♾rm
 </title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 <article>
 <div class="row-fluid">
     <header class="page-header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/DeepNLPRepo.html"> RNNs for Text classification in Tensorflow (#LTM London)  </a></h1>
+    <h1><a href="https://chrisorm.github.io/InfGenTradeoff.html"> Inference Generation Tradeoffs in VAEs  </a></h1>
     </header>
 </div>
 
@@ -1047,7 +1047,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Tensorflow-for-Text-Classification">Tensorflow for Text Classification<a class="anchor-link" href="#Tensorflow-for-Text-Classification">¶</a></h1><p>Earlier this year, I gave a talk at London Tensorflow Meetup, giving an interactive tutorial on how to do text classification using Tensorflow. This is just a short post going over the resources I created as part of that talk. The resources can be found <a href="https://github.com/chrisorm/LTM-July-2017-Talk">on my github.</a>.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>This post covers the recent paper <a href="https://arxiv.org/abs/1802.06847">Distribution Matching in Variational Inference</a> by Mihaela Rosca, Balaji Lakshminarayanan and Shakir Mohamed. It covers a variety of topics in deep generative modelling, and this post is my own take on some parts of it, so I also recommend the original paper! Many of the ideas in this post have been seen before, for example see <a href="http://www.inference.vc/choice-of-recognition-models-in-vaes-a-regularisation-view/">Ferenc</a>'s post on a similar topic, which lists a lot of related resources.</p>
 </div>
 </div>
 </div>
@@ -1056,8 +1056,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">¶</a></h2><p>For those wanting to learn to apply neural networks to text classification, finding practical resources can be somewhat challenging. The excellent, <a href="http://web.stanford.edu/class/cs224n/syllabus.html">CS224n</a> from Stanford has some excellent theoretical resources. However, if you don't go to stanford, access to materials to do this in practice can be somewhat lacking!</p>
-<p>All the exercises below have a semi-complete set of notebooks for you to work on, and have full solutions too, in case you want something to compare against or something is unclear. I suggest you invest the time to get a minimal working example before you look at my approach - it will pay dividends!</p>
+<h2 id="Inference-Generation-Tradeoff-in-VAEs">Inference Generation Tradeoff in VAEs<a class="anchor-link" href="#Inference-Generation-Tradeoff-in-VAEs">¶</a></h2><p>In VAEs, we try to maximise the ELBO, which serves as a lower bound on the marginal likelihood. We simultaneously learn the parameters, $\theta$, of the 'true' distribution, $p$, and the parameters, $\phi$ of the approximation $q$.</p>
+<p>Recall the ELBO;</p>
+<p>$log \ p_{\theta}(x) \geq E_{q_{\phi}}[log \ p_{\theta}(x \mid z)] - KL[q_{\phi}(z \mid x) || p(z)]$</p>
 </div>
 </div>
 </div>
@@ -1066,55 +1067,10 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Suggested-Syllabus">Suggested Syllabus<a class="anchor-link" href="#Suggested-Syllabus">¶</a></h2><h3 id="Lesson-1">Lesson 1<a class="anchor-link" href="#Lesson-1">¶</a></h3><ul>
-<li>Lecture 8 of CS224n <a href="http://web.stanford.edu/class/cs224n/lectures/cs224n-2017-lecture8.pdf">Slides</a></li>
-<li>First part of WildML blog on RNNs <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">Blog</a></li>
-<li>WildML blog of RNNs in Tensorflow. <a href="http://www.wildml.com/2016/08/rnns-in-tensorflow-a-practical-guide-and-undocumented-features/">Blog</a> - Some features/locations may have changed between tensorflow versions.</li>
-<li>Read the documentation about dynamic_rnn, and cell types, on tensorflow website. <a href="https://www.tensorflow.org/api_docs/python/tf/nn/dynamic_rnn">dynamic_rnn</a> <a href="http://web.stanford.edu/class/cs224n/lectures/cs224n-2017-lecture9.pdf">BasicRNNCell</a></li>
-</ul>
-<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
-<li><strong>BasicRNN</strong></li>
-</ul>
-<h3 id="Lesson-2">Lesson 2<a class="anchor-link" href="#Lesson-2">¶</a></h3><ul>
-<li>Lecture 9 CS224n <a href="http://web.stanford.edu/class/cs224n/lectures/cs224n-2017-lecture9.pdf">Slides</a></li>
-<li>Colah's Blog on LSTMs <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">Blog</a></li>
-<li>Read the documentation about GRUs and LSTMs, on tensorflow website. <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LSTMCell">LSTM</a> <a href="https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/GRUCell">GRU</a></li>
-</ul>
-<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
-<li><strong>GRURNN</strong></li>
-<li><strong>LSTMRNN</strong></li>
-</ul>
-<h3 id="Lesson-3">Lesson 3<a class="anchor-link" href="#Lesson-3">¶</a></h3><ul>
-<li>Later part of WildML blog on RNNs <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">Blog</a></li>
-<li>Oxford Deep NLP course <a href="https://github.com/oxford-cs-deepnlp-2017/lectures/blob/master/Lecture%205%20-%20Text%20Classification.pdf">Lecture 5</a></li>
-<li>Read tensorflow documentation about <a href="https://www.tensorflow.org/api_docs/python/tf/nn/bidirectional_dynamic_rnn">bidirectional_dynamic_rnn</a>
-#### Exercises</li>
-<li><strong>BasicBidirectionalRNN</strong> </li>
-<li>Modify this code to run bidirectional LSTM and GRU networks.</li>
-</ul>
-<h3 id="Lesson">Lesson<a class="anchor-link" href="#Lesson">¶</a></h3><ul>
-<li>Oxford Deep NLP Conditional Language Modelling with attention <a href="https://github.com/oxford-cs-deepnlp-2017/lectures/blob/master/Lecture%208%20-%20Conditional%20Language%20Modeling%20with%20Attention.pdf">Slides</a></li>
-</ul>
-<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
-<li><strong>BasicBidirectionalRNN-MeanPooling</strong></li>
-<li><strong>BasicBidirectionalRNN-MaxPooling</strong> </li>
-<li><strong>GRUBidirectionalRNN-MeanPooling</strong></li>
-<li><strong>GRUBidirectionalRNN-MaxPooling</strong></li>
-</ul>
-<h3 id="Lesson-5">Lesson 5<a class="anchor-link" href="#Lesson-5">¶</a></h3><ul>
-<li>Oxford Deep NLP Conditional Language Modelling with attention <a href="https://github.com/oxford-cs-deepnlp-2017/lectures/blob/master/Lecture%208%20-%20Conditional%20Language%20Modeling%20with%20Attention.pdf">Slides</a></li>
-<li>Wild ML Post on attention <a href="http://www.wildml.com/2016/01/attention-and-memory-in-deep-learning-and-nlp/">Blog</a></li>
-<li>Hierchical Attention Networks - Zhang, 2015 <a href="https://www.cs.cmu.edu/~diyiy/docs/naacl16.pdf">Paper</a>
-#### Exercises</li>
-<li><strong>BasicRNNAttention</strong></li>
-<li>Modify this code to run attention over an LSTM network.</li>
-</ul>
-<h3 id="Lesson-6+">Lesson 6+<a class="anchor-link" href="#Lesson-6+">¶</a></h3><p>Apply these techniques to other datasets, some examples:</p>
-<h4 id="Exercises">Exercises<a class="anchor-link" href="#Exercises">¶</a></h4><ul>
-<li>Yelp dataset <a href="https://www.yelp.co.uk/dataset_challenge">Site</a></li>
-<li>Hierichal text classification <a href="https://www.kaggle.com/c/lshtc">Kaggle</a></li>
-<li>Reuters Dataset <a href="http://www.daviddlewis.com/resources/testcollections/reuters21578/">Site</a></li>
-</ul>
+<p>As the authors of the paper say, the first term of the ELBO is an approximation of the log-likelihood of the sample. To maximise this term, our network needs to learn a $p$ and $q$ such that $q_{\phi}(z \mid x)$ is sufficiently different to $q_{\phi}(z \mid x^{*})$, where $x$ and $x^{*}$ are distinct samples. If this isn't true, the $z$ variables will not encode much information about our sample. In addition, the network should learn $p$ such that the sample $x$ has high likelihood under $p$.</p>
+<p>To summarise this point, the first term is large when $q$ encodes a large amount of information about the sample, and also when $p$ assigns high mass to the sample when conditioned on $z$.</p>
+<p>The second term, however, needs to be minimised in order to maximise the ELBO. This penalizes the distance between the prior and the approximate posterior.</p>
+<p>So the inference generation trade off comes from these two terms - the first strives to encode lots of information into $q$, whilst the KLD seeks to make $q$ unconditional.</p>
 </div>
 </div>
 </div>
@@ -1123,7 +1079,149 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>This is only a short set of notebooks, and of course their are many other approachs and techniques that one could use. However, if you invest the time and work through these, you will be incredibly well placed to tackle current research papers in the area!</p>
+<h3 id="Sampling-Vs-Reconstructions">Sampling Vs Reconstructions<a class="anchor-link" href="#Sampling-Vs-Reconstructions">¶</a></h3><p>With VAEs, we train the network by taking a sample, passing it through $q$ to get a latent variable, then reconstructing by passing the latent sample through $p$. Gradients are then taken based on the ELBO.</p>
+<p>So, during training, the reconstructor $p$, only ever sees zs that are sampled from q. However, when we sample, we sample from our prior $p(z)$. If the prior and approximate posterior are very close this is probably fine. Based on this assumption, we can generate both good samples and good reconstructions.</p>
+<p>However, this paper shows that this is never true - in almost every case, the likelihood term dominates, and the KLD is always non zero, often in a substantial way. This means we can have good reconstructions but poor samples - which is likely a reason VAEs and extensions have always struggled to compete with GANs for the quality of the generated samples.</p>
+<p>This is the crux of the Inference-Generation tradeoff, by making the likelihood term large, the network is unable to make the approximate posterior be reasonably similar to the prior, and so when we sample using the prior, we probably wont get the same quality as we do when we reconstruct.</p>
+<p>This can be seen as a generalization problem - the VAE can do just fine when we reconstruct values from $q$ but don't do anywhere near as well when we sample from $p$. What we want is:</p>
+<p>$  \int p_{\theta}(x | z)q_{\phi}(z | x^{*})p(x^{*}) dx^{*} = p_{\theta}(x | z)p(z)$</p>
+<p>In words, we can say we want the 'average' over our true samples to be equivalent under either the prior or approximate posterior. Basically, every point under the distribution of the prior should be a latent sample corresponding to some point on the data manifold.</p>
+<p>$ p_{\theta}(x | z) \int q_{\phi}(z | x^{*})p(x^{*}) dx^{*} = p_{\theta}(x | z)p(z)$</p>
+<p>$ p_{\theta}(x | z) q_{\phi}(z) = p_{\theta}(x | z)p(z)$</p>
+<p>where $p(x^{*})$ is the true data distribution.</p>
+<p>This obviously implies we want $q_{\phi}(z)$, not the conditional distribution, to be close to the prior.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="An-example-of-when-this-is-a-problem">An example of when this is a problem<a class="anchor-link" href="#An-example-of-when-this-is-a-problem">¶</a></h2><p>Last year, Rui Shu published a blog post called <a href="http://ruishu.io/2017/01/14/one-bit/">Autoencoding a single bit</a>. Rui proposes a simple problem where the VAE takes either 1 or 0 as input, and has a 1D latent dimension.</p>
+<p>Here I replicate the experiment, using the exact same code from my previous post on VAEs (some code is omitted for clarity, you can checkout the previous post and make relevant changes easily).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">representation_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">input_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">n_samples_per_batch</span> <span class="o">=</span> <span class="n">n_samples</span><span class="o">//</span><span class="n">input_size</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_samples</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[ 0.]
+ [ 1.]]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">()</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
+    <span class="n">train</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Log Likelihood:  0.6550791263580322 KLD:  0.0017769336700439453
+Log Likelihood:  0.6910373568534851 KLD:  0.0015850365161895752
+Log Likelihood:  0.7176690697669983 KLD:  0.0015635490417480469
+Log Likelihood:  0.7264741659164429 KLD:  0.0016528218984603882
+Log Likelihood:  0.6751463413238525 KLD:  0.002006620168685913
+Log Likelihood:  0.7467774748802185 KLD:  0.0020923614501953125
+Log Likelihood:  0.7360091209411621 KLD:  0.002273961901664734
+Log Likelihood:  0.6239475607872009 KLD:  0.0022807419300079346
+Log Likelihood:  0.765009880065918 KLD:  0.0022680461406707764
+Log Likelihood:  0.6847072243690491 KLD:  0.0022851526737213135
+Log Likelihood:  0.6533515453338623 KLD:  0.002242550253868103
+Log Likelihood:  0.6589192748069763 KLD:  0.0022373944520950317
+Log Likelihood:  0.7541109919548035 KLD:  0.002177625894546509
+Log Likelihood:  0.7589014768600464 KLD:  0.002167060971260071
+Log Likelihood:  0.700297474861145 KLD:  0.0021290183067321777
+Log Likelihood:  0.6640893220901489 KLD:  0.0020879507064819336
+Log Likelihood:  0.6698483824729919 KLD:  0.0020499080419540405
+Log Likelihood:  0.6948075890541077 KLD:  0.002067163586616516
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As this shows, the KL term dominates in this case. This means the optimal ELBO is found by moving q to be close to the prior, and once we do this, we essentially force independence, so $p(x | z) = p(x)$. Rui's original post explains this in much more detail, so check it out.</p>
+<p>The key point here is that this is a scenario where the VAE strongly favours generation over inference - because the KL dominates, whether we generate samples from the prior or approximate posterior, they will be roughly the same quality.</p>
+<p>However, we sacrifice on the inference - we have learnt a really poor model for $p(x \mid z)$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-problem">The problem<a class="anchor-link" href="#The-problem">¶</a></h2><p>The real problem lies within the KL divergence. In most VAE formulations, the prior is used to shape the latent variable space - have a look at a few of my previous posts to see this in action. However, this property is actually about the marginal distribution of $q$.</p>
+<p>We would really like the overall shape to be given by the prior, e.g. the unit circle, and that this be 'divided up' so that conditioning on different samples gives some part of this space.</p>
+<p>Because the ELBO requires us to minimise $KL[q(z|x) || p(z)]$, we don't do this. What we really want is to minimise $KL[q(z)|| p(z)]$. However, we don't have easy access to the marginal on $q$, so the ELBO uses the conditional as a way to approximately achieve this. This is the cause of all our problems!</p>
+<p>Unfortunately, knowing the problem doesn't help much - computing the marginal is really expensive. We would also need to compute a bound involving the marginal. The <a href="http://approximateinference.org/accepted/HoffmanJohnson2016.pdf">ELBO Surgery</a> paper shows:</p>
+<p>$E_{p(x^{*})}[KL[q_{\phi}(z|x)||p(z)]] \geq KL[q_{\phi}(z)||p(z)]$</p>
+<p>So if we just change the KL term in the ELBO to be in terms of the marginal q, we may not have a lower bound anymore.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>This post has been a quick summary of the recent paper on the Generation Inference problem within VAEs. This has also been noted before in many places, and in general it should be no surprise - if we pick a very simple prior, this will be constraining.</p>
 </div>
 </div>
 </div>
@@ -1163,25 +1261,19 @@ h6:hover .anchor-link {
         <section>
         <div class="span2" style="float:right;font-size:0.9em;">
             <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-10-15T20:00:00+01:00">Oct 15, 2017</time>
+            <time pubdate="pubdate" datetime="2017-12-09T17:00:00+00:00">Dec 9, 2017</time>
             <h4>Category</h4>
             <a class="category-link" href="https://chrisorm.github.io/categories.html#posts-ref">posts</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
-                <li><a href="https://chrisorm.github.io/tags.html#nlp-ref">NLP
-                    <span>1</span>
-</a></li>
                 <li><a href="https://chrisorm.github.io/tags.html#python-ref">Python
                     <span>13</span>
 </a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#rnn-ref">RNN
-                    <span>1</span>
+                <li><a href="https://chrisorm.github.io/tags.html#variational-inference-ref">Variational Inference
+                    <span>15</span>
 </a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#tensorflow-ref">Tensorflow
-                    <span>2</span>
-</a></li>
-                <li><a href="https://chrisorm.github.io/tags.html#text-classification-ref">Text Classification
-                    <span>1</span>
+                <li><a href="https://chrisorm.github.io/tags.html#vi-ref">VI
+                    <span>15</span>
 </a></li>
             </ul>
 <h4>Contact</h4>
