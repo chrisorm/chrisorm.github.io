@@ -1057,7 +1057,7 @@ h6:hover .anchor-link {
 <li>This sample is then fed back into the 'decoder network' which outputs the mean and variance for $p(x \mid z)$.</li>
 <li>Samples of the reconstructed datapoints are generated (although often it's just the mean).</li>
 </ul>
-<p><img alt="VAE" src="VAE.png" /></p>
+<p><img alt="VAE" src="vae.png" /></p>
 <h3 id="Comparison-with-Neural-Processes">Comparison with Neural Processes<a class="anchor-link" href="#Comparison-with-Neural-Processes">¶</a></h3><p>VAEs encode a single data point, into a latent representation, and the reconstruct that data point from its latent variable. This is fine if we are learning latent representations for images, but if we want to do this for functions, we need an additional step.</p>
 <p>A function graph (e.g. (X, sin(X)), is defined over <strong>many</strong> sample points. Consider embedding the following function:</p>
 </div>
@@ -1102,7 +1102,7 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What we think of as our 'function space' is actually defined by the collection of x,y co-ordinates of all these data points. If we proceed niavely, we can just feed this into a VAE, as it wouldn't capture the correct thing. So what we do is introduce an intermediate step, of production a 'function representation', which is a single representation for all the data points. If you have ever done any NLP, it's the same concept as a sentence or document embedding. Hopefully the equivalence is clear between the below diagram and the previous one for a vanilla VAE.</p>
-<p><img alt="NP" src="NP.png" /></p>
+<p><img alt="NP" src="np.png" /></p>
 <p>So as the diagrams hopefully illustrate, the two main differences are that we have an additional 'preprocessing' step where we turn multiple points from a function into a single representation, and when we 'reconstruct' we use both the latent representation and the $X^{*}$ we want to predict at.</p>
 </div>
 </div>
