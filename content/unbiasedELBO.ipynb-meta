@@ -1,0 +1,8 @@
+Title: Variational Inference - Monte Carlo Approximation of the ELBO is unbiased.
+Slug: VI-ELBO-MC-approx
+Date: 2017-10-15 21:00
+Category: posts
+Tags: Variational Inference, VI
+author: Chris Orm
+Summary: Proving the unbiased nature of the Monte Carlo Approximation of the ELBO. 
+

@@ -1,0 +1,8 @@
+Title: Variational Inference - Monte Carlo ELBO
+Slug: VI-MC
+Date: 2017-09-30 12:00
+Category: posts
+Tags: Variational Inference, VI, Python, Tensorflow
+author: Chris Orm
+Summary: Using the ELBO in practice, and an introduction to a few of the issues of Monte Carlo estimation for the ELBO.
+

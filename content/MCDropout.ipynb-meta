@@ -1,0 +1,8 @@
+Title: Dropout As a Bayesian Method
+Slug: MCDropout
+Date: 2018-01-27 16:00
+Category: posts
+Tags: Dropout, Variational Inference, VI, Neural Networks
+author: Chris Orm
+Summary: A summary of Yarin Gals paper on the MCDropout.
+

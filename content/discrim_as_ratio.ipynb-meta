@@ -1,0 +1,8 @@
+Title: Learning with Generative Models - Discriminators as approximations of ratios of distributions
+Slug: GM-Disc-as-ratios
+Date: 2017-12-09 17:00
+Category: posts
+Tags: Variational Inference, VI, Python, Scikit-Learn
+author: Chris Orm
+Summary: Discriminators as approximations of ratios of distributions
+

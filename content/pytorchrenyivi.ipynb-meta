@@ -1,0 +1,8 @@
+Title: Renyi Alpha Variational Inference - Part 3
+Slug: VI-RVI-3
+Date: 2017-11-26 15:36
+Category: posts
+Tags: Variational Inference, VI, Python, PyTorch, Alpha Divergence
+author: Chris Orm
+Summary: Using the Renyi Divergence in practice for doing VI.
+

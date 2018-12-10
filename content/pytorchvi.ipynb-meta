@@ -1,0 +1,8 @@
+Title: Variational Inference - Monte Carlo ELBO in PyTorch
+Slug: VI-MC-PYT
+Date: 2017-10-24 21:00
+Category: posts
+Tags: Variational Inference, VI, Python, PyTorch
+author: Chris Orm
+Summary: Using the ELBO in practice, and an introduction to a few of the issues of Monte Carlo estimation for the ELBO.
+

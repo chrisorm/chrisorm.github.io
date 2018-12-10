@@ -1,0 +1,8 @@
+Title: Variational Inference - Deriving the ELBO
+Slug: VI-ELBO
+Date: 2017-09-28 20:00
+Category: posts
+Tags: Variational Inference, VI, ELBO
+author: Chris Orm
+Summary: The theory of the ELBO, with intuition as to what role each part plays.
+
