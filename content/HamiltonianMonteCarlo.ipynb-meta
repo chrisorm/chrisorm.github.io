@@ -1,0 +1,8 @@
+Title: Hamiltonian Monte Carlo
+Slug: HMC
+Date: 2018-12-09 19:00
+Category: posts
+Tags: Python, Autograd, Sampling, HMC
+author: Chris Orm
+Summary: Using autograd to explore HMC.
+
