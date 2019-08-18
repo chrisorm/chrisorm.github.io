@@ -1239,12 +1239,6 @@ Stochastic Calculus for Finance (Parts 1 & 2)- Shreve <br></p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Fokker-Planck-Equation">Fokker-Planck Equation<a class="anchor-link" href="#Fokker-Planck-Equation">¶</a></h1><p>For a stochastic process the Fokker-Planck equation is a PDE which quantifies the evolution of the probability the process is in state x at time t. If the process is as given above;</p>
 <p>$\frac{dp(x,t)}{dt} = -\frac{d(\mu(x,t) p(x,t))}{dx} +\frac{1}{2} \frac{d^{2}(\sigma^{2}(x,t) p(x,t))}{dx^{2}}$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>The stationary distribution of the SDE is given when $\frac{dp(x,t)}{dt}=0$. Hence the name, stationary (also, steady state) - as time evolves, the probabilites do not change.</p>
 </div>
 </div>
@@ -1255,12 +1249,6 @@ Stochastic Calculus for Finance (Parts 1 & 2)- Shreve <br></p>
 <h3 id="An-example">An example<a class="anchor-link" href="#An-example">¶</a></h3><p>Let's consider $\mu = -x_{t}$, $\sigma = \sqrt{2}$.</p>
 <p>We get the ODE:</p>
 <p>$ 0= -\frac{d(-x_{t}p(x,t))}{dx} + \frac{d^{2} p(x,t))}{dx^{2}}$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>$\frac{d p(x,t))}{dx} = -x_{t}p(x,t))  +c $</p>
 <p>This is a simple ODE, and actually if you have ever integrated the normal distribution, you have probably used this in reverse. If assume a form for p as :</p>
 <p>$p = ke^{\frac{-x^{2}}{2}}$</p>
@@ -1286,34 +1274,10 @@ Stochastic Calculus for Finance (Parts 1 & 2)- Shreve <br></p>
 <p>If we follow the same line of reasoning as before, we get to the general formula;</p>
 <p>$\frac{d D(x) p(x))}{dx} = \mu(x) p(x)$</p>
 <p>$p(x)\frac{d D(x) )}{dx} + D(x)\frac{d  p(x))}{dx} = \mu(x) p(x)$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>$\frac{d D(x) )}{dx} + D(x) [\frac{1}{p(x)}\frac{d  p(x))}{dx}] = \mu(x)$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can notice that the term in the square is actually the derivative of the log probability, so we can write this as:</p>
 <p>$\frac{d D(x) )}{dx} + D(x) \frac{d \ (ln \ p(x))}{dx} = \mu(x)$</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>So, we can pick a form for $D(x, t)$ and find the appropriate drift coefficient so that the stochastic process has a stationary distribution of the desired distribution!</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p>We can repeat our previous example, but by using $ln \ p(x) = \frac{-x^{2}}{2}$ and $D(x)=1$. As such we find the coefficient we need is (as expected) $-x$.</p>
 </div>
 </div>
