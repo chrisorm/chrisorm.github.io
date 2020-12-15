@@ -144,7 +144,7 @@ article p a:hover, article ol a:hover, article div.article-content ul:not(.artic
 
 .article-content {
     text-align:justify;
-    max-width:50em;
+    max-width:150em;
     font-family: "PT Serif", Georgia, Times, "Times New Roman", serif;
 }
 
