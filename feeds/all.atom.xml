@@ -9,7 +9,7 @@
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Intro"&gt;Intro&lt;a class="anchor-link" href="#Intro"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;The idea of this post is to use the advent of code problems as a jumping off point for some ML theory. Unfortunately, these take a lot longer to produce that it does to solve the problems!&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+&lt;h1 id="Intro"&gt;Intro&lt;a class="anchor-link" href="#Intro"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;The idea of this post is to use the advent of code problems as a jumping off point for some ML theory. Unfortunately, these take a lot longer to produce that it does to solve the problems in the easy way!&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -1130,8 +1130,10 @@ h6:hover .anchor-link {
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Intro"&gt;Intro&lt;a class="anchor-link" href="#Intro"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;The idea of this post is to use the advent of code problems as a jumping off point for some ML theory. Unfortunately, these take a lot longer to produce that it does to solve the problems!&lt;/p&gt;
+&lt;h1 id="Intro"&gt;Intro&lt;a class="anchor-link" href="#Intro"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;The idea of this post is to use the advent of code problems as a jumping off point for some ML theory. Unfortunately, these take a lot longer to produce that it does to solve the problems in the easy way!&lt;/p&gt;
+&lt;p&gt;The key point I want to demonstrate here is just how far we have to go on differentiable sparsity.&lt;/p&gt;
 &lt;h2 id="The-Problem"&gt;The Problem&lt;a class="anchor-link" href="#The-Problem"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The crux of the problem is to find two numbers in a list that sum to 2020.&lt;/p&gt;
+&lt;p&gt;You can see the full description here; &lt;a href="https://adventofcode.com/2020/day/1"&gt;https://adventofcode.com/2020/day/1&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1216,23 +1218,32 @@ h6:hover .anchor-link {
 &lt;p&gt;Well, that was no fun. There's not even a deep learning framework involved! What use is this?&lt;/p&gt;
 &lt;h2 id="The-problem-as-a-regression"&gt;The problem as a regression&lt;a class="anchor-link" href="#The-problem-as-a-regression"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We can see that actually, this is just a good old regression problem. Find w, such that $Xw = y$ with $X$ our input data, $y$ 2020, with a regularisation constriant.&lt;/p&gt;
 &lt;p&gt;So what we want is a solution $w$ that has 2 non-zero entries. This is the l0-norm.&lt;/p&gt;
+&lt;p&gt;Ok, sure. This is not the best way to solve this problem. But it has several interesting features:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It has an exact solution&lt;/li&gt;
+&lt;li&gt;It is small enough that a niave solution runs in trivial time.&lt;/li&gt;
+&lt;li&gt;We don't even have to learn any weights - just the Indicator if a variable should be included or not.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Surely, in 2020, deep learning has got this?&lt;/p&gt;
 &lt;h3 id="Problem-with-L0"&gt;Problem with L0&lt;a class="anchor-link" href="#Problem-with-L0"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We can't just slap an L0 norm as a regularizer and start training, as L0 norm is non-differentiable. This is actually the start of a quite deep rabit hole into sparse models.&lt;/p&gt;
 &lt;p&gt;This problem is closely related to sparsification - so this is where we start.&lt;/p&gt;
 &lt;p&gt;What we need is a solution to the problem with $||w||_{0}=2$&lt;/p&gt;
 &lt;h3 id="L1-relaxation"&gt;L1 relaxation&lt;a class="anchor-link" href="#L1-relaxation"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The L1 is the convex envelope of the L0. Essentially, it is convex (and piecewise differentiable) and has the same minimum point. Unfortunately, this is not really appropriate here. The relaxation is $||w||_{1} = 2$. But $[0.5, 1, 0.5]$ and $[1,1,0]$ have the same norm (and therefore are considered equally optimal).&lt;/p&gt;
-&lt;h3 id="An-approximation-to-the-L0"&gt;An approximation to the L0&lt;a class="anchor-link" href="#An-approximation-to-the-L0"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We can experiment with some cutting edge theory! The paper I'm going to look at is '&lt;strong&gt;Learning Sparse Neural Networks through $L_0$ Regularization&lt;/strong&gt;'&lt;/p&gt;
+&lt;p&gt;There are lots of other relaxations that we won't go into here.&lt;/p&gt;
+&lt;h3 id="An-approximation-to-the-L0"&gt;An approximation to the L0&lt;a class="anchor-link" href="#An-approximation-to-the-L0"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We can experiment with some cutting edge theory! The paper I'm going to look at is '&lt;strong&gt;Learning Sparse Neural Networks through $L_0$ Regularization&lt;/strong&gt;': &lt;a href="https://arxiv.org/abs/1712.01312"&gt;https://arxiv.org/abs/1712.01312&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;I won't labour the point, I suggest going through the paper. The essential idea is you have some distribution that generates random variables between 0 and 1.&lt;/p&gt;
+&lt;p&gt;I won't labour the point, I suggest going through the paper. The essential idea is you have some distribution that generates random variables between 0 and 1. You then compute an expectation of your loss function under these draws. If the R.V. was bernoulli, you're trying to learn the parameter p, so that it is ideally 1 for the important features. If you learn parameters that are sufficiently close to 1 or 0, the expectation of your loss function will be the loss under the chosen features. You place a penalty on the parameter values to make sure they obey sensible constraints, and then minimise the whole thing.&lt;/p&gt;
 &lt;p&gt;If $x$ is $nx1$, you have $n$ parameters to learn, essentially each $x_{i}$ has an associated parameter $\pi_{i}$. If we generate bernoulli random variables $\pi_{i} = P(z_{i}=1)$. We want these probabilities to be 1 for the variables we care about and 0 otherwise, so we have a regularizer:&lt;/p&gt;
 &lt;p&gt;$\mathcal{L}_{r} = (\sum_{i} \pi_{i} -2)^{2}$&lt;/p&gt;
 &lt;p&gt;And a likelihood loss:&lt;/p&gt;
 &lt;p&gt;$\mathcal{L}_{l} = E_{q(\mathbf{z}|\mathbf{\pi})}[(xz - 2020)^{2}]$&lt;/p&gt;
 &lt;p&gt;The problem is that generating bernoulli variables in a differentiable way is not easy - so we need to use different ways to estimate the gradient. The paper suggests an alternative: Use the Concrete distribution. Again I won't go over that here in the interest of brevity, but check out the paper &lt;a href="https://arxiv.org/abs/1611.00712"&gt;https://arxiv.org/abs/1611.00712&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;The important thing to note is we generate random variables and compute an expectation, whilst optimising over the distribution parameters - this makes the objective nice and smooth and can use the reparam trick to differentiate through sampling if we need to.&lt;/p&gt;
 &lt;p&gt;And so, we have our objective, and we'll give it a go on a smaller problem.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1467,7 +1478,9 @@ h6:hover .anchor-link {
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;This one doesn't work so well! I toyed around a lot with lots of training parameters. It seems there's two problems - both the size of the space to search and the space of the potential solutions - in the toy example theres only two main feasible solutions, but in the real example theres lots more "close" solutions.&lt;/p&gt;
+&lt;p&gt;This one doesn't work so well! I toyed around a lot with lots of training parameters. It seems there's two problems - both the size of the space to search and the space of the potential solutions - in the toy example theres only two main feasible solutions, but in the real example theres lots more "close" solutions. It was also a massive pain - you have to care about the regularization hyperparam and its not clear when its converged because the loss moves in a step like fashion as it moves the placement of the 1s.&lt;/p&gt;
+&lt;p&gt;If you didn't know there was 0 loss solution, I don't know how you'd decide this was finished training&lt;/p&gt;
+&lt;h4 id="In-true-deep-learning-style,-with-got-something-close-to-the-right-answer,-with-too-many-components."&gt;In true deep learning style, with got something close to the right answer, with too many components.&lt;a class="anchor-link" href="#In-true-deep-learning-style,-with-got-something-close-to-the-right-answer,-with-too-many-components."&gt;¶&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Hopefully this is a bit thought provoking! Is this the best we have for proper l0 sparsity with deep learning?!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

@@ -21,8 +21,8 @@
         <link rel="apple-touch-icon" sizes="144x144" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
         <link rel="icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
         <link href="https://chrisorm.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - Full Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f927f127250>] Category Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f927f54e250>, <pelican.contents.Article object at 0x7f927f53e210>, <pelican.contents.Article object at 0x7f927ecc6650>, <pelican.contents.Article object at 0x7f927f300bd0>, <pelican.contents.Article object at 0x7f927f0eee10>, <pelican.contents.Article object at 0x7f927ec61610>, <pelican.contents.Article object at 0x7f927f2154d0>, <pelican.contents.Article object at 0x7f927f13f750>, <pelican.contents.Article object at 0x7f927f12aed0>, <pelican.contents.Article object at 0x7f927ebd8c50>, <pelican.contents.Article object at 0x7f927ef8a1d0>, <pelican.contents.Article object at 0x7f927f0bbcd0>, <pelican.contents.Article object at 0x7f927eec6b50>, <pelican.contents.Article object at 0x7f927ee8a7d0>, <pelican.contents.Article object at 0x7f927f627050>, <pelican.contents.Article object at 0x7f927ee49910>, <pelican.contents.Article object at 0x7f927f097d50>, <pelican.contents.Article object at 0x7f927ef8a0d0>, <pelican.contents.Article object at 0x7f927ed0c510>, <pelican.contents.Article object at 0x7f927effee10>, <pelican.contents.Article object at 0x7f927f58a690>, <pelican.contents.Article object at 0x7f927ed8a990>, <pelican.contents.Article object at 0x7f927eeff7d0>, <pelican.contents.Article object at 0x7f927f300710>, <pelican.contents.Article object at 0x7f927ec4e950>] Category Atom Feed" />
+        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f334cb7a1d0>] Category Atom Feed" />
+        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f335029b490>, <pelican.contents.Article object at 0x7f334cf085d0>, <pelican.contents.Article object at 0x7f334cd35350>, <pelican.contents.Article object at 0x7f334cac5150>, <pelican.contents.Article object at 0x7f334d220ed0>, <pelican.contents.Article object at 0x7f334cac0450>, <pelican.contents.Article object at 0x7f334cafbf90>, <pelican.contents.Article object at 0x7f334c62ff50>, <pelican.contents.Article object at 0x7f334d1b3550>, <pelican.contents.Article object at 0x7f334c788d10>, <pelican.contents.Article object at 0x7f334d049a10>, <pelican.contents.Article object at 0x7f334c61c5d0>, <pelican.contents.Article object at 0x7f334cd65d90>, <pelican.contents.Article object at 0x7f334cff0a10>, <pelican.contents.Article object at 0x7f334c7f3c90>, <pelican.contents.Article object at 0x7f334ced3cd0>, <pelican.contents.Article object at 0x7f334ce6ab10>, <pelican.contents.Article object at 0x7f334cbe97d0>, <pelican.contents.Article object at 0x7f334c86edd0>, <pelican.contents.Article object at 0x7f334d274250>, <pelican.contents.Article object at 0x7f334c604090>, <pelican.contents.Article object at 0x7f334d1ffdd0>, <pelican.contents.Article object at 0x7f334cb15ad0>, <pelican.contents.Article object at 0x7f334d199350>, <pelican.contents.Article object at 0x7f334ce709d0>] Category Atom Feed" />
     </head>
     <body>
         <div id="content-sans-footer">
@@ -1182,8 +1182,10 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Intro">Intro<a class="anchor-link" href="#Intro">¶</a></h1><p>The idea of this post is to use the advent of code problems as a jumping off point for some ML theory. Unfortunately, these take a lot longer to produce that it does to solve the problems!</p>
+<h1 id="Intro">Intro<a class="anchor-link" href="#Intro">¶</a></h1><p>The idea of this post is to use the advent of code problems as a jumping off point for some ML theory. Unfortunately, these take a lot longer to produce that it does to solve the problems in the easy way!</p>
+<p>The key point I want to demonstrate here is just how far we have to go on differentiable sparsity.</p>
 <h2 id="The-Problem">The Problem<a class="anchor-link" href="#The-Problem">¶</a></h2><p>The crux of the problem is to find two numbers in a list that sum to 2020.</p>
+<p>You can see the full description here; <a href="https://adventofcode.com/2020/day/1">https://adventofcode.com/2020/day/1</a></p>
 </div>
 </div>
 </div>
@@ -1268,23 +1270,32 @@ h6:hover .anchor-link {
 <p>Well, that was no fun. There's not even a deep learning framework involved! What use is this?</p>
 <h2 id="The-problem-as-a-regression">The problem as a regression<a class="anchor-link" href="#The-problem-as-a-regression">¶</a></h2><p>We can see that actually, this is just a good old regression problem. Find w, such that $Xw = y$ with $X$ our input data, $y$ 2020, with a regularisation constriant.</p>
 <p>So what we want is a solution $w$ that has 2 non-zero entries. This is the l0-norm.</p>
+<p>Ok, sure. This is not the best way to solve this problem. But it has several interesting features:</p>
+<ul>
+<li>It has an exact solution</li>
+<li>It is small enough that a niave solution runs in trivial time.</li>
+<li>We don't even have to learn any weights - just the Indicator if a variable should be included or not.</li>
+</ul>
+<p>Surely, in 2020, deep learning has got this?</p>
 <h3 id="Problem-with-L0">Problem with L0<a class="anchor-link" href="#Problem-with-L0">¶</a></h3><p>We can't just slap an L0 norm as a regularizer and start training, as L0 norm is non-differentiable. This is actually the start of a quite deep rabit hole into sparse models.</p>
 <p>This problem is closely related to sparsification - so this is where we start.</p>
 <p>What we need is a solution to the problem with $||w||_{0}=2$</p>
 <h3 id="L1-relaxation">L1 relaxation<a class="anchor-link" href="#L1-relaxation">¶</a></h3><p>The L1 is the convex envelope of the L0. Essentially, it is convex (and piecewise differentiable) and has the same minimum point. Unfortunately, this is not really appropriate here. The relaxation is $||w||_{1} = 2$. But $[0.5, 1, 0.5]$ and $[1,1,0]$ have the same norm (and therefore are considered equally optimal).</p>
-<h3 id="An-approximation-to-the-L0">An approximation to the L0<a class="anchor-link" href="#An-approximation-to-the-L0">¶</a></h3><p>We can experiment with some cutting edge theory! The paper I'm going to look at is '<strong>Learning Sparse Neural Networks through $L_0$ Regularization</strong>'</p>
+<p>There are lots of other relaxations that we won't go into here.</p>
+<h3 id="An-approximation-to-the-L0">An approximation to the L0<a class="anchor-link" href="#An-approximation-to-the-L0">¶</a></h3><p>We can experiment with some cutting edge theory! The paper I'm going to look at is '<strong>Learning Sparse Neural Networks through $L_0$ Regularization</strong>': <a href="https://arxiv.org/abs/1712.01312">https://arxiv.org/abs/1712.01312</a></p>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I won't labour the point, I suggest going through the paper. The essential idea is you have some distribution that generates random variables between 0 and 1.</p>
+<p>I won't labour the point, I suggest going through the paper. The essential idea is you have some distribution that generates random variables between 0 and 1. You then compute an expectation of your loss function under these draws. If the R.V. was bernoulli, you're trying to learn the parameter p, so that it is ideally 1 for the important features. If you learn parameters that are sufficiently close to 1 or 0, the expectation of your loss function will be the loss under the chosen features. You place a penalty on the parameter values to make sure they obey sensible constraints, and then minimise the whole thing.</p>
 <p>If $x$ is $nx1$, you have $n$ parameters to learn, essentially each $x_{i}$ has an associated parameter $\pi_{i}$. If we generate bernoulli random variables $\pi_{i} = P(z_{i}=1)$. We want these probabilities to be 1 for the variables we care about and 0 otherwise, so we have a regularizer:</p>
 <p>$\mathcal{L}_{r} = (\sum_{i} \pi_{i} -2)^{2}$</p>
 <p>And a likelihood loss:</p>
 <p>$\mathcal{L}_{l} = E_{q(\mathbf{z}|\mathbf{\pi})}[(xz - 2020)^{2}]$</p>
 <p>The problem is that generating bernoulli variables in a differentiable way is not easy - so we need to use different ways to estimate the gradient. The paper suggests an alternative: Use the Concrete distribution. Again I won't go over that here in the interest of brevity, but check out the paper <a href="https://arxiv.org/abs/1611.00712">https://arxiv.org/abs/1611.00712</a> .</p>
+<p>The important thing to note is we generate random variables and compute an expectation, whilst optimising over the distribution parameters - this makes the objective nice and smooth and can use the reparam trick to differentiate through sampling if we need to.</p>
 <p>And so, we have our objective, and we'll give it a go on a smaller problem.</p>
 </div>
 </div>
@@ -1519,7 +1530,9 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This one doesn't work so well! I toyed around a lot with lots of training parameters. It seems there's two problems - both the size of the space to search and the space of the potential solutions - in the toy example theres only two main feasible solutions, but in the real example theres lots more "close" solutions.</p>
+<p>This one doesn't work so well! I toyed around a lot with lots of training parameters. It seems there's two problems - both the size of the space to search and the space of the potential solutions - in the toy example theres only two main feasible solutions, but in the real example theres lots more "close" solutions. It was also a massive pain - you have to care about the regularization hyperparam and its not clear when its converged because the loss moves in a step like fashion as it moves the placement of the 1s.</p>
+<p>If you didn't know there was 0 loss solution, I don't know how you'd decide this was finished training</p>
+<h4 id="In-true-deep-learning-style,-with-got-something-close-to-the-right-answer,-with-too-many-components.">In true deep learning style, with got something close to the right answer, with too many components.<a class="anchor-link" href="#In-true-deep-learning-style,-with-got-something-close-to-the-right-answer,-with-too-many-components.">¶</a></h4><p>Hopefully this is a bit thought provoking! Is this the best we have for proper l0 sparsity with deep learning?!</p>
 </div>
 </div>
 </div>
