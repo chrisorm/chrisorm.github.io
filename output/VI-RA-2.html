@@ -1,64 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Variational Inference, VI, Python, Alpha Divergence, Renyi, posts, " />
-        <title>Renyi Alpha Variational Inference - Part 2  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Renyi Alpha Variational Inference - Part 2
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="http://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="http://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="http://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="http://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://localhost:8000/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/blog.css">
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/github.css">
+        <script src="http://localhost:8000/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="http://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="http://chrisorm.github.io">Home</a></li>
-                            <li ><a href="http://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="http://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="http://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="http://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="http://chrisorm.github.io/VI-RA-2.html"> Renyi Alpha Variational Inference - Part 2  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://localhost:8000"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://localhost:8000/index.html">Home</a></li>
+                <li><a href="http://localhost:8000/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2017-11-18T16:41:00+00:00" pubdate>
+                            Sat 18 November 2017
+                        </time>
+                        <a href="http://localhost:8000/VI-RA-2.html" rel="bookmark"><h1>Renyi Alpha Variational Inference - Part 2</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1101,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1131,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1156,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1172,25 +1181,27 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Renyi-Alpha-Divergence-VI-part-2">Renyi Alpha Divergence VI part 2<a class="anchor-link" href="#Renyi-Alpha-Divergence-VI-part-2">¶</a></h1>
+<h1 id="Renyi-Alpha-Divergence-VI-part-2">Renyi Alpha Divergence VI part 2<a class="anchor-link" href="#Renyi-Alpha-Divergence-VI-part-2">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>In the <a href="https://chrisorm.github.io/VI-RA-1.html">previous post</a>, I covered some key properties of the Renyi Alpha Divergence, and filled in some gaps left in the paper. We showed how to use the Renyi Divergence to develop a bound on the marginal log likelihood, its connection to the KL divergence and showed that a Monte Carlo approximation is biased to underestimate the bound.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>In the <a href="https://chrisorm.github.io/VI-RA-1.html">previous post</a>, I covered some key properties of the Renyi Alpha Divergence, and filled in some gaps left in the paper. We showed how to use the Renyi Divergence to develop a bound on the marginal log likelihood, its connection to the KL divergence and showed that a Monte Carlo approximation is biased to underestimate the bound.</p>
 <p>In this post, we will derive the analytic Renyi Alpha divergence for a gaussian distribution, and then see how this Renyi bound compares for different alpha values.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Analytical-Bound-for-a-Gaussian-System">Analytical Bound for a Gaussian System<a class="anchor-link" href="#Analytical-Bound-for-a-Gaussian-System">¶</a></h2><p>Here we will derive the analytic bound for a gaussian prior and likelihood, and we approximate the posterior with a gaussian. Of course we could simply find the posterior directly, but this allows us to investigate several properties of the Renyi bound, in an exact manner. We will see some more complex examples with the stochastic bound in a later post.</p>
+<h2 id="Analytical-Bound-for-a-Gaussian-System">Analytical Bound for a Gaussian System<a class="anchor-link" href="#Analytical-Bound-for-a-Gaussian-System">&#182;</a></h2><p>Here we will derive the analytic bound for a gaussian prior and likelihood, and we approximate the posterior with a gaussian. Of course we could simply find the posterior directly, but this allows us to investigate several properties of the Renyi bound, in an exact manner. We will see some more complex examples with the stochastic bound in a later post.</p>
 <p>First, recall that the Renyi bound is given by:</p>
 <p>$\mathcal{L_\alpha} =  \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] $</p>
 <p>$ =\frac{1}{1 - \alpha} log \int q(z)^{\alpha} p(z, y)^{1-\alpha} dz $</p>
+
 </div>
 </div>
 </div>
@@ -1202,6 +1213,7 @@ h6:hover .anchor-link {
 <p>$p(y \mid z, x) \sim N(xz, \Sigma_{l})$</p>
 <p>$ p(y, z \mid x) \propto  exp -\frac{1}{2}[ (y-xz)^{T}\Sigma_{l}^{-1}(y-xz) + z^{T}\Sigma_{p}^{-1}z] $</p>
 <p>$ p(y, z \mid x) \propto  exp -\frac{1}{2}( y^{T}\Sigma_{l}^{-1}y + z^{T}[\Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x]z-2 z^{T}x^{T}\Sigma_{l}^{-1}y )$</p>
+
 </div>
 </div>
 </div>
@@ -1214,6 +1226,7 @@ h6:hover .anchor-link {
 <p>$= \frac{1}{1-\alpha} log \ \frac{exp -0.5 (1-\alpha)y^{T}\Sigma_{l}^{-1}y}{C}   \int exp -\frac{1}{2}[ (1-\alpha)z^{T}[\Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x]z-2(1-\alpha) z^{T}x^{T}\Sigma_{l}^{-1}y  + \alpha (z-\mu_{q})^{T}\Sigma_{q}^{-1}(z-\mu_{q})]$</p>
 <p>Where:</p>
 <p>$C = \frac{1}{(2\pi)^{\frac{N}{2}} (2\pi)^{\frac{(1-\alpha)M}{2}} \mid\Sigma_{q}\mid^{\frac{\alpha}{2}}\mid\Sigma_{p}\mid^{\frac{1-\alpha}{2}}\mid\Sigma_{l}\mid^{\frac{1-\alpha}{2}} }$</p>
+
 </div>
 </div>
 </div>
@@ -1222,6 +1235,7 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This has the potential to become quite cluttered, so we will deal with computing the integral only, and set 
 $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
+
 </div>
 </div>
 </div>
@@ -1230,6 +1244,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$\int exp -\frac{1}{2}[ (1-\alpha)z^{T}\Lambda z-2(1-\alpha) z^{T}x^{T}\Sigma_{l}^{-1}y  + \alpha (z-\mu_{q})^{T}\Sigma_{q}^{-1}(z-\mu_{q})] dz $</p>
 <p>$ = \int exp -\frac{1}{2}[ (1-\alpha)z^{T}\Lambda z-2(1-\alpha) z^{T}x^{T}\Sigma_{l}^{-1}y  + \alpha z^{T}\Sigma_{q}^{-1}z - 2\alpha z^{T}\Sigma_{q}^{-1}\mu_{q} + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q}$</p>
+
 </div>
 </div>
 </div>
@@ -1237,6 +1252,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$ = \int exp -\frac{1}{2}[z^{T}((1-\alpha) \Lambda + \alpha \Sigma_{q}^{-1})z - 2 z^{T}(\alpha \Sigma_{q}^{-1}\mu_{q} + (1-\alpha) x^{T}\Sigma_{l}^{-1}y) + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q}]$</p>
+
 </div>
 </div>
 </div>
@@ -1251,6 +1267,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <p>$ = \int exp -\frac{1}{2}[z^{T}((1-\alpha) \Lambda + \alpha \Sigma_{q}^{-1})z - 2 z^{T}(\alpha \Sigma_{q}^{-1}\mu_{q} + (1-\alpha) x^{T}\Sigma_{l}^{-1}y) + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q}]$</p>
 <p>$ = \int exp -\frac{1}{2}[(z-\mu)^{T}\Sigma^{-1}(z-\mu) - \mu^{T}\Sigma^{-1} \mu + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q}] dz$</p>
 <p>$ = exp -\frac{1}{2}(- \mu^{T}\Sigma^{-1} \mu + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q}) \int exp -\frac{1}{2}[(z-\mu)^{T}\Sigma^{-1}(z-\mu) ] dz$</p>
+
 </div>
 </div>
 </div>
@@ -1258,6 +1275,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$ = (2 \pi)^{\frac{N}{2}} \mid \Sigma \mid^{\frac{1}{2}} exp -\frac{1}{2}(- \mu^{T}\Sigma^{-1} \mu + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q})  $</p>
+
 </div>
 </div>
 </div>
@@ -1268,6 +1286,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <p>$ \frac{1}{1 - \alpha} log \int q(z)^{\alpha} p(z, y)^{1-\alpha} dz $</p>
 <p>$ =\frac{1}{1 - \alpha} log \ \frac{exp -0.5 (1-\alpha)y^{T}\Sigma_{l}^{-1}y}{C} (2 \pi)^{\frac{N}{2}} \mid \Sigma \mid^{\frac{1}{2}} exp -\frac{1}{2}(- \mu^{T}\Sigma^{-1} \mu + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q})  $</p>
 <p>$ =\frac{1}{1 - \alpha} log \ \frac{(2 \pi)^{\frac{N}{2}}\mid \Sigma \mid^{\frac{1}{2}}}{C}   exp -\frac{1}{2}(- \mu^{T}\Sigma^{-1} \mu + \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q} +  (1-\alpha)y^{T}\Sigma_{l}^{-1}y)  $</p>
+
 </div>
 </div>
 </div>
@@ -1276,6 +1295,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Substituting in for C and cancelling yields:</p>
 <p>$ =\frac{1}{1 - \alpha} log \ \frac{\mid \Sigma \mid^{\frac{1}{2}}}{(2\pi)^{\frac{(1-\alpha)M}{2}} \mid\Sigma_{q}\mid^{\frac{\alpha}{2}}\mid\Sigma_{p}\mid^{\frac{1-\alpha}{2}}\mid\Sigma_{l}\mid^{\frac{1-\alpha}{2}}} \bullet   exp -\frac{1}{2}(- \mu^{T}\Sigma^{-1} \mu + \\ \alpha\mu_{q}^{T}\Sigma_{q}^{-1}\mu_{q} +  (1-\alpha)y^{T}\Sigma_{l}^{-1}y)  $</p>
+
 </div>
 </div>
 </div>
@@ -1283,13 +1303,14 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Whilst this may not look like the most inviting formula, we are now in a position to compute the value of this bound for any values of the system we specified at the beginning, subject to a few mild conditions, such as Positive Semi Definite requirements for some values.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Bound-is-0-if-the-approximation-is-exact,-for-all-alpha-values">The Bound is 0 if the approximation is exact, for all alpha values<a class="anchor-link" href="#The-Bound-is-0-if-the-approximation-is-exact,-for-all-alpha-values">¶</a></h2>
+<h2 id="The-Bound-is-0-if-the-approximation-is-exact,-for-all-alpha-values">The Bound is 0 if the approximation is exact, for all alpha values<a class="anchor-link" href="#The-Bound-is-0-if-the-approximation-is-exact,-for-all-alpha-values">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -1304,17 +1325,19 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <p>$ =\frac{1}{1 - \alpha} log \int p(z\mid y)^{\alpha} p(z\mid y)^{1-\alpha} p(y)^{1-\alpha} dz $</p>
 <p>$ =\frac{1}{1 - \alpha} log \ p(y)^{1-\alpha} \int p(z\mid y) dz $</p>
 <p>$ =\frac{1-\alpha}{1 - \alpha} log \ p(y) \ = \ log \ p(y)$</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-Bound-is-exact-for-alpha-=0">The Bound is exact for alpha =0<a class="anchor-link" href="#The-Bound-is-exact-for-alpha-=0">¶</a></h2><p>The general proof is almost trivial:</p>
+<h2 id="The-Bound-is-exact-for-alpha-=0">The Bound is exact for alpha =0<a class="anchor-link" href="#The-Bound-is-exact-for-alpha-=0">&#182;</a></h2><p>The general proof is almost trivial:</p>
 <p>$ =\frac{1}{1 - \alpha} log \int q(z)^{\alpha} p(z, y)^{1-\alpha} dz $</p>
 <p>$ =\frac{1}{1 - 0} log \int q(z)^{0} p(z, y)^{1-0} dz $</p>
 <p>$ = log \int p(z, y) dz  = log \ p(y)$</p>
 <p>This is the proof in general, but here we also show this explicitly for the gaussian system we are working with.</p>
+
 </div>
 </div>
 </div>
@@ -1327,6 +1350,7 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <p>$\mathcal{L_{\alpha=0}} \propto exp -\frac{1}{2}(y^{T}\Sigma_{l}^{-1}y - \mu^{T}\Sigma^{-1} \mu )$</p>
 <p>$\mathcal{L_{\alpha=0}} \propto exp -\frac{1}{2}(y^{T}\Sigma_{l}^{-1}y - (y^{T}\Sigma_{l}^{-1}x\Lambda^{-1} x^{T}\Sigma_{l}^{-1}y) )$</p>
 <p>$\mathcal{L_{\alpha=0}} \propto exp -\frac{1}{2}(y^{T}(\Sigma_{l}^{-1} - \Sigma_{l}^{-1}x\Lambda ^{-1}x^{T}\Sigma_{l}^{-1})y)$</p>
+
 </div>
 </div>
 </div>
@@ -1338,38 +1362,41 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <p>$\mathcal{L_{\alpha=0}} \propto exp -\frac{1}{2}(y^{T}(\Sigma_{l} + x \Sigma_{p}x^{T})^{-1}y)$</p>
 <p>This is just the marginal distribution of y - which is the exact thing we are looking to bound! It is relatively simple to show the normalizer also cancels down to give an exact Gaussian.</p>
 <p>I have possibly moved a little fast if you are not familiar with the algebra techniques I used, and if I have lost you, PRML by Chris Bishop covers some of this at a more gentle pace in Section 2.3 (and also partly during the Bayesian Linear Regression section).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-the-bound-behaves-for-a-Gaussian-System">How the bound behaves for a Gaussian System<a class="anchor-link" href="#How-the-bound-behaves-for-a-Gaussian-System">¶</a></h2>
+<h2 id="How-the-bound-behaves-for-a-Gaussian-System">How the bound behaves for a Gaussian System<a class="anchor-link" href="#How-the-bound-behaves-for-a-Gaussian-System">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="o">%</span><span class="k">matplotlib</span> inline
 
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sigma</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">sq</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sigma</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">sq</span><span class="p">):</span>
     
     <span class="k">return</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">lam</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sq</span><span class="p">)))</span><span class="o">**-</span><span class="mi">1</span>
 
@@ -1393,16 +1420,18 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
                                     <span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">sl</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">sl</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">return</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">normalizer</span><span class="p">)</span> <span class="o">+</span> <span class="n">exponent</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">0.2</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="mf">0.4</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">sl</span><span class="p">)</span>
 
@@ -1412,16 +1441,18 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
 <span class="n">sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.002</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">0.2</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">):</span>
     <span class="n">alphas</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1432,25 +1463,41 @@ $\Lambda = \Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1}x $</p>
     <span class="n">b</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alphas</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">.</span><span class="mi">102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-           <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"expand"</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Mean of q(z)"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'alpha'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Renyi Bound'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">.102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+           <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;expand&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mean of q(z)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Renyi Bound&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.text at 0x7fb7cfd306a0></pre>
+<pre>&lt;matplotlib.text.Text at 0x7fb7cfd306a0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtUAAAMoCAYAAAAAyBwYAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3Xl0HNWBPuz3VlVvUmtr7ZZsyzY2GNnGhjjsIYEEJ4OB
 HEjCziQhARKGsORHcrJ8hBnGBoY5AyEkEJYkLMkBm5BAxsBkhoQAAcxiwGAItrGNkSxrsaRuqdVb
@@ -2295,18 +2342,22 @@ du3apXXr1qm6ulr/8i//or59+8owjPOeHx0drQceeEBHjhzRyy+/rMrKSs2bN0+TJk3qci3h4eFa
 tGiRLrzwQr3xxhvasGGDHA6HFixY4MmlAUCPZ5jcLQIAIW/JkiU6deqUfvOb3wS6FADolVipBgAA
 ALxEqAYAAAC8RKgGAEhSp/ZdAwDaxp5qAAAAwEusVAMAAABeIlQDAAAAXiJUAwAAAF4iVAMAAABe
 IlQDAAAAXiJUAwAAAF4iVAMAAABeIlQDAAAAXvr/RN01B0Wqbu8AAAAASUVORK5CYII=
-" />
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">):</span>
     <span class="n">means</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2318,25 +2369,41 @@ IlQDAAAAXiJUAwAAAF4iVAMAAABeIlQDAAAAXvr/RN01B0Wqbu8AAAAASUVORK5CYII=
     <span class="n">b</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">.</span><span class="mi">102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-           <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"expand"</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Alpha"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Mean of q'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Renyi Bound'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">.102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+           <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;expand&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of q&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Renyi Bound&#39;</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.text at 0x7fb7cfc5d6a0></pre>
+<pre>&lt;matplotlib.text.Text at 0x7fb7cfc5d6a0&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtUAAANDCAYAAABi++OBAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3XmYHGWBP/Bv3X3N9NwzIQc5CDAJxgTIihhEgyiRICLi
 coYV5XjER/FCnwXRn24QgRWJCq7CsirPI4YbnyDI47NsZA1XwiIgEEISMMdcmavvut7fH1Vd0z3T
@@ -3458,54 +3525,62 @@ Q/rwhz88gnfcb968eXIcR+vWrdN///d/q6urSzfeeKPWrFkz4ucEgLFmOHzyBADQhG699VZJ4kRF
 AJ5ATzUAAAAwSoRqAAAAYJQI1QCApjXWH7YEgJGipxoAAAAYJXaqAQAAgFEiVAMAAACjRKgGAAAA
 RolQDQAAAIwSoRoAAAAYJUI1AAAAMEqEagAAAGCUCNUAAADAKBGqAQAAgFH6//yX6Emgg3IOAAAA
 AElFTkSuQmCC
-" />
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we can see, as alpha increases, the curvature of the bound increases. The bound sits below the true marginal likelihood at all points (this is most obvious for high alpha values). This is because we only modify the mean, and use a fixed variance that is not exactly the true posterior variance.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Different-alphas-induce-different-preferences">Different alphas induce different preferences<a class="anchor-link" href="#Different-alphas-induce-different-preferences">¶</a></h2><p>Let's say we have a system:</p>
+<h2 id="Different-alphas-induce-different-preferences">Different alphas induce different preferences<a class="anchor-link" href="#Different-alphas-induce-different-preferences">&#182;</a></h2><p>Let's say we have a system:</p>
 <p>$q(z) \sim N(\mu_{q}, \Sigma_{q})$</p>
 <p>$p(z) \sim N(0, \Sigma_{p})$</p>
 <p>$p(y \mid z, x) \sim N(xz, \Sigma_{l})$</p>
 <p>$p(z \mid y, x) \sim N(\sigma x^{T} \Sigma_{l}^{-1}y, \sigma)$</p>
 <p>where $\sigma = (\Sigma_{p}^{-1} + x^{T}\Sigma_{l}^{-1} x)^{-1}$</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mf">1.1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="mf">0.4</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">sl</span><span class="p">)</span>
 
 <span class="n">sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">0.2</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">posterior_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span><span class="o">+</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sl</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">posterior_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span><span class="o">+</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sl</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="n">posterior_mean</span> <span class="o">=</span> <span class="n">posterior_var</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sl</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Posterior Mean"</span><span class="p">,</span><span class="n">posterior_mean</span><span class="p">,</span> <span class="s2">". Posterior Variance:"</span><span class="p">,</span> <span class="n">posterior_var</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Posterior Mean&quot;</span><span class="p">,</span><span class="n">posterior_mean</span><span class="p">,</span> <span class="s2">&quot;. Posterior Variance:&quot;</span><span class="p">,</span> <span class="n">posterior_var</span><span class="p">)</span>
 
 <span class="n">qmean1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">posterior_mean</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">qvar1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">5e-6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -3513,55 +3588,80 @@ AElFTkSuQmCC
 <span class="n">qmean2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">posterior_mean</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">qvar2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.002</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Posterior Mean [ 0.41522244] . Posterior Variance: [[  7.83671422e-05]]
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">multivariate_normal</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
 
 <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="n">posterior_mean</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="n">posterior_var</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"True Posterior"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Posterior&quot;</span><span class="p">)</span>
 
 <span class="n">q1</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="n">qmean1</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="n">qvar1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Low Spread"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Low Spread&quot;</span><span class="p">)</span>
 
 <span class="n">q2</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="n">qmean2</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="n">qvar2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"High Spread"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;High Spread&quot;</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">.</span><span class="mi">102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-           <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"expand"</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">.102</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+           <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;expand&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[8]:</div>
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.legend.legend at 0x7fb7cfa049e8></pre>
+<pre>&lt;matplotlib.legend.Legend at 0x7fb7cfa049e8&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhoAAAGiCAYAAAChyG+jAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3XtcFXX+P/DXnAt3BY/cRFTkImGiGKIZrJiamestNXXT
 BBEzXb+tZf4qK41t8btbaZfVvpUVoKWieW1Nt4vmBrne1lZdSTTUdFW84AEFOZzL/P6AM3bkevDM
@@ -3990,28 +4090,39 @@ PBQWFjJ27Fjuv/9+hg8ffmG/XJakGjOtNWvXruXUqVPYbDaGDh3K1772NWbNmhVfR8paenGTspYY
 s2RIWUsvblLWEmMWDod56qmnOHPmDE6nk9GjR3PPPfdw8cUXx9fJVFlTWnobCSGEECJLcqKPhhBC
 CCEGJkk0hBBCCJE1kmgIIYQQImsk0RBCCCFE1kiiIYQQQoiskURDCCGEEFkjiYYQQgghskYSDSGE
 EEJkjSQaQgghhMgaSTSEEEIIkTWSaAghhBAia/4/OQGIA8STbnkAAAAASUVORK5CYII=
-" />
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Bound for low Spread:"</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean1</span><span class="p">,</span> <span class="n">qvar1</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">" with alpha "</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Bound for high Spread:"</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean2</span><span class="p">,</span> <span class="n">qvar2</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">" with alpha "</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bound for low Spread:&quot;</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean1</span><span class="p">,</span> <span class="n">qvar1</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">&quot; with alpha &quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bound for high Spread:&quot;</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean2</span><span class="p">,</span> <span class="n">qvar2</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">&quot; with alpha &quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Bound for low Spread: [[-13.81421434]]  with alpha  0.1
 Bound for high Spread: [[-13.58920791]]  with alpha  0.1
@@ -4020,49 +4131,64 @@ Bound for high Spread: [[-19.84787177]]  with alpha  0.95
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As this shows, the Renyi bound produces strong mode seeking behaviour with high alpha, and mass covering with low alpha. There is also an alpha (approx 0.4 in this case), which has no preference between the two behaviours.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="mf">0.4</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Bound for low Spread:"</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean1</span><span class="p">,</span> <span class="n">qvar1</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">" with alpha "</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Bound for high Spread:"</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean2</span><span class="p">,</span> <span class="n">qvar2</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">" with alpha "</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="mf">0.4</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bound for low Spread:&quot;</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean1</span><span class="p">,</span> <span class="n">qvar1</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">&quot; with alpha &quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bound for high Spread:&quot;</span><span class="p">,</span><span class="n">bound</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">qmean2</span><span class="p">,</span> <span class="n">qvar2</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s2">&quot; with alpha &quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Bound for low Spread: [[-14.1539275]]  with alpha  0.4
 Bound for high Spread: [[-14.14098968]]  with alpha  0.4
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, we have derived the exact Renyi Variational Bound for a Gaussian system, and used this to show how different alpha values induce different behaviours. We have also shown some useful properties that the bound has, so we know that if our approximation is exact, our bound is exact also.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>In this post, we have derived the exact Renyi Variational Bound for a Gaussian system, and used this to show how different alpha values induce different behaviours. We have also shown some useful properties that the bound has, so we know that if our approximation is exact, our bound is exact also.</p>
 <p>In the next post we will use the stochastic approximation for the bound, and see how the unbiased nature of it affects the bound.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -4093,67 +4219,19 @@ Bound for high Spread: [[-14.14098968]]  with alpha  0.4
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="http://chrisorm.github.io/VI-RA-1.html" title="Previous: Renyi Alpha Variational Inference - Part 1">Renyi Alpha Variational Inference - Part 1</a></li>
- 
-                <li class="next_article"><a href="http://chrisorm.github.io/VI-RVI-3.html" title="Next: Renyi Alpha Variational Inference - Part 3">Renyi Alpha Variational Inference - Part 3</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-11-18T16:41:00+00:00">Nov 18, 2017</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Alpha-Divergence-ref">Alpha Divergence
-                    <span>3</span>
-</a></li>
-                <li><a href="/tags.html#Python-ref">Python
-                    <span>16</span>
-</a></li>
-                <li><a href="/tags.html#Renyi-ref">Renyi
-                    <span>2</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://localhost:8000/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://localhost:8000/tag/variational-inference.html">Variational Inference</a>, <a href="http://localhost:8000/tag/vi.html">VI</a>, <a href="http://localhost:8000/tag/python.html">Python</a>, <a href="http://localhost:8000/tag/alpha-divergence.html">Alpha Divergence</a>, <a href="http://localhost:8000/tag/renyi.html">Renyi</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://localhost:8000/theme/js/main.js"></script>
     </body>
 </html>

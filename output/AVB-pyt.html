@@ -1,64 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Variational Inference, VI, Python, PyTorch, Implicit Learning, posts, " />
-        <title>Adversarial Variational Bayes in Pytorch  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Adversarial Variational Bayes in Pytorch
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="http://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="http://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="http://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="http://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://localhost:8000/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/blog.css">
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/github.css">
+        <script src="http://localhost:8000/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="http://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="http://chrisorm.github.io">Home</a></li>
-                            <li ><a href="http://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="http://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="http://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="http://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="http://chrisorm.github.io/AVB-pyt.html"> Adversarial Variational Bayes in Pytorch  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://localhost:8000"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://localhost:8000/index.html">Home</a></li>
+                <li><a href="http://localhost:8000/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2017-12-17T21:40:00+00:00" pubdate>
+                            Sun 17 December 2017
+                        </time>
+                        <a href="http://localhost:8000/AVB-pyt.html" rel="bookmark"><h1>Adversarial Variational Bayes in Pytorch</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1101,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1131,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1156,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1172,44 +1181,47 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Adversarial-Variational-Bayes-in-Pytorch">Adversarial Variational Bayes in Pytorch<a class="anchor-link" href="#Adversarial-Variational-Bayes-in-Pytorch">¶</a></h1><p>In the previous post, we implemented a Variational Autoencoder, and pointed out a few problems. The overlap between classes was one of the key problems. The normality assumption is also perhaps somewhat constraining.</p>
+<h1 id="Adversarial-Variational-Bayes-in-Pytorch">Adversarial Variational Bayes in Pytorch<a class="anchor-link" href="#Adversarial-Variational-Bayes-in-Pytorch">&#182;</a></h1><p>In the previous post, we implemented a Variational Autoencoder, and pointed out a few problems. The overlap between classes was one of the key problems. The normality assumption is also perhaps somewhat constraining.</p>
 <p>In this post, I implement the recent paper <a href="https://arxiv.org/pdf/1701.04722.pdf">Adversarial Variational Bayes</a>, in Pytorch. This addresses some of the issues with VAEs, and also provides some interesting links to GANs, the other popular approach to generative modelling.</p>
-<h2 id="Theory">Theory<a class="anchor-link" href="#Theory">¶</a></h2><p>Before diving in, if you are not familiar with VAEs, I suggest you take some time to recap my <a href="https://chrisorm.github.io/VI-to-VAE.html">previous post</a> on the theory of VAEs.</p>
+<h2 id="Theory">Theory<a class="anchor-link" href="#Theory">&#182;</a></h2><p>Before diving in, if you are not familiar with VAEs, I suggest you take some time to recap my <a href="https://chrisorm.github.io/VI-to-VAE.html">previous post</a> on the theory of VAEs.</p>
 <p>The main modification proposed by the <a href="https://arxiv.org/pdf/1701.04722.pdf">AVB paper</a>, is to change the encoder from being a parameterized Gaussian to being a fully implicit distribution. In a vanilla VAE, the encoder network takes a data point, x, as input and outputs the mean and variance of a normal distribution. We then used the reparameterization trick on standard normal samples to sample values of the latent variables.</p>
 <p>The first modification is that instead of outputting a mean and variance, the encoder now returns a z value directly. The inputs are now data points, x, and standard Gaussian noise. So our encoder network learns how to incorporate the random noise to generate a sample from the approximate posterior directly.</p>
 <p>This is most easily shown by figure 2 in the original paper.</p>
-<h3 id="Implicit-Likelihood-Ratio">Implicit Likelihood Ratio<a class="anchor-link" href="#Implicit-Likelihood-Ratio">¶</a></h3><p>Once we have made the above change, we have a problem. The ELBO:</p>
+<h3 id="Implicit-Likelihood-Ratio">Implicit Likelihood Ratio<a class="anchor-link" href="#Implicit-Likelihood-Ratio">&#182;</a></h3><p>Once we have made the above change, we have a problem. The ELBO:</p>
 <p>$max_{\phi}max_{\theta} \ E_{p_{D}}[ \mathcal{L}] = max_{\phi, \theta} E_{p_{D}}[E_{q}[log \ P_{\theta}(X \mid Z) + log \ P_{\theta}(Z) - log \ q_{\phi}(Z \mid X)]] $</p>
 <p>contains probabilities under the approximate posterior, q. Now we have an implicit model for q, we can't evaluate the probability of a sample. In order to deal with this problem, we use the idea from <a href="https://arxiv.org/abs/1610.03483">Learning in Implicit Generative Models</a>, covered in a <a href="https://chrisorm.github.io/GM-Disc-as-ratios.html">previous post</a>. The idea is to use a discriminator to approximate the log ratio of q and the prior.</p>
 <p>We introduce a second network, $T(x,z)$, which outputs a single value for each sample. If we label the samples from the posterior as class 1, and from the prior as class 0, we can then pass the output of T through a sigmoid, and then train it using binary cross entropy, in exactly the same way as with my previous post on <a href="https://chrisorm.github.io/GM-Disc-as-ratios.html">Discriminators as likelihood ratios</a>. In this case, the output of T (without the sigmoid) are the logits, which at optimality of the discriminator is the ratio of the two distributions. We can therefor substitute the output of T directly for the ratio term in the ELBO, $log \ p(Z) - log \ q_{\phi}(Z\mid X) $.</p>
 <p>This gives us two loss functions that we optimise in an iterative process. The discriminator is trained by minimising the binary cross entropy, and the encoder and decoder is trained by maximising the ELBO, but with the discriminator's estimate in place of an analytical $log \ p(Z) - log \ q_{\phi}(Z\mid X) $.</p>
 <p>$max \ \mathcal{L_{D}} = E_{P_{D}}( E_{q(z \mid x)}[log \ \sigma (T(X, Z))] + E_{p(z)}[log \ 1 - \sigma (T(X, Z))] )$</p>
 <p>$max \ \mathcal{L_{G}} =   E_{p_{D}}[E_{q}[log \ P_{\theta}(X \mid Z) - T(X, Z)]] $</p>
-<h2 id="In-practice">In practice<a class="anchor-link" href="#In-practice">¶</a></h2><p>I continue with the example I used in the VAE post, the toy example that is included in the post.</p>
+<h2 id="In-practice">In practice<a class="anchor-link" href="#In-practice">&#182;</a></h2><p>I continue with the example I used in the VAE post, the toy example that is included in the post.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">representation_size</span> <span class="o">=</span> <span class="mi">2</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">representation_size</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">input_size</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">2000</span>
 <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">500</span>
@@ -1217,47 +1229,59 @@ h6:hover .anchor-link {
 <span class="n">enc_hidden_size</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">disc_hidden_size</span> <span class="o">=</span> <span class="mi">200</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">n_samples_per_batch</span> <span class="o">=</span> <span class="n">n_samples</span><span class="o">//</span><span class="n">input_size</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_samples_per_batch</span> <span class="o">=</span> <span class="n">n_samples</span><span class="o">//</span><span class="n">input_size</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">input_size</span><span class="p">)</span>  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples_per_batch</span><span class="p">)])</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">input_size</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Some example data points:</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">58</span> <span class="p">,</span><span class="mi">610</span><span class="p">,</span> <span class="mi">790</span><span class="p">,</span> <span class="mi">1123</span><span class="p">,</span> <span class="mi">1258</span><span class="p">,</span> <span class="mi">1506</span><span class="p">,</span> <span class="mi">1988</span><span class="p">]])</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">58</span> <span class="p">,</span><span class="mi">610</span><span class="p">,</span> <span class="mi">790</span><span class="p">,</span> <span class="mi">1123</span><span class="p">,</span> <span class="mi">1258</span><span class="p">,</span> <span class="mi">1506</span><span class="p">,</span> <span class="mi">1988</span><span class="p">]])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[[ 1.  0.  0.  0.]
  [ 1.  0.  0.  0.]
@@ -1270,16 +1294,18 @@ h6:hover .anchor-link {
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">VAE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">VAE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">VAE</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gen_l1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">representation_size</span><span class="p">,</span> <span class="n">gen_hidden_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gen_l2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">gen_hidden_size</span><span class="p">,</span> <span class="n">input_size</span><span class="p">)</span>
@@ -1342,58 +1368,66 @@ h6:hover .anchor-link {
         
         <span class="k">return</span> <span class="n">disc_loss</span><span class="p">,</span> <span class="n">gen_loss</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">disc_params</span> <span class="o">=</span> <span class="p">[]</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">disc_params</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">gen_params</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
     
-    <span class="k">if</span> <span class="s1">'disc'</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;disc&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
         
         <span class="n">disc_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">gen_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">disc_optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">disc_params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">disc_optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">disc_params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 <span class="n">gen_optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">gen_params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batches_per_epoch</span> <span class="o">=</span> <span class="mi">501</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">batches_per_epoch</span> <span class="o">=</span> <span class="mi">501</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
     
     <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -1413,119 +1447,148 @@ h6:hover .anchor-link {
         <span class="n">disc_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">==</span><span class="mi">0</span><span class="p">):</span>
             <span class="c1">#Print progress</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'Train Epoch: </span><span class="si">{}</span><span class="s1"> [</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">Loss: </span><span class="si">{:.6f}</span><span class="se">\t</span><span class="s1">Loss: </span><span class="si">{:.6f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train Epoch: </span><span class="si">{}</span><span class="s1"> [</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">Loss: </span><span class="si">{:.6f}</span><span class="se">\t</span><span class="s1">Loss: </span><span class="si">{:.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">epoch</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">*</span><span class="n">batches_per_epoch</span><span class="p">,</span>
                 <span class="n">discrim_loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">gen_loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'====> Epoch: </span><span class="si">{}</span><span class="s1"> done!'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;====&gt; Epoch: </span><span class="si">{}</span><span class="s1"> done!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
           <span class="n">epoch</span><span class="p">))</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span>
     <span class="n">train</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Train Epoch: 1 [0/250500]	Loss: 0.002767	Loss: 0.665143
 Train Epoch: 1 [250000/250500]	Loss: 0.000456	Loss: 0.005928
-====> Epoch: 1 done!
+====&gt; Epoch: 1 done!
 Train Epoch: 2 [0/250500]	Loss: 0.000511	Loss: 0.005995
 Train Epoch: 2 [250000/250500]	Loss: 0.001044	Loss: 0.004739
-====> Epoch: 2 done!
+====&gt; Epoch: 2 done!
 Train Epoch: 3 [0/250500]	Loss: 0.001039	Loss: 0.004568
 Train Epoch: 3 [250000/250500]	Loss: 0.000926	Loss: 0.004154
-====> Epoch: 3 done!
+====&gt; Epoch: 3 done!
 Train Epoch: 4 [0/250500]	Loss: 0.000915	Loss: 0.004528
 Train Epoch: 4 [250000/250500]	Loss: 0.001076	Loss: 0.003867
-====> Epoch: 4 done!
+====&gt; Epoch: 4 done!
 Train Epoch: 5 [0/250500]	Loss: 0.001025	Loss: 0.003856
 Train Epoch: 5 [250000/250500]	Loss: 0.001121	Loss: 0.003561
-====> Epoch: 5 done!
+====&gt; Epoch: 5 done!
 Train Epoch: 6 [0/250500]	Loss: 0.001205	Loss: 0.003342
 Train Epoch: 6 [250000/250500]	Loss: 0.001148	Loss: 0.003481
-====> Epoch: 6 done!
+====&gt; Epoch: 6 done!
 Train Epoch: 7 [0/250500]	Loss: 0.000997	Loss: 0.003723
 Train Epoch: 7 [250000/250500]	Loss: 0.001250	Loss: 0.003150
-====> Epoch: 7 done!
+====&gt; Epoch: 7 done!
 Train Epoch: 8 [0/250500]	Loss: 0.001242	Loss: 0.003158
 Train Epoch: 8 [250000/250500]	Loss: 0.001235	Loss: 0.002745
-====> Epoch: 8 done!
+====&gt; Epoch: 8 done!
 Train Epoch: 9 [0/250500]	Loss: 0.001093	Loss: 0.002915
 Train Epoch: 9 [250000/250500]	Loss: 0.001357	Loss: 0.003052
-====> Epoch: 9 done!
+====&gt; Epoch: 9 done!
 Train Epoch: 10 [0/250500]	Loss: 0.001276	Loss: 0.003014
 Train Epoch: 10 [250000/250500]	Loss: 0.001053	Loss: 0.003656
-====> Epoch: 10 done!
+====&gt; Epoch: 10 done!
 Train Epoch: 11 [0/250500]	Loss: 0.001076	Loss: 0.003654
 Train Epoch: 11 [250000/250500]	Loss: 0.001373	Loss: 0.002868
-====> Epoch: 11 done!
+====&gt; Epoch: 11 done!
 Train Epoch: 12 [0/250500]	Loss: 0.001270	Loss: 0.002848
 Train Epoch: 12 [250000/250500]	Loss: 0.001166	Loss: 0.003288
-====> Epoch: 12 done!
+====&gt; Epoch: 12 done!
 Train Epoch: 13 [0/250500]	Loss: 0.001110	Loss: 0.003320
 Train Epoch: 13 [250000/250500]	Loss: 0.001227	Loss: 0.002905
-====> Epoch: 13 done!
+====&gt; Epoch: 13 done!
 Train Epoch: 14 [0/250500]	Loss: 0.001295	Loss: 0.002825
 Train Epoch: 14 [250000/250500]	Loss: 0.001322	Loss: 0.002630
-====> Epoch: 14 done!
+====&gt; Epoch: 14 done!
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 <span class="n">zs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample_posterior</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">zs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">zs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[12]:</div>
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.pathcollection at 0x7ff8f12e6c18></pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x7ff8f12e6c18&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXYAAAD8CAYAAABjAo9vAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzsnXeYFNXSh9/Tk2dzIBkQMaKYQMWMioif8ZoTZuWac85i
 ziIqJrwGQAUVcwBBMWACFEVABMkCywY2TZ6u748zG2anZ3Z2WUWw3+fZR+npPn1md6b6nKpfVSkR
@@ -2427,44 +2490,65 @@ Tats63hOAtYCqUKI7kIIM3Ax8H0bx3RSUL35+F8gTdO059o6nqYihIg+2rUmhAjAswHfrnJNR+uK
 HFKjEUJ8BkzGozCYC/xD07T/tmlQjUQIMR5YBmzF87cK8H+apv3YdlE1HiHEQOADPL83EvClpmn/
 bNuovOlQid3AwMDAoIOVYgwMDAwMjMRuYGBg0OEwEruBgYFBB8NI7AYGBgYdDCOxGxgYGHQwjMRu
 YGBg0MEwEruBgYFBB8NI7AYGBgYdjP8HVd78S1B1GYgAAAAASUVORK5CYII=
-" />
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The above plot generates stochastic z values. As we can see, this distribution is much clearer than the equivalent from VAEs.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 <span class="n">zs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample_posterior</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">zs</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">zs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[13]:</div>
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.pathcollection at 0x7ff8f0219710></pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x7ff8f0219710&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAAD8CAYAAAB+UHOxAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAADs1JREFUeJzt3W+IpWd5x/HvL7sGKVZMzDaJu5vuvlgLCyqmYxpQMGpC
 d1fpKmhJ1JgWYYkaicWi20p9I7SRggYhJmxjaKTCYmvQRVZjTE1LCbGZVYldlyRLRLNxY8YgKvZF
@@ -2534,92 +2618,126 @@ c1RVO6tqR7f+/BvwwbW2+MP6DYBbgGuSPA5c3e2T5BVJjk60s7VjlDl6PXA98OYkP+i+9k2m3XOv
 qmaBm4B7mXvB+8tVdTzJjUlu7MqOAk8AJ4F/Aj44kWYnZMQ5+iTwcuDz3c/M9ITanYgR52hd8J3A
 ktSo9XoFIEnqyQCQpEYZAJLUKANAkhplAEhSowwASWqUASBJjTIAJKlR/wfj8PiCXx39ZgAAAABJ
 RU5ErkJggg==
-" />
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As this shows, it has learnt that their should be 4 means for the posterior, and positioned them far away from each other.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Some-example-points">Some example points<a class="anchor-link" href="#Some-example-points">¶</a></h2><p>The output of the decoder is the Bernoulli probability that that element is 1.</p>
+<h2 id="Some-example-points">Some example points<a class="anchor-link" href="#Some-example-points">&#182;</a></h2><p>The output of the decoder is the Bernoulli probability that that element is 1.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">test_point</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">test_point</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">test_point</span><span class="p">)</span>
 <span class="n">s</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>
  2.6369e-14  5.8558e-09  1.8340e-08  1.0000e+00
 [torch.FloatTensor of size 1x4]</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As the boundary is much sharper, it is normally clear for almost any point which class the latent variable corresponds to. If we pick a border point, the network has much lower probabilties.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">test_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">test_point</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">test_point</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">test_point</span><span class="p">)</span>
 <span class="n">s</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[16]:</div>
+
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>
  7.8847e-03  1.0944e-01  5.7596e-06  1.0726e-03
 [torch.FloatTensor of size 1x4]</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post I have implemented the AVB algorithm in pytorch, and shown that it provides more intuitive latent codings than a vanilla VAE. This has been the first post to incorporate ideas from implicit generative modelling, and I hope to go over some more substantially theory in future posts.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>In this post I have implemented the AVB algorithm in pytorch, and shown that it provides more intuitive latent codings than a vanilla VAE. This has been the first post to incorporate ideas from implicit generative modelling, and I hope to go over some more substantially theory in future posts.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2650,67 +2768,19 @@ RU5ErkJggg==
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="http://chrisorm.github.io/VAE-pyt.html" title="Previous: Variational Autoencoder in Pytorch">Variational Autoencoder in Pytorch</a></li>
- 
-                <li class="next_article"><a href="http://chrisorm.github.io/MCDropout.html" title="Next: Dropout As a Bayesian Method">Dropout As a Bayesian Method</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-12-17T21:40:00+00:00">Dec 17, 2017</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Implicit-Learning-ref">Implicit Learning
-                    <span>1</span>
-</a></li>
-                <li><a href="/tags.html#Python-ref">Python
-                    <span>16</span>
-</a></li>
-                <li><a href="/tags.html#PyTorch-ref">PyTorch
-                    <span>7</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://localhost:8000/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://localhost:8000/tag/variational-inference.html">Variational Inference</a>, <a href="http://localhost:8000/tag/vi.html">VI</a>, <a href="http://localhost:8000/tag/python.html">Python</a>, <a href="http://localhost:8000/tag/pytorch.html">PyTorch</a>, <a href="http://localhost:8000/tag/implicit-learning.html">Implicit Learning</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://localhost:8000/theme/js/main.js"></script>
     </body>
 </html>

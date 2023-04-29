@@ -1,64 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Dropout, Variational Inference, VI, Neural Networks, posts, " />
-        <title>Dropout As a Bayesian Method  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Dropout As a Bayesian Method
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="http://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="http://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="http://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="http://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://localhost:8000/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/blog.css">
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/github.css">
+        <script src="http://localhost:8000/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="http://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="http://chrisorm.github.io">Home</a></li>
-                            <li ><a href="http://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="http://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="http://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="http://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="http://chrisorm.github.io/MCDropout.html"> Dropout As a Bayesian Method  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://localhost:8000"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://localhost:8000/index.html">Home</a></li>
+                <li><a href="http://localhost:8000/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2018-01-27T16:00:00+00:00" pubdate>
+                            Sat 27 January 2018
+                        </time>
+                        <a href="http://localhost:8000/MCDropout.html" rel="bookmark"><h1>Dropout As a Bayesian Method</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1101,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1131,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1156,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1172,14 +1181,15 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Dropout-as-a-Bayesian-Method">Dropout as a Bayesian Method<a class="anchor-link" href="#Dropout-as-a-Bayesian-Method">¶</a></h1><p>Dropout is a common method to prevent overfitting in neural networks. This post covers <a href="https://arxiv.org/abs/1506.02142">Dropout as a Bayesian Approximation</a>.</p>
+<h1 id="Dropout-as-a-Bayesian-Method">Dropout as a Bayesian Method<a class="anchor-link" href="#Dropout-as-a-Bayesian-Method">&#182;</a></h1><p>Dropout is a common method to prevent overfitting in neural networks. This post covers <a href="https://arxiv.org/abs/1506.02142">Dropout as a Bayesian Approximation</a>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Dropout">Dropout<a class="anchor-link" href="#Dropout">¶</a></h2><p>Dropout is a way to reduce overfitting during training of neural networks. The idea is simple - if a single sample of input to a layer in out network is N dimensional, we sample N independent Bernoulli variables with a probability $p$ (also called the dropout probability), and take the product of each Bernoulli sample with the corresponding entry of our input.</p>
+<h2 id="Dropout">Dropout<a class="anchor-link" href="#Dropout">&#182;</a></h2><p>Dropout is a way to reduce overfitting during training of neural networks. The idea is simple - if a single sample of input to a layer in out network is N dimensional, we sample N independent Bernoulli variables with a probability $p$ (also called the dropout probability), and take the product of each Bernoulli sample with the corresponding entry of our input.</p>
 <p>$\mathbf{z} = \left[\begin{matrix}z_{0} \\ ... \\ z_{i} \\ ... \\ z_{N}\end{matrix}\right]$</p>
 <p>$z_{i} \sim Bernoulli(p)$</p>
 <p>$\mathbf{\hat{y}} = \sigma((\mathbf{x} \cdot \mathbf{z})^{T}W +b)$</p>
@@ -1190,9 +1200,9 @@ h6:hover .anchor-link {
 <p>$\mathcal{L} = Er(\mathbf{\tilde{y}}, \mathbf{y}) + \lambda(||W||_{2}^{2}+||W_{2}||_{2}^{2}+||b||_{2}^{2} + ||b_{2}||_{2}^{2})$</p>
 <p>For regression, $Er$ could be the normal squared error:</p>
 <p>$Er(\mathbf{\tilde{y}}, \mathbf{y}) = ||\mathbf{\tilde{y}}- \mathbf{y}||_{2}^{2}$</p>
-<h3 id="Intuition">Intuition<a class="anchor-link" href="#Intuition">¶</a></h3><p>Dropout works because for every sample, each feature may be zero-ed out with probability p. This means in order to make good predictions, the network cannot rely too heavily on any specific feature. Generalisation is, at a high level, having a network that is not dependent on specific patterns within the training set that do not hold in general.</p>
+<h3 id="Intuition">Intuition<a class="anchor-link" href="#Intuition">&#182;</a></h3><p>Dropout works because for every sample, each feature may be zero-ed out with probability p. This means in order to make good predictions, the network cannot rely too heavily on any specific feature. Generalisation is, at a high level, having a network that is not dependent on specific patterns within the training set that do not hold in general.</p>
 <p>This means that the network is too sensitive to particular features. Dropout helps combat this because any feature may be set to 0. If the network is heavily reliant on very particular intricacies of a feature, it will perform terribly if we set that feature to 0. So in order to achieve a good Loss, the network is forced to not exploit small transient patterns in the training set.</p>
-<h2 id="Dropout-as-a-Bayesian-method">Dropout as a Bayesian method<a class="anchor-link" href="#Dropout-as-a-Bayesian-method">¶</a></h2><p>The basic approach we will take is to view our network as a Gaussian Process. Let our final network outputs be $\mathbf{Y}$, and the inputs be $\mathbf{X}$. A Gaussian process with the correct kernel and sufficient form is capable of modelling any function, so this view is justified.</p>
+<h2 id="Dropout-as-a-Bayesian-method">Dropout as a Bayesian method<a class="anchor-link" href="#Dropout-as-a-Bayesian-method">&#182;</a></h2><p>The basic approach we will take is to view our network as a Gaussian Process. Let our final network outputs be $\mathbf{Y}$, and the inputs be $\mathbf{X}$. A Gaussian process with the correct kernel and sufficient form is capable of modelling any function, so this view is justified.</p>
 <p>Let us consider a slightly simplified functional form that above:</p>
 <p>$\mathbf{\tilde{y}} = \sigma(\mathbf{X}W_{1} +b)W_{2} + \epsilon$</p>
 <p>$X$ has shape Nxd, $W_{1}$ is dxK, $W_{2}$ is Kx1.</p>
@@ -1204,16 +1214,18 @@ h6:hover .anchor-link {
 <p>Here we have an anlogue to standard loss functions - if each of the terms above are normal, performing MAP estimation is equivalent to minimising:</p>
 <p>$||y-\hat{y}^{2}|| + ||W_{1}||^{2}+ ||W_{2}||^{2}+ ||b||^{2}$</p>
 <p>Which is a standard sum-of squares loss funciton with regularization terms.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="As-a-Gaussian-Process">As a Gaussian Process<a class="anchor-link" href="#As-a-Gaussian-Process">¶</a></h2><p>We can also write this as a Gaussian process, which is the approach used in the paper:</p>
+<h2 id="As-a-Gaussian-Process">As a Gaussian Process<a class="anchor-link" href="#As-a-Gaussian-Process">&#182;</a></h2><p>We can also write this as a Gaussian process, which is the approach used in the paper:</p>
 <p>$\mathcal{N}(\mathbf{\tilde{y}}| f, \tau^{-1}I_{d})\mathcal{N}(f|0, K)$</p>
 <p>$f = \Phi W_{2}$</p>
 <p>where $\Phi = \sigma(\mathbf{X}W_{1}+b)$</p>
+
 </div>
 </div>
 </div>
@@ -1229,14 +1241,16 @@ h6:hover .anchor-link {
 <p>$K_{n,m} = K(\mathbf{X}_{n},\mathbf{X}_{m})$</p>
 <p>We can approximate the integral by samples:</p>
 <p>$\hat{K}(x,y)= \frac{1}{K} \sum_{k=1}^{K} \sigma(w_{k}^{T}x +b_{k}) \sigma(w_{k}^{T}y +b_{k})$</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Uncertainty-Estimates-of-a-New-point">Uncertainty Estimates of a New point<a class="anchor-link" href="#Uncertainty-Estimates-of-a-New-point">¶</a></h2><p>Given some new sample, $x'$, we want the distribution of $y'$.</p>
+<h2 id="Uncertainty-Estimates-of-a-New-point">Uncertainty Estimates of a New point<a class="anchor-link" href="#Uncertainty-Estimates-of-a-New-point">&#182;</a></h2><p>Given some new sample, $x'$, we want the distribution of $y'$.</p>
 <p>$P(y' | x', \mathbf{X}, y) = \int P(y' | x', W_{1}, W_{2}, b)P(W_{1}, W_{2}, b | \mathbf{X}, y) dW_{1}dW_{2}db$</p>
+
 </div>
 </div>
 </div>
@@ -1258,25 +1272,30 @@ h6:hover .anchor-link {
 <p>Where</p>
 <p>$W^{n} = M \cdot Z^{n}$</p>
 <p>In practice, this corresponds to simply applying dropout at test time, and the computing the probability of each output under a normal distribution under multiple samples, as specified above, and averaging the results for each data point.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">¶</a></h2><p>For me the key insight is the result the link between dropout and a mixture of gaussians. Under this framework, training the network corresponds to learning the means of one of the mixture components. Of course, the real crux of the issue is the appropriateness of this posterior - the uncertainty estimates we generate are only as good as our approximation to the true posterior. Knowing if this choice is sufficient to give us useful output is of course a much harder problem.</p>
+<h2 id="Discussion">Discussion<a class="anchor-link" href="#Discussion">&#182;</a></h2><p>For me the key insight is the result the link between dropout and a mixture of gaussians. Under this framework, training the network corresponds to learning the means of one of the mixture components. Of course, the real crux of the issue is the appropriateness of this posterior - the uncertainty estimates we generate are only as good as our approximation to the true posterior. Knowing if this choice is sufficient to give us useful output is of course a much harder problem.</p>
 <p>Empirically, we see that dropout improves generalisation of networks when appropriately applied.</p>
 <p>We could view this as saying that overfitting corresponds to learning parameters $\omega = [W_1, W_2, b]$ so that $P(Y | X, \omega)$ is high, but $P(Y| X)$ is not. If this is the case, applying dropout is analogous to optimising the model evidence as opposed to the likelihood, which is a well established bayesian method to avoid overfitting.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>This post was a short summary of the details of the paper by Gal et Al. I mainly focussed on the interpretation and the use of this approach to compute distributions over the output of a network. In the appendix to the original paper, the authors present a more complete set of results, such as how this applies to classification, and formulas for a variety of useful quantities like marginal likelihood etc, as well as expanding on some points I skimmed over here.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>This post was a short summary of the details of the paper by Gal et Al. I mainly focussed on the interpretation and the use of this approach to compute distributions over the output of a network. In the appendix to the original paper, the authors present a more complete set of results, such as how this applies to classification, and formulas for a variety of useful quantities like marginal likelihood etc, as well as expanding on some points I skimmed over here.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1307,64 +1326,19 @@ h6:hover .anchor-link {
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="http://chrisorm.github.io/AVB-pyt.html" title="Previous: Adversarial Variational Bayes in Pytorch">Adversarial Variational Bayes in Pytorch</a></li>
- 
-                <li class="next_article"><a href="http://chrisorm.github.io/AD-IS.html" title="Next: Approximate Distributions Implied by Importance Sampling">Approximate Distributions Implied by Importance Sampling</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2018-01-27T16:00:00+00:00">Jan 27, 2018</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Dropout-ref">Dropout
-                    <span>1</span>
-</a></li>
-                <li><a href="/tags.html#Neural-Networks-ref">Neural Networks
-                    <span>1</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://localhost:8000/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://localhost:8000/tag/dropout.html">Dropout</a>, <a href="http://localhost:8000/tag/variational-inference.html">Variational Inference</a>, <a href="http://localhost:8000/tag/vi.html">VI</a>, <a href="http://localhost:8000/tag/neural-networks.html">Neural Networks</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://localhost:8000/theme/js/main.js"></script>
     </body>
 </html>

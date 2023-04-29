@@ -1,64 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Stochastic Differential Equations, SDEs, Sampling, posts, " />
-        <title>Linking Sampling and Stochastic Differential Equations  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Linking Sampling and Stochastic Differential Equations
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="http://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="http://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="http://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="http://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://localhost:8000/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/blog.css">
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/github.css">
+        <script src="http://localhost:8000/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="http://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="http://chrisorm.github.io">Home</a></li>
-                            <li ><a href="http://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="http://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="http://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="http://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="http://chrisorm.github.io/SDE-S.html"> Linking Sampling and Stochastic Differential Equations  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://localhost:8000"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://localhost:8000/index.html">Home</a></li>
+                <li><a href="http://localhost:8000/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2019-08-18T12:00:00+01:00" pubdate>
+                            Sun 18 August 2019
+                        </time>
+                        <a href="http://localhost:8000/SDE-S.html" rel="bookmark"><h1>Linking Sampling and Stochastic Differential Equations</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1101,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1131,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1156,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1172,40 +1181,43 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Linking-SDEs-and-Sampling">Linking SDEs and Sampling<a class="anchor-link" href="#Linking-SDEs-and-Sampling">¶</a></h1><p>In bayesian inference, when we want to find samples from an intractable posterior distribution, we often resort to sampling schemes like Metropolis-Hastings or Hamiltonian Monte Carlo. It can seem like a bit of black box as to how this actually works - but there is a powerful intuition to be gained by considering stochastic processes.</p>
+<h1 id="Linking-SDEs-and-Sampling">Linking SDEs and Sampling<a class="anchor-link" href="#Linking-SDEs-and-Sampling">&#182;</a></h1><p>In bayesian inference, when we want to find samples from an intractable posterior distribution, we often resort to sampling schemes like Metropolis-Hastings or Hamiltonian Monte Carlo. It can seem like a bit of black box as to how this actually works - but there is a powerful intuition to be gained by considering stochastic processes.</p>
 <p>The aim of this post (or perhaps post series) is to provide some background and intution behind the excellent work: <a href="https://arxiv.org/pdf/1506.04696.pdf">A Complete Recipe for Stochastic Gradient MCMC</a>.</p>
 <p>This post involves some stochastic processes and ideas from stochastic calculus. If you want a good introductory resource, in the past I have found:</p>
-<p>Brownian Motion Calculus - Wiersema <br />
-Stochastic Calculus for Finance (Parts 1 & 2)- Shreve <br /></p>
+<p>Brownian Motion Calculus - Wiersema <br/>
+Stochastic Calculus for Finance (Parts 1 &amp; 2)- Shreve <br/></p>
 <p>to be really good introductions.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Ito-Process-and-SDE's---A-Recap">Ito Process and SDE's - A Recap<a class="anchor-link" href="#Ito-Process-and-SDE's---A-Recap">¶</a></h2><p>An Ito process is one of the form:</p>
+<h2 id="Ito-Process-and-SDE's---A-Recap">Ito Process and SDE's - A Recap<a class="anchor-link" href="#Ito-Process-and-SDE's---A-Recap">&#182;</a></h2><p>An Ito process is one of the form:</p>
 <p>$dX_{t} = \mu_{t}dt + \theta_{t}dW_{t}$</p>
 <p>Where $W_{t}$ is a Brownian motion - i.e. $W_{t} - W_{s} \sim N(0, t-s)$</p>
 <p>This is actually shorthand - we won't go into technicalities but the process $X_{t}$ is differentiable almost nowhere.</p>
 <p>What is important here is intuition - essentially we can read the differential form as at any time point, the change in $X_{t}$ is made up of a deterministic part changing through time, and a stochasitic part that is related to a Brownian motion.</p>
 <p>This is a stochastic process, and we can take analogue to the Euler discretisation from ODE's, called Euler-Maruyama discretisation as a practical way to simulate a stochasic process from a given ODE.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Fokker-Planck-Equation">Fokker-Planck Equation<a class="anchor-link" href="#Fokker-Planck-Equation">¶</a></h1><p>For a stochastic process the Fokker-Planck equation is a PDE which quantifies the evolution of the probability the process is in state x at time t. If the process is as given above;</p>
+<h1 id="Fokker-Planck-Equation">Fokker-Planck Equation<a class="anchor-link" href="#Fokker-Planck-Equation">&#182;</a></h1><p>For a stochastic process the Fokker-Planck equation is a PDE which quantifies the evolution of the probability the process is in state x at time t. If the process is as given above;</p>
 <p>$\frac{dp(x,t)}{dt} = -\frac{d(\mu(x,t) p(x,t))}{dx} +\frac{1}{2} \frac{d^{2}(\sigma^{2}(x,t) p(x,t))}{dx^{2}}$</p>
 <p>The stationary distribution of the SDE is given when $\frac{dp(x,t)}{dt}=0$. Hence the name, stationary (also, steady state) - as time evolves, the probabilites do not change.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="An-example">An example<a class="anchor-link" href="#An-example">¶</a></h3><p>Let's consider $\mu = -x_{t}$, $\sigma = \sqrt{2}$.</p>
+<h3 id="An-example">An example<a class="anchor-link" href="#An-example">&#182;</a></h3><p>Let's consider $\mu = -x_{t}$, $\sigma = \sqrt{2}$.</p>
 <p>We get the ODE:</p>
 <p>$ 0= -\frac{d(-x_{t}p(x,t))}{dx} + \frac{d^{2} p(x,t))}{dx^{2}}$</p>
 <p>$\frac{d p(x,t))}{dx} = -x_{t}p(x,t))  +c $</p>
@@ -1216,13 +1228,15 @@ Stochastic Calculus for Finance (Parts 1 & 2)- Shreve <br /></p>
 <p>$dX_{t} = -X_{t}dt + \sqrt{2} dW_{t}$</p>
 <p>and the values of X are our samples!</p>
 <p>Obviously in practice this is not neccesary - we can generate samples directly in this case. However, the concept is sound - we can sample from a distribution if only we know the correct stochastic process!</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Solving-it-the-other-way-round!">Solving it the other way round!<a class="anchor-link" href="#Solving-it-the-other-way-round!">¶</a></h3><p>What we did before was to solve the ODE to find the stationary distribution. We can however, solve for the coefficient given a known probability distribution. We can tell that p(x,t) = p(x) because it's partial derivative with respect to $t$ is 0, so we drop it from our notation.</p>
+<h3 id="Solving-it-the-other-way-round!">Solving it the other way round!<a class="anchor-link" href="#Solving-it-the-other-way-round!">&#182;</a></h3><p>What we did before was to solve the ODE to find the stationary distribution. We can however, solve for the coefficient given a known probability distribution. We can tell that p(x,t) = p(x) because it's partial derivative with respect to $t$ is 0, so we drop it from our notation.</p>
+
 </div>
 </div>
 </div>
@@ -1238,27 +1252,32 @@ Stochastic Calculus for Finance (Parts 1 & 2)- Shreve <br /></p>
 <p>$\frac{d D(x) )}{dx} + D(x) \frac{d \ (ln \ p(x))}{dx} = \mu(x)$</p>
 <p>So, we can pick a form for $D(x, t)$ and find the appropriate drift coefficient so that the stochastic process has a stationary distribution of the desired distribution!</p>
 <p>We can repeat our previous example, but by using $ln \ p(x) = \frac{-x^{2}}{2}$ and $D(x)=1$. As such we find the coefficient we need is (as expected) $-x$.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Use-of-this-approach">Use of this approach<a class="anchor-link" href="#Use-of-this-approach">¶</a></h2><p>Firstly, simulating an SDE is quite straight-forward! Secondly, we don't have to limit ourselves to simple closed form distribution sampling. Recalling the log posterior is:</p>
+<h2 id="Use-of-this-approach">Use of this approach<a class="anchor-link" href="#Use-of-this-approach">&#182;</a></h2><p>Firstly, simulating an SDE is quite straight-forward! Secondly, we don't have to limit ourselves to simple closed form distribution sampling. Recalling the log posterior is:</p>
 <p>$ln \ P(\theta \mid \mathcal{D}) = ln \ P(\theta, \mathcal{D}) + C$</p>
 <p>This means the gradients are the same, and so we can compute the gradient of log joint, and use a simple discretisation regime on the resulting stochastic process to sample from the posterior distribution!</p>
 <p>It should be noted however, that just because the stationary distribution is correct, it doesn't mean that in practice our simulation will converge in any sensible time. Effective simulation of SDEs is a big topic!</p>
 <p>Most samplers we might care to use are actually specialisations of the above procedure, but in higher dimensions. It also can be interesting to look at what we can add from other areas - for example, stochastic gradient Hamiltonian Monte Carlo is where we use an estimate of the gradient rather than its full form. See the paper for more details, but you may also want to check out <a href="https://arxiv.org/abs/1906.10652">Monte Carlo Gradient Estimation in Machine Learning</a> for some ways we could compute estimates of this gradient.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>What we have seen in this post is that the there is a reasonably simple way that we can determine (in this case 1D) a stochastic process which has the stationary distribution we wish to sample from. We can go through an analogue procedure, as listed in the paper, to do the same thing in n dimensions.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>What we have seen in this post is that the there is a reasonably simple way that we can determine (in this case 1D) a stochastic process which has the stationary distribution we wish to sample from. We can go through an analogue procedure, as listed in the paper, to do the same thing in n dimensions.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1289,59 +1308,19 @@ Stochastic Calculus for Finance (Parts 1 & 2)- Shreve <br /></p>
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="http://chrisorm.github.io/GM2.html" title="Previous: Graphical Models 2 - Sum Product Algorithm">Graphical Models 2 - Sum Product Algorithm</a></li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2019-08-18T12:00:00+01:00">Aug 18, 2019</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Sampling-ref">Sampling
-                    <span>2</span>
-</a></li>
-                <li><a href="/tags.html#SDEs-ref">SDEs
-                    <span>1</span>
-</a></li>
-                <li><a href="/tags.html#Stochastic-Differential-Equations-ref">Stochastic Differential Equations
-                    <span>1</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://localhost:8000/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://localhost:8000/tag/stochastic-differential-equations.html">Stochastic Differential Equations</a>, <a href="http://localhost:8000/tag/sdes.html">SDEs</a>, <a href="http://localhost:8000/tag/sampling.html">Sampling</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://localhost:8000/theme/js/main.js"></script>
     </body>
 </html>

@@ -1,3 +1,15 @@
-[submodule "plugins/ipynb"]
-	path = plugins/ipynb
-	url = git://github.com/danielfrg/pelican-ipynb.git
+[submodule "pelican-plugins"]
+	path = pelican-plugins
+	url = https://github.com/getpelican/pelican-plugins
+[submodule "themes/pelican-blue"]
+	path = themes/pelican-blue
+	url = https://github.com/Parbhat/pelican-blue.git
+[submodule "themes/pelican-elegant"]
+	path = themes/pelican-elegant
+	url = https://github.com/Pelican-Elegant/elegant.git
+[submodule "pelican-themes"]
+	path = pelican-themes
+	url = https://github.com/getpelican/pelican-themes.git
+[submodule "my_themes/pelicancait"]
+	path = my_themes/pelicancait
+	url = git@github.com:chrisorm/pelican-cait-corm.git

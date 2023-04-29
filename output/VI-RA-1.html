@@ -1,64 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Variational Inference, VI, Python, PyTorch, Alpha Divergence, Renyi, posts, " />
-        <title>Renyi Alpha Variational Inference - Part 1  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Renyi Alpha Variational Inference - Part 1
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="http://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="http://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="http://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="http://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="http://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://localhost:8000/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/blog.css">
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/github.css">
+        <script src="http://localhost:8000/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="http://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="http://chrisorm.github.io">Home</a></li>
-                            <li ><a href="http://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="http://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="http://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="http://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="http://chrisorm.github.io/VI-RA-1.html"> Renyi Alpha Variational Inference - Part 1  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://localhost:8000"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://localhost:8000/index.html">Home</a></li>
+                <li><a href="http://localhost:8000/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2017-11-14T22:33:00+00:00" pubdate>
+                            Tue 14 November 2017
+                        </time>
+                        <a href="http://localhost:8000/VI-RA-1.html" rel="bookmark"><h1>Renyi Alpha Variational Inference - Part 1</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1101,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1131,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1156,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1172,22 +1181,24 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Renyi-Alpha-Divergence">Renyi Alpha Divergence<a class="anchor-link" href="#Renyi-Alpha-Divergence">¶</a></h1><p>In many areas of machine learning, we use the KL-divergence to measure the 'distance' between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on <a href="https://arxiv.org/pdf/1602.02311.pdf">Renyi Divergence Variational Inference</a>, submitted to NIPS 2016.</p>
+<h1 id="Renyi-Alpha-Divergence">Renyi Alpha Divergence<a class="anchor-link" href="#Renyi-Alpha-Divergence">&#182;</a></h1><p>In many areas of machine learning, we use the KL-divergence to measure the 'distance' between probability distributions. However, the KL-divergence is a special case of a wider range of $\alpha$-family divergences. One of interest in the VI literature is the Renyi $\alpha$ divergence, and this post is a short note on this family. This post is one of a series, and this post in mainly theory based on <a href="https://arxiv.org/pdf/1602.02311.pdf">Renyi Divergence Variational Inference</a>, submitted to NIPS 2016.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Alpha-divergence-recap">Alpha divergence recap<a class="anchor-link" href="#Alpha-divergence-recap">¶</a></h2><p>The alpha divergence is given by;</p>
+<h2 id="Alpha-divergence-recap">Alpha divergence recap<a class="anchor-link" href="#Alpha-divergence-recap">&#182;</a></h2><p>The alpha divergence is given by;</p>
 <p>$D_{\alpha}[q\mid \mid p] =\frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
 <p>$ = \frac{1}{\alpha-1} log \int q(x) q(x)^{\alpha - 1}p(x)^{1-\alpha}dx$</p>
 <p>$ = \frac{1}{\alpha-1} log \int q(x) (\frac{p(x)}{q(x)})^{1-\alpha}dx$</p>
 <p>$ =  \frac{1}{\alpha-1} log E_{q}[(\frac{p(x)}{q(x)})^{1-\alpha}]$</p>
-<h2 id="Why-Renyi-Alpha-divergence?">Why Renyi Alpha divergence?<a class="anchor-link" href="#Why-Renyi-Alpha-divergence?">¶</a></h2><p>The presence of the $\alpha$ allows us to tailor the strength of the bound that we use. If we take $\alpha$ as 0, we recover:</p>
+<h2 id="Why-Renyi-Alpha-divergence?">Why Renyi Alpha divergence?<a class="anchor-link" href="#Why-Renyi-Alpha-divergence?">&#182;</a></h2><p>The presence of the $\alpha$ allows us to tailor the strength of the bound that we use. If we take $\alpha$ as 0, we recover:</p>
 <p>$D_{0}[q\mid \mid p] =-log \int p(x)dx = 0$</p>
 <p>This means, we recover the maximum likelihood solution (i.e. the bound is exact), and if we set $\alpha$ to 1, we recover the KL divergence. By choosing some other value, we can generate different behaviour to manipulate the type and tightness of the bound. Many of these points will become clear later in this post, or in subsequent posts.</p>
-<h2 id="Link-to-KL-Divergence">Link to KL Divergence<a class="anchor-link" href="#Link-to-KL-Divergence">¶</a></h2><p>If we take the limit of $\alpha \rightarrow 1$, we recover the KL-divergence, and we prove this now.</p>
+<h2 id="Link-to-KL-Divergence">Link to KL Divergence<a class="anchor-link" href="#Link-to-KL-Divergence">&#182;</a></h2><p>If we take the limit of $\alpha \rightarrow 1$, we recover the KL-divergence, and we prove this now.</p>
+
 </div>
 </div>
 </div>
@@ -1195,6 +1206,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$\lim_{\alpha\to 1} \frac{1}{\alpha-1} log \int q(x)^{\alpha}p(x)^{1-\alpha}dx$</p>
+
 </div>
 </div>
 </div>
@@ -1213,17 +1225,19 @@ h6:hover .anchor-link {
 <p>$\lim_{\alpha \to 1} \frac{1}{\int q(x)^{\alpha}p(x)^{1-\alpha}dx} \int p(x)^{1-\alpha}q(x)^{\alpha}log \ q(x) - q(x)^{\alpha}p(x)^{1-\alpha} log \ p(x) dx$</p>
 <p>$= \frac{1}{\int q(x)dx} \int q(x)log \ q(x) - q(x) log \ p(x) dx$</p>
 <p>$= \int q(x)log \ q(x) - q(x) log \ p(x) dx \ \ = \ KL(q \mid \mid p)$</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Deriving-the-Renyi-Objective">Deriving the Renyi Objective<a class="anchor-link" href="#Deriving-the-Renyi-Objective">¶</a></h2><p>The previous section provides us with some guidance about how to go about deriving a Renyi based bound on the marginal likelihood. If we recall the <a href="https://chrisorm.github.io/VI-ELBO.html">derivation of the ELBO</a>, we will proceed along a similar path, except using Renyi divergences rather than KL. Using the form derived in section 1:</p>
+<h2 id="Deriving-the-Renyi-Objective">Deriving the Renyi Objective<a class="anchor-link" href="#Deriving-the-Renyi-Objective">&#182;</a></h2><p>The previous section provides us with some guidance about how to go about deriving a Renyi based bound on the marginal likelihood. If we recall the <a href="https://chrisorm.github.io/VI-ELBO.html">derivation of the ELBO</a>, we will proceed along a similar path, except using Renyi divergences rather than KL. Using the form derived in section 1:</p>
 <p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z \mid x)}{q(z)})^{1-\alpha}]$</p>
 <p>Expanding the posterior over z under p, $p(z \mid x)$, using bayes theorem, we get:</p>
 <p>$p(z \mid x) = \frac{p(z, x)}{p(x)}$</p>
 <p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{p(x)q(z)})^{1-\alpha}]$</p>
+
 </div>
 </div>
 </div>
@@ -1232,6 +1246,7 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Rearranging slightly, and then separating terms:</p>
 <p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) = \frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} \ \frac{1}{p(x)^{1-\alpha}}] =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha} p(x)^{\alpha -1}] $</p>
+
 </div>
 </div>
 </div>
@@ -1239,6 +1254,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the last term, the marginal likelihood is a constant with respect to the expectation, so we can rewrite this term on the outside of the expectation:</p>
+
 </div>
 </div>
 </div>
@@ -1249,6 +1265,7 @@ h6:hover .anchor-link {
 <p>$=\frac{1}{\alpha -1} (log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x)^{\alpha -1}) $</p>
 <p>$=\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
 <p>So, we now have a familiar form for the first term, this is a Renyi Divergence between the joint and the approximation, and the second term is the log marginal likelihood.</p>
+
 </div>
 </div>
 </div>
@@ -1256,6 +1273,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =\frac{1}{\alpha -1} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
+
 </div>
 </div>
 </div>
@@ -1265,6 +1283,7 @@ h6:hover .anchor-link {
 <p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] \ + \ log \ p(x) $</p>
 <p>$D_{\alpha}(q(z)\mid \mid p(z \mid x)) =- \mathcal{L_\alpha} \ + \ log \ p(x) $</p>
 <p>where $\mathcal{L_\alpha} =  \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z, x)}{q(z)})^{1-\alpha}] $</p>
+
 </div>
 </div>
 </div>
@@ -1273,14 +1292,16 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here, we have an equivalent formulation to that which we ended up with when we derived the ELBO. In order to minimise the Renyi divergence between the true and approximate posterior, we should maximise the Renyi bound, $\mathcal{L_{\alpha}}$.</p>
 <p>As mentioned earlier, if we choose $\alpha$ to be 0, it is easy to show that  $D_{\alpha}(q(z)\mid \mid p(z \mid x))$ becomes 0, and so $\mathcal{L_{0}}$ simplifies to nothing more than integrating the z out of the joint, hence it is exact. As the Renyi divergence is continuous in $\alpha$, by picking a value between 0 and 1, we get somewhere between an exact and ELBO solution.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Practicalities-of-using-the-Renyi-Alpha-divergence.">Practicalities of using the Renyi Alpha divergence.<a class="anchor-link" href="#Practicalities-of-using-the-Renyi-Alpha-divergence.">¶</a></h2><p>When we use the KL divergence, we approximate the expectations by monte carlo, as covered in a <a href="https://chrisorm.github.io/VI-MC.html">previous post</a>. For the KL divergence, we are lucky that this happens to be an unbiased estimate of the true expectation, so we can use this in our optimisation procedure confident of our convergence.</p>
+<h2 id="Practicalities-of-using-the-Renyi-Alpha-divergence.">Practicalities of using the Renyi Alpha divergence.<a class="anchor-link" href="#Practicalities-of-using-the-Renyi-Alpha-divergence.">&#182;</a></h2><p>When we use the KL divergence, we approximate the expectations by monte carlo, as covered in a <a href="https://chrisorm.github.io/VI-MC.html">previous post</a>. For the KL divergence, we are lucky that this happens to be an unbiased estimate of the true expectation, so we can use this in our optimisation procedure confident of our convergence.</p>
 <p>Let's do the same with the Renyi bound:</p>
+
 </div>
 </div>
 </div>
@@ -1290,6 +1311,7 @@ h6:hover .anchor-link {
 <p>$\hat{\mathcal{L_\alpha}} =  \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
 <p>For this to be unbiased, if we take the expectation it should be equal to the true value.</p>
 <p>$E_{q}[\hat{\mathcal{L_\alpha}}] = E_{q}[ \frac{1}{1 - \alpha} log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
+
 </div>
 </div>
 </div>
@@ -1297,6 +1319,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$= \frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
+
 </div>
 </div>
 </div>
@@ -1305,6 +1328,7 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is somewhat problematic though, as the log complicates matters. By Jensen's inequality (recalling that the log is convex):</p>
 <p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ \frac{1}{N} E_{q}[  \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]]$</p>
+
 </div>
 </div>
 </div>
@@ -1312,6 +1336,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$\frac{1}{1 - \alpha} E_{q}[ log \ \frac{1}{N} \sum_{n}^{N} [(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]] \le \frac{1}{1 - \alpha} log \ E_{q}[(\frac{p(z_{n}, x)}{q(z_{n})})^{1-\alpha}]$</p>
+
 </div>
 </div>
 </div>
@@ -1319,17 +1344,21 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is not great, as we are trying to maximise $\mathcal{L_{\alpha}}$. So our estimate of the bound will actually be a underestimate, making the bound less tight.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, I have introduced the Renyi alpha divergence, and we have seen some important properties. We have shown that the KL-divergence is a special case, shown how we can derive a Renyi Lower Bound, and shown that a monte carlo approximation of this bound is biased to underestimate the bound.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>In this post, I have introduced the Renyi alpha divergence, and we have seen some important properties. We have shown that the KL-divergence is a special case, shown how we can derive a Renyi Lower Bound, and shown that a monte carlo approximation of this bound is biased to underestimate the bound.</p>
 <p>In the next post, I will show some more properties of the Renyi divergence bound, as well as use it in a practical problem or two!</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1360,70 +1389,19 @@ h6:hover .anchor-link {
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="http://chrisorm.github.io/VI-MC-PYT.html" title="Previous: Variational Inference - Monte Carlo ELBO in PyTorch">Variational Inference - Monte Carlo ELBO in PyTorch</a></li>
- 
-                <li class="next_article"><a href="http://chrisorm.github.io/VI-RA-2.html" title="Next: Renyi Alpha Variational Inference - Part 2">Renyi Alpha Variational Inference - Part 2</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-11-14T22:33:00+00:00">Nov 14, 2017</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Alpha-Divergence-ref">Alpha Divergence
-                    <span>3</span>
-</a></li>
-                <li><a href="/tags.html#Python-ref">Python
-                    <span>16</span>
-</a></li>
-                <li><a href="/tags.html#PyTorch-ref">PyTorch
-                    <span>7</span>
-</a></li>
-                <li><a href="/tags.html#Renyi-ref">Renyi
-                    <span>2</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://localhost:8000/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://localhost:8000/tag/variational-inference.html">Variational Inference</a>, <a href="http://localhost:8000/tag/vi.html">VI</a>, <a href="http://localhost:8000/tag/python.html">Python</a>, <a href="http://localhost:8000/tag/pytorch.html">PyTorch</a>, <a href="http://localhost:8000/tag/alpha-divergence.html">Alpha Divergence</a>, <a href="http://localhost:8000/tag/renyi.html">Renyi</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://localhost:8000/theme/js/main.js"></script>
     </body>
 </html>
