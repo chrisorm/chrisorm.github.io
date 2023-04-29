@@ -10,15 +10,15 @@
 </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-            <link rel="stylesheet" href="http://localhost:8000/theme/css/normalize.css">
+            <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/normalize.css">
         <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
-        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css">
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/main.css">
 
-    <link rel="stylesheet" href="http://localhost:8000/theme/css/blog.css">
-    <link rel="stylesheet" href="http://localhost:8000/theme/css/github.css">
-        <script src="http://localhost:8000/theme/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/blog.css">
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/github.css">
+        <script src="http://chrisorm.github.io:/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -28,13 +28,13 @@
         <div id="wrapper">
 <header id="sidebar" class="side-shadow">
     <hgroup id="site-header">
-      <a id="site-title" href="http://localhost:8000"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+      <a id="site-title" href="http://chrisorm.github.io:"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
         <p id="site-desc"></p>
     </hgroup>
     <nav>
         <ul id="nav-links">
-                <li><a href="http://localhost:8000/index.html">Home</a></li>
-                <li><a href="http://localhost:8000/about.html">About Me</a></li>
+                <li><a href="http://chrisorm.github.io:/index.html">Home</a></li>
+                <li><a href="http://chrisorm.github.io:/about.html">About Me</a></li>
         </ul>
         <ul id="socials">
                 <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
@@ -55,7 +55,7 @@
         <li>
             <article class="post-entry">
                 <header class="entry-header">
-                    <a href="http://localhost:8000/pages/NGP" rel="bookmark"><h1>Neural Processes in PyTorch</h1></a>
+                    <a href="http://chrisorm.github.io:/pages/NGP" rel="bookmark"><h1>Neural Processes in PyTorch</h1></a>
                 </header>
                 <section class="post-content">
                     <style type="text/css">/*!
@@ -1187,7 +1187,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>This sample is then fed back into the 'decoder network' which outputs the mean and variance for $p(x \mid z)$.</li>
 <li>Samples of the reconstructed datapoints are generated (although often it's just the mean).</li>
 </ul>
-<p><img src="vae.png" alt="VAE"></p>
+<p><img src="images/vae.png" alt="VAE"></p>
 <h3 id="Comparison-with-Neural-Processes">Comparison with Neural Processes<a class="anchor-link" href="#Comparison-with-Neural-Processes">&#182;</a></h3><p>VAEs encode a single data point, into a latent representation, and the reconstruct that data point from its latent variable. This is fine if we are learning latent representations for images, but if we want to do this for functions, we need an additional step.</p>
 <p>A function graph (e.g. (X, sin(X)), is defined over <strong>many</strong> sample points. Consider embedding the following function:</p>
 
@@ -1253,7 +1253,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>What we think of as our 'function space' is actually defined by the collection of x,y co-ordinates of all these data points. If we proceed niavely, we can just feed this into a VAE, as it wouldn't capture the correct thing. So what we do is introduce an intermediate step, of production a 'function representation', which is a single representation for all the data points. If you have ever done any NLP, it's the same concept as a sentence or document embedding. Hopefully the equivalence is clear between the below diagram and the previous one for a vanilla VAE.</p>
-<p><img src="np.png" alt="NP"></p>
+<p><img src="images/np.png" alt="NP"></p>
 <p>So as the diagrams hopefully illustrate, the two main differences are that we have an additional 'preprocessing' step where we turn multiple points from a function into a single representation, and when we 'reconstruct' we use both the latent representation and the $X^{*}$ we want to predict at.</p>
 
 </div>
@@ -2176,6 +2176,6 @@ sigma context, target:  [0.0069707  0.01075098]
 </div>
         </div>
 
-        <script src="http://localhost:8000/theme/js/main.js"></script>
+        <script src="http://chrisorm.github.io:/theme/js/main.js"></script>
     </body>
 </html>

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Chris Ormandy'
 SITENAME = 'Infinite n'+u"\u267E"+'rm'
-SITEURL = 'http://localhost:8000/'
+SITEURL = 'http://chrisorm.github.io:'
 
 PATH = 'content'
 
