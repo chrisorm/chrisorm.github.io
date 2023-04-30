@@ -1,67 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Variational Inference, VI, Variational Autoencoder, posts, " />
-        <title>Variational Autoencoders  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Variational Autoencoders
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="https://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="https://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="https://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="https://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link href="https://chrisorm.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - Full Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f334cb7a1d0>] Category Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f335029b490>, <pelican.contents.Article object at 0x7f334cf085d0>, <pelican.contents.Article object at 0x7f334cd35350>, <pelican.contents.Article object at 0x7f334cac5150>, <pelican.contents.Article object at 0x7f334d220ed0>, <pelican.contents.Article object at 0x7f334cac0450>, <pelican.contents.Article object at 0x7f334cafbf90>, <pelican.contents.Article object at 0x7f334c62ff50>, <pelican.contents.Article object at 0x7f334d1b3550>, <pelican.contents.Article object at 0x7f334c788d10>, <pelican.contents.Article object at 0x7f334d049a10>, <pelican.contents.Article object at 0x7f334c61c5d0>, <pelican.contents.Article object at 0x7f334cd65d90>, <pelican.contents.Article object at 0x7f334cff0a10>, <pelican.contents.Article object at 0x7f334c7f3c90>, <pelican.contents.Article object at 0x7f334ced3cd0>, <pelican.contents.Article object at 0x7f334ce6ab10>, <pelican.contents.Article object at 0x7f334cbe97d0>, <pelican.contents.Article object at 0x7f334c86edd0>, <pelican.contents.Article object at 0x7f334d274250>, <pelican.contents.Article object at 0x7f334c604090>, <pelican.contents.Article object at 0x7f334d1ffdd0>, <pelican.contents.Article object at 0x7f334cb15ad0>, <pelican.contents.Article object at 0x7f334d199350>, <pelican.contents.Article object at 0x7f334ce709d0>] Category Atom Feed" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/blog.css">
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/github.css">
+        <script src="http://chrisorm.github.io:/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="https://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="https://chrisorm.github.io">Home</a></li>
-                            <li ><a href="https://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="https://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="https://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="https://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-to-VAE.html"> Variational Autoencoders  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://chrisorm.github.io:"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://chrisorm.github.io:/index.html">Home</a></li>
+                <li><a href="http://chrisorm.github.io:/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2017-12-02T19:20:00+00:00" pubdate>
+                            Sat 02 December 2017
+                        </time>
+                        <a href="http://chrisorm.github.io:/VI-to-VAE.html" rel="bookmark"><h1>Variational Autoencoders</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1104,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1134,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1159,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1175,52 +1181,57 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="From-Variational-Inference-to-Variational-Autoencoders">From Variational Inference to Variational Autoencoders<a class="anchor-link" href="#From-Variational-Inference-to-Variational-Autoencoders">¶</a></h1><p>In previous posts, we have introduced Variational Inference, mainly from the perspective of computing an intractable posterior. However, this is just one use of the very general framework that we have encountered. In this post, I will bridge the gap between the previous posts and <a href="https://arxiv.org/abs/1312.6114">Variational Autoencoders</a>.</p>
+<h1 id="From-Variational-Inference-to-Variational-Autoencoders">From Variational Inference to Variational Autoencoders<a class="anchor-link" href="#From-Variational-Inference-to-Variational-Autoencoders">&#182;</a></h1><p>In previous posts, we have introduced Variational Inference, mainly from the perspective of computing an intractable posterior. However, this is just one use of the very general framework that we have encountered. In this post, I will bridge the gap between the previous posts and <a href="https://arxiv.org/abs/1312.6114">Variational Autoencoders</a>.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Recap">Recap<a class="anchor-link" href="#Recap">¶</a></h2><p>In previous posts, we have had a fixed model, and are looking to compute an approximate posterior, often because this is computationally hard to do exactly. To do this, we derived the ELBO, which revolves around the KL-divergence to measure the 'closeness' of the true and approximate posteriors. Let's denote the parameters of our approximate posterior as $\phi$.</p>
+<h2 id="Recap">Recap<a class="anchor-link" href="#Recap">&#182;</a></h2><p>In previous posts, we have had a fixed model, and are looking to compute an approximate posterior, often because this is computationally hard to do exactly. To do this, we derived the ELBO, which revolves around the KL-divergence to measure the 'closeness' of the true and approximate posteriors. Let's denote the parameters of our approximate posterior as $\phi$.</p>
 <p>$\mathcal{L} = E_{q}[log \ \frac{P(X,Z)}{q(Z)}] = E_{q}[log \ P(X,Z) - log \ q_{\phi}(Z)]  $</p>
 <p>In order to find our approximation, $q$, we solve:</p>
 <p>$max_{\phi}(\mathcal{L})$</p>
-<h2 id="Learning-the-true-joint">Learning the true joint<a class="anchor-link" href="#Learning-the-true-joint">¶</a></h2><p>The natural question to ask is "what if we don't know the model for the joint distribution?". Let's first imagine that we do have a form for the model - e.g. it is normally distributed, but we don't know the parameters of this model. We can use maximum likelihood to learn the parameters of our true model, which we will denote as $\theta$.</p>
+<h2 id="Learning-the-true-joint">Learning the true joint<a class="anchor-link" href="#Learning-the-true-joint">&#182;</a></h2><p>The natural question to ask is "what if we don't know the model for the joint distribution?". Let's first imagine that we do have a form for the model - e.g. it is normally distributed, but we don't know the parameters of this model. We can use maximum likelihood to learn the parameters of our true model, which we will denote as $\theta$.</p>
 <p>So, if we want to learn both the model and the approximate posterior, we can rewrite the above objective as:</p>
 <p>$max_{\phi}max_{\theta} \ E_{p_{D}}[ \mathcal{L}] = max_{\phi, \theta} E_{p_{D}}[E_{q}[log \ P_{\theta}(X,Z) - log \ q_{\phi}(Z)]] $</p>
 <p>where $p_{D}(X)$ denotes the distribution of the data. In practice, we have some data, $X$, and we minimise the mean of the loss function over this data.</p>
 <p>This represents a very minor change to the previous framework, and this is quite natural to handle in modern autodiff framworks.</p>
-<h2 id="Variational-Autoencoders">Variational Autoencoders<a class="anchor-link" href="#Variational-Autoencoders">¶</a></h2><p>One final step brings us to <a href="https://arxiv.org/abs/1312.6114">Variational Autoencoders</a>. The problem with doing simple maximum likelihood as outlined before, is that it is very constraining. If I want to learn a model over Gaussians, it's fine, but if I want to learn a model of the distribution of images that contain zebras, specifying the model is a problem!</p>
+<h2 id="Variational-Autoencoders">Variational Autoencoders<a class="anchor-link" href="#Variational-Autoencoders">&#182;</a></h2><p>One final step brings us to <a href="https://arxiv.org/abs/1312.6114">Variational Autoencoders</a>. The problem with doing simple maximum likelihood as outlined before, is that it is very constraining. If I want to learn a model over Gaussians, it's fine, but if I want to learn a model of the distribution of images that contain zebras, specifying the model is a problem!</p>
 <p>To solve this problem, VAEs replace the explicit model with a neural network. Firstly, we make the near trivial extension that the approximate posterior is given by $q(z \mid x)$. The original paper took the posterior as:</p>
 <p>$q(z \mid X) \sim N(\mu_{q \mid X}, \Sigma_{q \mid X})$</p>
 <p>The notation here means that every x value has its own mean and variance associated with it - so if we have n data points, we learn n means and n covariances.</p>
 <p>We also specify the joint as a prior on Z and a likelihood term on x. The prior is a unit gaussian.</p>
 <p>$P(Z) \sim N(0,I)$</p>
 <p>The form of $P(X \mid Z)$ is either a Gaussian or Bernoulli, depending on the data.</p>
-<h3 id="Distributions-from-Neural-Networks">Distributions from Neural Networks<a class="anchor-link" href="#Distributions-from-Neural-Networks">¶</a></h3><p>In order to have both the approximate posterior and likelihood terms, we use neural networks to learn the form. In the case of the likelihood, we have a neural network that takes a sample from $P(Z)$ as input, and outputs a mean and a variance of the likelihood distribution if it is Gaussian, or the Bernoulli parameter if not.</p>
+<h3 id="Distributions-from-Neural-Networks">Distributions from Neural Networks<a class="anchor-link" href="#Distributions-from-Neural-Networks">&#182;</a></h3><p>In order to have both the approximate posterior and likelihood terms, we use neural networks to learn the form. In the case of the likelihood, we have a neural network that takes a sample from $P(Z)$ as input, and outputs a mean and a variance of the likelihood distribution if it is Gaussian, or the Bernoulli parameter if not.</p>
 <p>The approximate posterior is parameterised by a neural network that takes a sample of our data as input, and outputs a mean and variance for the approximate posterior at this X value.</p>
 <p>In short, the neural networks act a bit like lookup tables - we pass in an input value and get the parameters of the distribution out. From there, everything is much the same as before - we maximise the ELBO.</p>
 <p>Let's assume that the likelihood is given be a Gaussian:</p>
 <p>$P(X \mid Z) \sim N(f(Z), g(Z))$</p>
 <p>Where f and g are our neural network. Assuming we don't use a trivial network (e.g. no hidden layers or no non-linearities), f and g are likely to be far from linear. This means the joint is no longer a Gaussian, but this is a good thing! If the network is sufficiently flexible, it can learn very complex joints that are not at all similar to a Gaussian.</p>
-<h2 id="Some-complications-to-be-aware-of">Some complications to be aware of<a class="anchor-link" href="#Some-complications-to-be-aware-of">¶</a></h2><p>One obvious problem comes from the posterior - whereas before we had to only learn a single posterior, now we learn one for each data point. This means if we have lots of data, this may be a problem!</p>
+<h2 id="Some-complications-to-be-aware-of">Some complications to be aware of<a class="anchor-link" href="#Some-complications-to-be-aware-of">&#182;</a></h2><p>One obvious problem comes from the posterior - whereas before we had to only learn a single posterior, now we learn one for each data point. This means if we have lots of data, this may be a problem!</p>
 <p>$q(z \mid X) \sim N(h(X), k(X))$</p>
 <p>Another, more subtle issue comes from the ELBO itself.</p>
 <p>$\mathcal{L} = E_{q}[log \ \frac{P(X,Z)}{q(Z \mid X)}] $</p>
 <p>We encounter problems if the support of the distributions P and q are different. If there is some point where the distribution under P is non-zero, but the distribution under q is very small, the bound becomes very large. If there is a point where q is actually or numerically zero, the bound is infinite.</p>
 <p>As the bound becomes very large, the gradient signal we get becomes smaller and smaller, and so we may well encounter convergence issues. We will come back to this in more detail in a later post.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, we have bridged the (theoretical) gap between VI and VAEs. We have discussed how to extend the ELBO to cope with learning the model as well as the approximation, and how to use neural networks to help us out for complex distributions.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>In this post, we have bridged the (theoretical) gap between VI and VAEs. We have discussed how to extend the ELBO to cope with learning the model as well as the approximation, and how to use neural networks to help us out for complex distributions.</p>
 <p>In the next post, we will see some code implementing these ideas, and in the future we will expand on some of the problems raised at the end of the post, and see some recent solutions.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1251,61 +1262,19 @@ h6:hover .anchor-link {
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="https://chrisorm.github.io/VI-RVI-3.html" title="Previous: Renyi Alpha Variational Inference - Part 3">Renyi Alpha Variational Inference - Part 3</a></li>
- 
-                <li class="next_article"><a href="https://chrisorm.github.io/GM-Disc-as-ratios.html" title="Next: Learning with Generative Models - Discriminators as approximations of ratios of distributions">Learning with Generative Models - Discriminators as approximations of ratios of distributions</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-12-02T19:20:00+00:00">Dec 2, 2017</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Variational-Autoencoder-ref">Variational Autoencoder
-                    <span>1</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://chrisorm.github.io:/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://chrisorm.github.io:/tag/variational-inference.html">Variational Inference</a>, <a href="http://chrisorm.github.io:/tag/vi.html">VI</a>, <a href="http://chrisorm.github.io:/tag/variational-autoencoder.html">Variational Autoencoder</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://chrisorm.github.io:/theme/js/main.js"></script>
     </body>
 </html>

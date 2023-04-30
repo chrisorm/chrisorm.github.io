@@ -1,67 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Variational Inference, VI, ELBO, posts, " />
-        <title>Variational Inference - Deriving the ELBO  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Variational Inference - Deriving the ELBO
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="https://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="https://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="https://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="https://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link href="https://chrisorm.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - Full Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f334cb7a1d0>] Category Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f335029b490>, <pelican.contents.Article object at 0x7f334cf085d0>, <pelican.contents.Article object at 0x7f334cd35350>, <pelican.contents.Article object at 0x7f334cac5150>, <pelican.contents.Article object at 0x7f334d220ed0>, <pelican.contents.Article object at 0x7f334cac0450>, <pelican.contents.Article object at 0x7f334cafbf90>, <pelican.contents.Article object at 0x7f334c62ff50>, <pelican.contents.Article object at 0x7f334d1b3550>, <pelican.contents.Article object at 0x7f334c788d10>, <pelican.contents.Article object at 0x7f334d049a10>, <pelican.contents.Article object at 0x7f334c61c5d0>, <pelican.contents.Article object at 0x7f334cd65d90>, <pelican.contents.Article object at 0x7f334cff0a10>, <pelican.contents.Article object at 0x7f334c7f3c90>, <pelican.contents.Article object at 0x7f334ced3cd0>, <pelican.contents.Article object at 0x7f334ce6ab10>, <pelican.contents.Article object at 0x7f334cbe97d0>, <pelican.contents.Article object at 0x7f334c86edd0>, <pelican.contents.Article object at 0x7f334d274250>, <pelican.contents.Article object at 0x7f334c604090>, <pelican.contents.Article object at 0x7f334d1ffdd0>, <pelican.contents.Article object at 0x7f334cb15ad0>, <pelican.contents.Article object at 0x7f334d199350>, <pelican.contents.Article object at 0x7f334ce709d0>] Category Atom Feed" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/blog.css">
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/github.css">
+        <script src="http://chrisorm.github.io:/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="https://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="https://chrisorm.github.io">Home</a></li>
-                            <li ><a href="https://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="https://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="https://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="https://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-ELBO.html"> Variational Inference - Deriving the ELBO  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://chrisorm.github.io:"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://chrisorm.github.io:/index.html">Home</a></li>
+                <li><a href="http://chrisorm.github.io:/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2017-09-28T20:00:00+01:00" pubdate>
+                            Thu 28 September 2017
+                        </time>
+                        <a href="http://chrisorm.github.io:/VI-ELBO.html" rel="bookmark"><h1>Variational Inference - Deriving the ELBO</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1104,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1134,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1159,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1175,26 +1181,29 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Deriving-the-Evidence-Lower-Bound">Deriving the Evidence Lower Bound<a class="anchor-link" href="#Deriving-the-Evidence-Lower-Bound">¶</a></h1><h2 id="Recap">Recap<a class="anchor-link" href="#Recap">¶</a></h2><p>In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting:</p>
+<h1 id="Deriving-the-Evidence-Lower-Bound">Deriving the Evidence Lower Bound<a class="anchor-link" href="#Deriving-the-Evidence-Lower-Bound">&#182;</a></h1><h2 id="Recap">Recap<a class="anchor-link" href="#Recap">&#182;</a></h2><p>In the previous post, I talked about different types of bounds we could have, and why we need to use them. As a quick recap, we are looking to compute the marginalization of a joint distribution in a general setting:</p>
 <p>$P(X) = \int_{Z} P(X, Z) dZ$</p>
 <p>Previously, I showed how this can be an incredibly difficult thing to compute using standard methods, such as numerical integration, because of the curse of dimensionality.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Evidence">Evidence<a class="anchor-link" href="#Evidence">¶</a></h2><p>The quantity we are going to derive, in a few ways, is the ELBO, or Evidence Lower BOund. As suggested by the name, it is a bound on the so-called Model Evidence, (also termed the probability of the data), $P(X)$.</p>
+<h2 id="Evidence">Evidence<a class="anchor-link" href="#Evidence">&#182;</a></h2><p>The quantity we are going to derive, in a few ways, is the ELBO, or Evidence Lower BOund. As suggested by the name, it is a bound on the so-called Model Evidence, (also termed the probability of the data), $P(X)$.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Via-Jensen's-Inequality">Via Jensen's Inequality<a class="anchor-link" href="#Via-Jensen's-Inequality">¶</a></h3><p>Let us start with the premise that we wish to find $log P(X)$.</p>
+<h3 id="Via-Jensen's-Inequality">Via Jensen's Inequality<a class="anchor-link" href="#Via-Jensen's-Inequality">&#182;</a></h3><p>Let us start with the premise that we wish to find $log P(X)$.</p>
 <p>$log P(X) = log [\int_{Z} P(X,Z) dZ]$</p>
 <p>Introducing another distribution on Z, we can rewrite as;</p>
 <p>$log P(X) = log [\int_{Z} P(X,Z)\frac{q(Z)}{q(Z)} dZ] = log \ E_{q}[\frac{P(X,Z)}{q(Z)}]$</p>
+
 </div>
 </div>
 </div>
@@ -1202,6 +1211,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>By <a href="https://en.wikipedia.org/wiki/Jensen%27s_inequality#Measure-theoretic_and_probabilistic_form">Jensen's Inequality</a> we know $log \ E_{q}[\frac{P(X,Z)}{q(Z)}] \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}]$</p>
+
 </div>
 </div>
 </div>
@@ -1209,6 +1219,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This gives us;</p>
+
 </div>
 </div>
 </div>
@@ -1217,6 +1228,7 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$ log \ P(X) = log \ E_{q}[\frac{P(X,Z)}{q(Z)}] \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}]$</p>
 <p>$ log \ P(X) \geq \ E_{q}[log \frac{P(X,Z)}{q(Z)}] = \mathcal{L}$</p>
+
 </div>
 </div>
 </div>
@@ -1224,16 +1236,18 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From this, the role of the ELBO is obvious; it is a lower bound on the "evidence", $P(X)$, so we can use this to get an approximation for the evidence.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Via-KL-Divergence">Via KL-Divergence<a class="anchor-link" href="#Via-KL-Divergence">¶</a></h3><p>We can also get to the ELBO from a completely different route.</p>
+<h3 id="Via-KL-Divergence">Via KL-Divergence<a class="anchor-link" href="#Via-KL-Divergence">&#182;</a></h3><p>We can also get to the ELBO from a completely different route.</p>
 <p>Often, we actually want to the approximate the posterior $P(Z|X)$. This is where our distribution $q(Z)$ comes in: we want to choose some distribution, $q(Z)$ to approximate the true posterior $P(Z \mid X)$.</p>
 <p>A really common way to measure the similarity between two probability distributions is the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">KL-divergence</a>. This is a non-negative measure of similarity, that is 0 for identical distributions.</p>
 <p>So, in order to encode the idea that our approximation is close, we want to have some 'small' (what ever that means...) KL-Divergence.</p>
+
 </div>
 </div>
 </div>
@@ -1242,6 +1256,7 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$D_{KL}(q(Z)\mid\mid P(Z|X)) = -E_{q}[log\frac{P(Z\mid X)}{q(Z)}] = -E_{q}[log \ P(Z\mid X) - log \ q(Z)] $</p>
 <p>$-E_{q}[log \ P(Z\mid X) - log \ q(Z)] = -E_{q}[log \frac{ P(Z, X)}{P(X)} - log \ q(Z)] = -E_{q}[log \ P(Z, X) \ - log \ P(X) - log \ q(Z)]$</p>
+
 </div>
 </div>
 </div>
@@ -1252,6 +1267,7 @@ h6:hover .anchor-link {
 <p>$-E_{q}[log \ P(Z, X) \ - log \ P(X) - log \ q(Z)] = -E_{q}[log \ P(Z, X) \ - log \ q(Z)] + E_{q}[log \ P(X)] $</p>
 <p>Therefore, we arrive at;</p>
 <p>$D_{KL}(q(z)\mid\mid P(Z\mid X))= -E_{q}[log \ P(Z, X) \  - log \ q(Z)] + log \ P(X)$</p>
+
 </div>
 </div>
 </div>
@@ -1260,6 +1276,7 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The expectation term is the same as the term we called $\mathcal{L}$ in the previous section, so rewriting;</p>
 <p>$D_{KL}(q(z)\mid\mid P(Z\mid X))= -\mathcal{L} + log \ P(X)$</p>
+
 </div>
 </div>
 </div>
@@ -1267,6 +1284,7 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The original goal was to find an approximation $q(z)$ that is close to the true posterior. So we are varying $q$ in order to minimise the KL-Divergence between it and the posterior. The log evidence is independent of $q$, so it doesn't matter how we vary $q$, it is just a constant term. So to minimise the LHS, we have to minimise $-\mathcal{L}$, which is equivalent to maximising $\mathcal{L}$.</p>
+
 </div>
 </div>
 </div>
@@ -1274,16 +1292,20 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Looking at the ELBO from this perspective, we see that the $q$ that maximises the ELBO also minimises the KL-Divergence between itself and the true posterior.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>From the above two angles, we can see the roles that the component parts of the ELBO play. The ELBO itself is a lower bound on the evidence, whilst the distribution q serves as the approximation of the true posterior.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>From the above two angles, we can see the roles that the component parts of the ELBO play. The ELBO itself is a lower bound on the evidence, whilst the distribution q serves as the approximation of the true posterior.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1314,61 +1336,19 @@ h6:hover .anchor-link {
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="https://chrisorm.github.io/VI-Why.html" title="Previous: Variational Inference - Why?">Variational Inference - Why?</a></li>
- 
-                <li class="next_article"><a href="https://chrisorm.github.io/VI-MC.html" title="Next: Variational Inference - Monte Carlo ELBO">Variational Inference - Monte Carlo ELBO</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-09-28T20:00:00+01:00">Sep 28, 2017</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#ELBO-ref">ELBO
-                    <span>1</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://chrisorm.github.io:/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://chrisorm.github.io:/tag/variational-inference.html">Variational Inference</a>, <a href="http://chrisorm.github.io:/tag/vi.html">VI</a>, <a href="http://chrisorm.github.io:/tag/elbo.html">ELBO</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://chrisorm.github.io:/theme/js/main.js"></script>
     </body>
 </html>

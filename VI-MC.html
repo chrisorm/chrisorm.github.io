@@ -1,67 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Variational Inference, VI, Python, Tensorflow, posts, " />
-        <title>Variational Inference - Monte Carlo ELBO  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Variational Inference - Monte Carlo ELBO
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="https://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="https://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="https://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="https://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link href="https://chrisorm.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - Full Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f334cb7a1d0>] Category Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f335029b490>, <pelican.contents.Article object at 0x7f334cf085d0>, <pelican.contents.Article object at 0x7f334cd35350>, <pelican.contents.Article object at 0x7f334cac5150>, <pelican.contents.Article object at 0x7f334d220ed0>, <pelican.contents.Article object at 0x7f334cac0450>, <pelican.contents.Article object at 0x7f334cafbf90>, <pelican.contents.Article object at 0x7f334c62ff50>, <pelican.contents.Article object at 0x7f334d1b3550>, <pelican.contents.Article object at 0x7f334c788d10>, <pelican.contents.Article object at 0x7f334d049a10>, <pelican.contents.Article object at 0x7f334c61c5d0>, <pelican.contents.Article object at 0x7f334cd65d90>, <pelican.contents.Article object at 0x7f334cff0a10>, <pelican.contents.Article object at 0x7f334c7f3c90>, <pelican.contents.Article object at 0x7f334ced3cd0>, <pelican.contents.Article object at 0x7f334ce6ab10>, <pelican.contents.Article object at 0x7f334cbe97d0>, <pelican.contents.Article object at 0x7f334c86edd0>, <pelican.contents.Article object at 0x7f334d274250>, <pelican.contents.Article object at 0x7f334c604090>, <pelican.contents.Article object at 0x7f334d1ffdd0>, <pelican.contents.Article object at 0x7f334cb15ad0>, <pelican.contents.Article object at 0x7f334d199350>, <pelican.contents.Article object at 0x7f334ce709d0>] Category Atom Feed" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/blog.css">
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/github.css">
+        <script src="http://chrisorm.github.io:/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="https://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="https://chrisorm.github.io">Home</a></li>
-                            <li ><a href="https://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="https://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="https://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="https://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/VI-MC.html"> Variational Inference - Monte Carlo ELBO  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://chrisorm.github.io:"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://chrisorm.github.io:/index.html">Home</a></li>
+                <li><a href="http://chrisorm.github.io:/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2017-09-30T12:00:00+01:00" pubdate>
+                            Sat 30 September 2017
+                        </time>
+                        <a href="http://chrisorm.github.io:/VI-MC.html" rel="bookmark"><h1>Variational Inference - Monte Carlo ELBO</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1104,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1134,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1159,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1175,16 +1181,17 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Using-the-ELBO-in-practice">Using the ELBO in practice<a class="anchor-link" href="#Using-the-ELBO-in-practice">¶</a></h1>
+<h1 id="Using-the-ELBO-in-practice">Using the ELBO in practice<a class="anchor-link" href="#Using-the-ELBO-in-practice">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>In the previous post, we derived the ELBO in practice. We saw that by maximising the lower bound, given by;</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>In the previous post, we derived the ELBO in practice. We saw that by maximising the lower bound, given by;</p>
 <p>$E_{q}[log \ P(X,Z) - log \ q(Z)] = \mathcal{L}$</p>
 <p>we can approximate the posterior $P(Z\mid X)$ with $q(Z)$.</p>
+
 </div>
 </div>
 </div>
@@ -1192,13 +1199,14 @@ h6:hover .anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For this post, I will go through how we can use Tensorflow to to learn an approximation to the true posterior.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Computing-the-ELBO-in-practice">Computing the ELBO in practice<a class="anchor-link" href="#Computing-the-ELBO-in-practice">¶</a></h2><p>What we will concerned with in this post is how to compute the ELBO in practice, without having to resort to special case simplifications. This approach forms part of a set of approaches termed 'Black Box' Variational Inference.</p>
+<h2 id="Computing-the-ELBO-in-practice">Computing the ELBO in practice<a class="anchor-link" href="#Computing-the-ELBO-in-practice">&#182;</a></h2><p>What we will concerned with in this post is how to compute the ELBO in practice, without having to resort to special case simplifications. This approach forms part of a set of approaches termed 'Black Box' Variational Inference.</p>
 <p>$\mathcal{L} = E_{q}[log \ P(X,Z) - log \ q(Z)] $</p>
 <p>The advantage of this formulation is that as we want a tractable approximation it should be simple to sample from $q$. This means we are able to approximate the Expecation as;</p>
 <p>$E_{q}[log \ P(X,Z) - log \ q(Z)] \approx \frac{1}{M}\sum_{i}^{M} [log \ P(X, Z_{i}) - log \ q(Z_{i})]$</p>
@@ -1209,49 +1217,63 @@ h6:hover .anchor-link {
 <p>$ = \frac{1}{M}\sum_{i}^{M} \sum_{j}^{N}log \ P(X_{j} \mid Z_{i}) + \frac{1}{M}\sum_{i}^{M}log \ P(Z_{i}) - \frac{1}{M}\sum_{i}^{M}log \ q(Z_{i})$</p>
 <p>Using the above formula we can easily compute a Monte carlo estimate of the ELBO, irrelevant of the form of the joint distribution.</p>
 <p>There is one subtly, however, lurking beneath the surface.</p>
-<h2 id="Using-the-MC-ELBO-estimate">Using the MC ELBO estimate<a class="anchor-link" href="#Using-the-MC-ELBO-estimate">¶</a></h2><p>The esimate we have derived above is very simple to implement providing we can evaluate the joint distribution and we can sample from $q$.</p>
+<h2 id="Using-the-MC-ELBO-estimate">Using the MC ELBO estimate<a class="anchor-link" href="#Using-the-MC-ELBO-estimate">&#182;</a></h2><p>The esimate we have derived above is very simple to implement providing we can evaluate the joint distribution and we can sample from $q$.</p>
 <p>Our goal is to maximise the ELBO, using the MC approximation. If we wish to use a library like tensorflow, or other library which uses automatic differentiation in order to do gradient based optimization, we have to ensure that all the gradients flow correctly.</p>
 <p>In a general sense, sampling is not an operation over which gradients will flow under automatic differentiation. Intuitively, we can see this is the case because sampling is non-deterministic, so the gradients will also be non-deterministic. We will explore this further in a future post.</p>
 <p>One way to get around this is to use the so-called <a href="http://blog.shakirm.com/2015/10/machine-learning-trick-of-the-day-4-reparameterisation-tricks/">Reparameterization Trick</a>. Within Tensorflow, all variables that implement some method for sampling over which gradients will flow have a FULLY_REPARAMETERIZED flag. You can see this check in the code that follows.</p>
 <p>In future posts, we will look into the details of the Reparameterization Trick, as well as ways to deal with distributions where this is not possible.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
 
 <span class="n">tf</span><span class="o">.</span><span class="n">__version__</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[1]:</div>
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre>'1.3.0'</pre>
+<pre>&#39;1.3.0&#39;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Problem-setup">Problem setup<a class="anchor-link" href="#Problem-setup">¶</a></h2><p>In order to introduce the ELBO, and to be able to examine the results, we will use a conjugate distribution so we can easily derive the analytical solution.</p>
+<h2 id="Problem-setup">Problem setup<a class="anchor-link" href="#Problem-setup">&#182;</a></h2><p>In order to introduce the ELBO, and to be able to examine the results, we will use a conjugate distribution so we can easily derive the analytical solution.</p>
 <p>We will use a simple linear regression, treating the weights, $W$ as our latent variable.</p>
 <p>$P(W) = N(W; 0.8, 1.0)$</p>
 <p>$P(t\mid X, W) = N(t; y, S_{N})$</p>
 <p>where $y = Xw$</p>
+
 </div>
 </div>
 </div>
@@ -1260,44 +1282,63 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Our aim is to compute an approximation to the posterior $P(W| \ t, \ X)$.</p>
 <p>Firstly, we will generate the data we will use.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">200</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">200</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mf">3.2</span><span class="o">*</span><span class="n">X</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">T</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[3]:</div>
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.pathcollection at 0x7fe4552bc160></pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x7fe4552bc160&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAh8AAAFqCAYAAAC6Wjg+AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3XtwU+eZP/CvpCMJybIki8gODnEu3AIlQDZN9wdYkE0b
 HFKczCZNoJRdzMWQkGS23Uy9vew2SackU3dbZjrEATu+0FAKuUPcJXHYpFQGTzLtJOS6XMMldQE5
@@ -1659,26 +1700,31 @@ uH79urjIWEREBHx8fKw9LZuwfv36ftvj4+OxaNEi8fjy5cu4d+8eDAYDpk+fjsjISLteLKs/qamp
 8PLykiwyxtykSkpKkJOTg8bGRiiVSqxYsaLPc2vmyMwuig8iIiKyHfZ7q0VERERWweKDiIiILIrF
 BxEREVkUiw8iIiKyKBYfREREZFEsPoiIiMiiWHwQERGRRbH4ICIiIoti8UFEREQWxeKDiIiILIrF
 BxEREVkUiw8iIiKyqP8BTM1fksHjgxUAAAAASUVORK5CYII=
-" />
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below is a simple tensorflow graph implementing the theory in the above sections. One additional trick, is we have wrapped the variable representing the standard deviation of the $q$ distribution in a softplus - this is to ensure our system doesn't degenerate by forcing the std to become either numerically 0 or negative.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">(),</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'/cpu'</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">(),</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/cpu&#39;</span><span class="p">):</span>
     <span class="n">latent_samples</span> <span class="o">=</span> <span class="mi">100</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="c1"># targets</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="c1"># independent variables</span>
@@ -1721,28 +1767,32 @@ BxEREVkUiw8iIiKyqP8BTM1fksHjgxUAAAAASUVORK5CYII=
     <span class="n">train_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="o">-</span><span class="n">loss</span><span class="p">)</span>
     <span class="n">init_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">InteractiveSession</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span>
 <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_op</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2001</span><span class="p">):</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2001</span><span class="p">):</span>
     <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span><span class="n">T</span><span class="p">}</span>
     <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">train_op</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">)</span>
     
@@ -1751,13 +1801,20 @@ BxEREVkUiw8iIiKyqP8BTM1fksHjgxUAAAAASUVORK5CYII=
         <span class="n">q_mean</span> <span class="o">=</span> <span class="n">q_m</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
         <span class="n">q_std</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="n">q_s</span><span class="p">)])</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[1.2, 0.55412644]
 [3.1951087, 0.00074953539]
@@ -1771,8 +1828,10 @@ BxEREVkUiw8iIiKyqP8BTM1fksHjgxUAAAAASUVORK5CYII=
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -1780,83 +1839,124 @@ BxEREVkUiw8iIiKyqP8BTM1fksHjgxUAAAAASUVORK5CYII=
 <p>We can derive the mean and variance of the posterior analytically, (for more information, see PRML by Bishop).</p>
 <p>The posterior variance is given by $S_{P} = (\frac{1}{5.5^{2}}X^{T}X + 1)^{-1}$.</p>
 <p>The posterior mean is given by $m_{P} = S_{P}(0.9+\frac{1}{5.5^{2}}X^{T}t)$</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">analytical_posterior_var</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mf">5.5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">@</span> <span class="n">X</span> <span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">analytical_posterior_var</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mf">5.5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">@</span> <span class="n">X</span> <span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
 <span class="n">analytical_posterior_var</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[13]:</div>
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[ 0.00018215]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">analytical_posterior_mean</span> <span class="o">=</span> <span class="n">analytical_posterior_var</span><span class="o">*</span><span class="p">(</span><span class="mf">0.9</span><span class="o">+</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mf">5.5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">T</span><span class="p">))</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">analytical_posterior_mean</span> <span class="o">=</span> <span class="n">analytical_posterior_var</span><span class="o">*</span><span class="p">(</span><span class="mf">0.9</span><span class="o">+</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mf">5.5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">T</span><span class="p">))</span>
 <span class="n">analytical_posterior_mean</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[14]:</div>
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
 <pre>array([[ 3.1941171]])</pre>
 </div>
+
+</div>
+
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">norm</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
 <span class="n">xn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">)</span>
 <span class="n">true_dist</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="n">analytical_posterior_mean</span><span class="p">,</span> 
                  <span class="n">scale</span> <span class="o">=</span><span class="p">(</span><span class="n">analytical_posterior_var</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">q_dist</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="n">q_mean</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">q_std</span><span class="p">)</span>
 <span class="n">yn</span> <span class="o">=</span> <span class="n">true_dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xn</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xn</span><span class="p">,</span> <span class="n">yn</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"True Posterior"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xn</span><span class="p">,</span> <span class="n">q_dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xn</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-         <span class="n">label</span><span class="o">=</span><span class="s2">"Approximation"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xn</span><span class="p">,</span> <span class="n">yn</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Posterior&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xn</span><span class="p">,</span> <span class="n">q_dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">xn</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Approximation&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.legend.legend at 0x7fe41c716f98></pre>
+<pre>&lt;matplotlib.legend.Legend at 0x7fe41c716f98&gt;</pre>
 </div>
+
 </div>
+
 <div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgwAAAFqCAYAAAB2wwLVAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAAPYQAAD2EBqD+naQAAIABJREFUeJzs3Xt8U/XhP/7XybVNk/R+oTegUG6CFquiUsHh/Yq3icML
 4ES+Ik7wtrHhEBQ3Lxtzc/7cgI98RFE+OEDcxMvkMkEdQ3EgolTuBXqhbZq0adNczu+P0CTnpC20
@@ -2241,26 +2341,34 @@ DtmmVgFg8eLFePXVVz0e/0gmNTeiKKKkpARNTU226dj169cjPT3dW0MY0YbyukaeITU3FosFhw8f
 RmtrKwICApCUlISdO3di6tSpkvrlhZuIiIjIKZ77QkRERE6xYCAiIiKnWDAQERGRUywYiIiIyCkW
 DEREROQUCwYiIiJyigUDEREROcWCgYiIiJxiwUBEREROsWAgIiIip1gwEBERkVMsGIiIiMip/wN1
 L7DOALUQWQAAAABJRU5ErkJggg==
-" />
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
-</div>
-</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As we can see, this is a very close approximation, and if we run for more steps, we will get an exact analytical solution.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>In this post, we have introduced the Monte Carlo approach to computing the ELBO, talked very briefly about some considerations, and used tensorflow to compute a simple example.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>In this post, we have introduced the Monte Carlo approach to computing the ELBO, talked very briefly about some considerations, and used tensorflow to compute a simple example.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -2291,64 +2399,19 @@ L7DOALUQWQAAAABJRU5ErkJggg==
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="https://chrisorm.github.io/VI-ELBO.html" title="Previous: Variational Inference - Deriving the ELBO">Variational Inference - Deriving the ELBO</a></li>
- 
-                <li class="next_article"><a href="https://chrisorm.github.io/VI-reparam.html" title="Next: Variational Inference - Reparameterisation Trick in detail.">Variational Inference - Reparameterisation Trick in detail.</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2017-09-30T12:00:00+01:00">Sep 30, 2017</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Python-ref">Python
-                    <span>16</span>
-</a></li>
-                <li><a href="/tags.html#Tensorflow-ref">Tensorflow
-                    <span>2</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://chrisorm.github.io:/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://chrisorm.github.io:/tag/variational-inference.html">Variational Inference</a>, <a href="http://chrisorm.github.io:/tag/vi.html">VI</a>, <a href="http://chrisorm.github.io:/tag/python.html">Python</a>, <a href="http://chrisorm.github.io:/tag/tensorflow.html">Tensorflow</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://chrisorm.github.io:/theme/js/main.js"></script>
     </body>
 </html>

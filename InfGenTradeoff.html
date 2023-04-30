@@ -1,67 +1,68 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Chris Orm" />
-        <meta name="copyright" content="Chris Orm" />
-
-<meta name="keywords" content="Variational Inference, VI, Python, posts, " />
-        <title>Inference Generation Tradeoffs in VAEs  · Infinite n♾rm
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>    Inference Generation Tradeoffs in VAEs
 </title>
-        <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="https://chrisorm.github.io/theme/css/solarizedlight.css" media="screen">
-        <link rel="shortcut icon" href="https://chrisorm.github.io/theme/images/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="57x57" href="https://chrisorm.github.io/theme/images/apple-touch-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="https://chrisorm.github.io/theme/images/apple-touch-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="https://chrisorm.github.io/theme/images/apple-touch-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link rel="icon" href="https://chrisorm.github.io/theme/images/apple-touch-icon-144x144.png" />
-        <link href="https://chrisorm.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - Full Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f334cb7a1d0>] Category Atom Feed" />
-        <link href="https://chrisorm.github.io/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="Infinite n♾rm - [<pelican.contents.Article object at 0x7f335029b490>, <pelican.contents.Article object at 0x7f334cf085d0>, <pelican.contents.Article object at 0x7f334cd35350>, <pelican.contents.Article object at 0x7f334cac5150>, <pelican.contents.Article object at 0x7f334d220ed0>, <pelican.contents.Article object at 0x7f334cac0450>, <pelican.contents.Article object at 0x7f334cafbf90>, <pelican.contents.Article object at 0x7f334c62ff50>, <pelican.contents.Article object at 0x7f334d1b3550>, <pelican.contents.Article object at 0x7f334c788d10>, <pelican.contents.Article object at 0x7f334d049a10>, <pelican.contents.Article object at 0x7f334c61c5d0>, <pelican.contents.Article object at 0x7f334cd65d90>, <pelican.contents.Article object at 0x7f334cff0a10>, <pelican.contents.Article object at 0x7f334c7f3c90>, <pelican.contents.Article object at 0x7f334ced3cd0>, <pelican.contents.Article object at 0x7f334ce6ab10>, <pelican.contents.Article object at 0x7f334cbe97d0>, <pelican.contents.Article object at 0x7f334c86edd0>, <pelican.contents.Article object at 0x7f334d274250>, <pelican.contents.Article object at 0x7f334c604090>, <pelican.contents.Article object at 0x7f334d1ffdd0>, <pelican.contents.Article object at 0x7f334cb15ad0>, <pelican.contents.Article object at 0x7f334d199350>, <pelican.contents.Article object at 0x7f334ce709d0>] Category Atom Feed" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/normalize.css">
+        <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/main.css">
+
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/blog.css">
+    <link rel="stylesheet" href="http://chrisorm.github.io:/theme/css/github.css">
+        <script src="http://chrisorm.github.io:/theme/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <div id="content-sans-footer">
-        <div class="navbar navbar-static-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="https://chrisorm.github.io/"><span class=site-name>Infinite n♾rm</span></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right top-menu">
-                            <li ><a href="https://chrisorm.github.io">Home</a></li>
-                            <li ><a href="https://chrisorm.github.io/categories.html">Categories</a></li>
-                            <li ><a href="https://chrisorm.github.io/tags.html">Tags</a></li>
-                            <li ><a href="https://chrisorm.github.io/archives.html">Archives</a></li>
-                            <li><form class="navbar-search" action="https://chrisorm.github.io/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span1"></div>
-                <div class="span10">
-<article>
-<div class="row-fluid">
-    <header class="page_header span10 offset2">
-    <h1><a href="https://chrisorm.github.io/InfGenTradeoff.html"> Inference Generation Tradeoffs in VAEs  </a></h1>
-    </header>
-</div>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-<div class="row-fluid">
-        <div class="span8 offset2 article-content">
+        <div id="wrapper">
+<header id="sidebar" class="side-shadow">
+    <hgroup id="site-header">
+      <a id="site-title" href="http://chrisorm.github.io:"><h1><i class="icon-angle-left"></i> Infinite n♾rm<i class="icon-angle-right"></i></h1></a>
+        <p id="site-desc"></p>
+    </hgroup>
+    <nav>
+        <ul id="nav-links">
+                <li><a href="http://chrisorm.github.io:/index.html">Home</a></li>
+                <li><a href="http://chrisorm.github.io:/about.html">About Me</a></li>
+        </ul>
+        <ul id="socials">
+                <li><a href="http://twitter.com/ClOrmandy" target="twitter"><i class="icon-twitter svc-badge"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/cormandy/" target="linkedin"><i class="icon-linkedin svc-badge"></i></a></li>
+        </ul>
 
-            <style type="text/css">/*!
+    </nav>
+<footer id="site-info">
+    <p>
+        Proudly powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> and <a href="http://python.org/" target="python">Python</a>. Theme by <a href="https://github.com/hdra/pelican-cait" target="github">hndr</a>.
+    </p>
+    <p>
+        Textures by <a href="http://subtlepatterns.com/" target="subtlepatterns">Subtle Pattern</a>. Font Awesome by <a href="http://fortawesome.github.io/Font-Awesome/" target="github">Dave Grandy</a>.
+    </p>
+</footer></header>
+    <div id="post-container">
+        <ol id="post-list">
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <time class="post-time" datetime="2018-03-03T18:00:00+00:00" pubdate>
+                            Sat 03 March 2018
+                        </time>
+                        <a href="http://chrisorm.github.io:/InfGenTradeoff.html" rel="bookmark"><h1>Inference Generation Tradeoffs in VAEs</h1></a>
+                    </header>
+
+                    <section class="post-content">
+                        <style type="text/css">/*!
 *
 * IPython notebook
 *
@@ -1104,24 +1105,29 @@ h6:hover .anchor-link {
   font-style: italic;
 }
 </style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
-.highlight  { background: #f8f8f8; }
-.highlight .c { color: #408080; font-style: italic } /* Comment */
+<style type="text/css">pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
-.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
 .highlight .ge { font-style: italic } /* Generic.Emph */
-.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gr { color: #E40000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -1134,15 +1140,15 @@ h6:hover .anchor-link {
 .highlight .kt { color: #B00040 } /* Keyword.Type */
 .highlight .m { color: #666666 } /* Literal.Number */
 .highlight .s { color: #BA2121 } /* Literal.String */
-.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .na { color: #687822 } /* Name.Attribute */
 .highlight .nb { color: #008000 } /* Name.Builtin */
 .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .highlight .no { color: #880000 } /* Name.Constant */
 .highlight .nd { color: #AA22FF } /* Name.Decorator */
-.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .highlight .nf { color: #0000FF } /* Name.Function */
-.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nl { color: #767600 } /* Name.Label */
 .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .highlight .nv { color: #19177C } /* Name.Variable */
@@ -1159,11 +1165,11 @@ h6:hover .anchor-link {
 .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .highlight .sx { color: #008000 } /* Literal.String.Other */
-.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
 .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
 .highlight .ss { color: #19177C } /* Literal.String.Symbol */
 .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -1175,16 +1181,18 @@ h6:hover .anchor-link {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style><div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2><p>This post covers the recent paper <a href="https://arxiv.org/abs/1802.06847">Distribution Matching in Variational Inference</a> by Mihaela Rosca, Balaji Lakshminarayanan and Shakir Mohamed. It covers a variety of topics in deep generative modelling, and this post is my own take on some parts of it, so I also recommend the original paper! Many of the ideas in this post have been seen before, for example see <a href="http://www.inference.vc/choice-of-recognition-models-in-vaes-a-regularisation-view/">Ferenc</a>'s post on a similar topic, which lists a lot of related resources.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>This post covers the recent paper <a href="https://arxiv.org/abs/1802.06847">Distribution Matching in Variational Inference</a> by Mihaela Rosca, Balaji Lakshminarayanan and Shakir Mohamed. It covers a variety of topics in deep generative modelling, and this post is my own take on some parts of it, so I also recommend the original paper! Many of the ideas in this post have been seen before, for example see <a href="http://www.inference.vc/choice-of-recognition-models-in-vaes-a-regularisation-view/">Ferenc</a>'s post on a similar topic, which lists a lot of related resources.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Inference-Generation-Tradeoff-in-VAEs">Inference Generation Tradeoff in VAEs<a class="anchor-link" href="#Inference-Generation-Tradeoff-in-VAEs">¶</a></h2><p>In VAEs, we try to maximise the ELBO, which serves as a lower bound on the marginal likelihood. We simultaneously learn the parameters, $\theta$, of the 'true' distribution, $p$, and the parameters, $\phi$ of the approximation $q$.</p>
+<h2 id="Inference-Generation-Tradeoff-in-VAEs">Inference Generation Tradeoff in VAEs<a class="anchor-link" href="#Inference-Generation-Tradeoff-in-VAEs">&#182;</a></h2><p>In VAEs, we try to maximise the ELBO, which serves as a lower bound on the marginal likelihood. We simultaneously learn the parameters, $\theta$, of the 'true' distribution, $p$, and the parameters, $\phi$ of the approximation $q$.</p>
 <p>Recall the ELBO;</p>
 <p>$log \ p_{\theta}(x) \geq E_{q_{\phi}}[log \ p_{\theta}(x \mid z)] - KL[q_{\phi}(z \mid x) || p(z)]$</p>
+
 </div>
 </div>
 </div>
@@ -1195,13 +1203,14 @@ h6:hover .anchor-link {
 <p>To summarise this point, the first term is large when $q$ encodes a large amount of information about the sample, and also when $p$ assigns high mass to the sample when conditioned on $z$.</p>
 <p>The second term, however, needs to be minimised in order to maximise the ELBO. This penalizes the distance between the prior and the approximate posterior.</p>
 <p>So the inference generation trade off comes from these two terms - the first strives to encode lots of information into $q$, whilst the KLD seeks to make $q$ unconditional.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Sampling-Vs-Reconstructions">Sampling Vs Reconstructions<a class="anchor-link" href="#Sampling-Vs-Reconstructions">¶</a></h3><p>With VAEs, we train the network by taking a sample, passing it through $q$ to get a latent variable, then reconstructing by passing the latent sample through $p$. Gradients are then taken based on the ELBO.</p>
+<h3 id="Sampling-Vs-Reconstructions">Sampling Vs Reconstructions<a class="anchor-link" href="#Sampling-Vs-Reconstructions">&#182;</a></h3><p>With VAEs, we train the network by taking a sample, passing it through $q$ to get a latent variable, then reconstructing by passing the latent sample through $p$. Gradients are then taken based on the ELBO.</p>
 <p>So, during training, the reconstructor $p$, only ever sees zs that are sampled from q. However, when we sample, we sample from our prior $p(z)$. If the prior and approximate posterior are very close this is probably fine. Based on this assumption, we can generate both good samples and good reconstructions.</p>
 <p>However, this paper shows that this is never true - in almost every case, the likelihood term dominates, and the KLD is always non zero, often in a substantial way. This means we can have good reconstructions but poor samples - which is likely a reason VAEs and extensions have always struggled to compete with GANs for the quality of the generated samples.</p>
 <p>This is the crux of the Inference-Generation tradeoff, by making the likelihood term large, the network is unable to make the approximate posterior be reasonably similar to the prior, and so when we sample using the prior, we probably wont get the same quality as we do when we reconstruct.</p>
@@ -1212,25 +1221,27 @@ h6:hover .anchor-link {
 <p>$ p_{\theta}(x | z) q_{\phi}(z) = p_{\theta}(x | z)p(z)$</p>
 <p>where $p(x^{*})$ is the true data distribution.</p>
 <p>This obviously implies we want $q_{\phi}(z)$, not the conditional distribution, to be close to the prior.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="An-example-of-when-this-is-a-problem">An example of when this is a problem<a class="anchor-link" href="#An-example-of-when-this-is-a-problem">¶</a></h2><p>Last year, Rui Shu published a blog post called <a href="http://ruishu.io/2017/01/14/one-bit/">Autoencoding a single bit</a>. Rui proposes a simple problem where the VAE takes either 1 or 0 as input, and has a 1D latent dimension.</p>
+<h2 id="An-example-of-when-this-is-a-problem">An example of when this is a problem<a class="anchor-link" href="#An-example-of-when-this-is-a-problem">&#182;</a></h2><p>Last year, Rui Shu published a blog post called <a href="http://ruishu.io/2017/01/14/one-bit/">Autoencoding a single bit</a>. Rui proposes a simple problem where the VAE takes either 1 or 0 as input, and has a 1D latent dimension.</p>
 <p>Here I replicate the experiment, using the exact same code from my previous post on VAEs (some code is omitted for clarity, you can checkout the previous post and make relevant changes easily).</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -1242,52 +1253,70 @@ h6:hover .anchor-link {
 <span class="n">n_samples_per_batch</span> <span class="o">=</span> <span class="n">n_samples</span><span class="o">//</span><span class="n">input_size</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_samples</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[[ 0.]
  [ 1.]]
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">()</span>
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">()</span>
 
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
     <span class="n">train</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
 </pre></div>
+
+    </div>
 </div>
 </div>
-</div>
+
 <div class="output_wrapper">
 <div class="output">
+
+
 <div class="output_area">
-<div class="prompt"></div>
+
+    <div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Log Likelihood:  0.6550791263580322 KLD:  0.0017769336700439453
 Log Likelihood:  0.6910373568534851 KLD:  0.0015850365161895752
@@ -1310,8 +1339,10 @@ Log Likelihood:  0.6948075890541077 KLD:  0.002067163586616516
 </pre>
 </div>
 </div>
+
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -1319,28 +1350,33 @@ Log Likelihood:  0.6948075890541077 KLD:  0.002067163586616516
 <p>As this shows, the KL term dominates in this case. This means the optimal ELBO is found by moving q to be close to the prior, and once we do this, we essentially force independence, so $p(x | z) = p(x)$. Rui's original post explains this in much more detail, so check it out.</p>
 <p>The key point here is that this is a scenario where the VAE strongly favours generation over inference - because the KL dominates, whether we generate samples from the prior or approximate posterior, they will be roughly the same quality.</p>
 <p>However, we sacrifice on the inference - we have learnt a really poor model for $p(x \mid z)$.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-problem">The problem<a class="anchor-link" href="#The-problem">¶</a></h2><p>The real problem lies within the KL divergence. In most VAE formulations, the prior is used to shape the latent variable space - have a look at a few of my previous posts to see this in action. However, this property is actually about the marginal distribution of $q$.</p>
+<h2 id="The-problem">The problem<a class="anchor-link" href="#The-problem">&#182;</a></h2><p>The real problem lies within the KL divergence. In most VAE formulations, the prior is used to shape the latent variable space - have a look at a few of my previous posts to see this in action. However, this property is actually about the marginal distribution of $q$.</p>
 <p>We would really like the overall shape to be given by the prior, e.g. the unit circle, and that this be 'divided up' so that conditioning on different samples gives some part of this space.</p>
 <p>Because the ELBO requires us to minimise $KL[q(z|x) || p(z)]$, we don't do this. What we really want is to minimise $KL[q(z)|| p(z)]$. However, we don't have easy access to the marginal on $q$, so the ELBO uses the conditional as a way to approximately achieve this. This is the cause of all our problems!</p>
 <p>Unfortunately, knowing the problem doesn't help much - computing the marginal is really expensive. We would also need to compute a bound involving the marginal. The <a href="http://approximateinference.org/accepted/HoffmanJohnson2016.pdf">ELBO Surgery</a> paper shows:</p>
 <p>$E_{p(x^{*})}[KL[q_{\phi}(z|x)||p(z)]] \geq KL[q_{\phi}(z)||p(z)]$</p>
 <p>So if we just change the KL term in the ELBO to be in terms of the marginal q, we may not have a lower bound anymore.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">¶</a></h1><p>This post has been a quick summary of the recent paper on the Generation Inference problem within VAEs. This has also been noted before in many places, and in general it should be no surprise - if we pick a very simple prior, this will be constraining.</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>This post has been a quick summary of the recent paper on the Generation Inference problem within VAEs. This has also been noted before in many places, and in general it should be no surprise - if we pick a very simple prior, this will be constraining.</p>
+
 </div>
 </div>
 </div>
+ 
+
 
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
@@ -1371,61 +1407,19 @@ Log Likelihood:  0.6948075890541077 KLD:  0.002067163586616516
 }
 </script>
 
-            <aside>
-            <hr/>
-            <nav>
-            <ul class="articles_timeline">
- 
-                <li class="previous_article">« <a href="https://chrisorm.github.io/AD-IS.html" title="Previous: Approximate Distributions Implied by Importance Sampling">Approximate Distributions Implied by Importance Sampling</a></li>
- 
-                <li class="next_article"><a href="https://chrisorm.github.io/pydata-2018.html" title="Next: Deep Probabilistic Methods in Pytorch @ Pydata London 2018">Deep Probabilistic Methods in Pytorch @ Pydata London 2018</a> »</li>
-            </ul>
-            </nav>
-            </aside>
-        </div>
-        <section>
-        <div class="span2" style="float:right;font-size:0.9em;">
- 
-            <h4>Published</h4>
-            <time pubdate="pubdate" datetime="2018-03-03T18:00:00+00:00">Mar 3, 2018</time>
-            <h4>Category</h4>
-            <a class="category-link" href="/categories.html#posts-ref">posts</a> 
-            <h4>Tags</h4>
-            <ul class="list-of-tags tags-in-article"> 
-                <li><a href="/tags.html#Python-ref">Python
-                    <span>16</span>
-</a></li>
-                <li><a href="/tags.html#Variational-Inference-ref">Variational Inference
-                    <span>17</span>
-</a></li>
-                <li><a href="/tags.html#VI-ref">VI
-                    <span>17</span>
-</a></li>
-            </ul>
-
-        </div>
-        </section>
-</div>
-</article>
-                </div>
-                <div class="span1"></div>
-            </div>
-        </div>
+                    </section>
+                    <hr/>
+                    <aside class="post-meta">
+                        <p>Category: <a href="http://chrisorm.github.io:/category/posts.html">posts</a></p>
+                        <p>Tags: <a href="http://chrisorm.github.io:/tag/variational-inference.html">Variational Inference</a>, <a href="http://chrisorm.github.io:/tag/vi.html">VI</a>, <a href="http://chrisorm.github.io:/tag/python.html">Python</a>, </p>
+                    </aside>
+                    <hr/>
+                </article>
+            </li>
+        </ol>
     </div>
-<footer>
-<div id="footer">
-    <ul class="footer-content">
-        <li class="elegant-power">Powered by <a href="http://getpelican.com/" title="Pelican Home Page">Pelican</a>. Theme: <a href="http://oncrashreboot.com/pelican-elegant" title="Theme Elegant Home Page">Elegant</a> by <a href="http://oncrashreboot.com" title="Talha Mansoor Home Page">Talha Mansoor</a></li>
-    </ul>
-</div>
-</footer>            <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function validateForm(query)
-            {
-                return (query.length > 0);
-            }
-        </script>
+        </div>
 
+        <script src="http://chrisorm.github.io:/theme/js/main.js"></script>
     </body>
 </html>
